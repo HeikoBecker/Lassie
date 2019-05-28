@@ -1,0 +1,6 @@
+.ControlButtons {
+  box-shadow: 0 6px 24px rgba(60, 60, 60, 0.18);
+  float: right;
+  margin-top: 50px;
+  background-color: white;
+}

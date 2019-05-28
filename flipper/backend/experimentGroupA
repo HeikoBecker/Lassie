@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm int-output/query.log
+rm int-output/response.log
+> int-output/grammar.log.json
+./interactive/run @mode=voxelurn

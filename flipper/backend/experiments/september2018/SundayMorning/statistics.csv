@@ -1,0 +1,2 @@
+id,group,number of queries,length of queries,number of tokens,number of definitions,number of unparsable queries,number of induced queries,number of core language queries,length of successful queries,tokens in unsuccessful,queries by others,queries by self
+t2i4f4fglc,B,108,3129,590,10,24,39,45,2211,427,0,39

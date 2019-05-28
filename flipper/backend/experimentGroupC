@@ -1,0 +1,6 @@
+#!/bin/bash
+
+rm int-output/query.log
+rm int-output/response.log
+cp experiments/gavranExtended.log.json int-output/grammar.log.json
+./interactive/run @mode=voxelurn

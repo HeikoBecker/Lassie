@@ -1,0 +1,850 @@
+{"format": "lisp2json", "q": "(:q \"start\")", "count": 556, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:16:19.536"}
+{"format": "lisp2json", "q": "(:q \"start\")", "count": 558, "sessionId": "diu2invfm6", "time": "2018-09-14T11:16:19.803"}
+{"format": "lisp2json", "q": "(:q \"start\")", "count": 562, "sessionId": "diu2invfm6", "time": "2018-09-14T11:17:13.701"}
+{"format": "lisp2json", "q": "(:q \"pick item is green\")", "count": 566, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:18:30.467"}
+{"format": "lisp2json", "q": "(:q \"pick item is green\")", "count": 568, "sessionId": "diu2invfm6", "time": "2018-09-14T11:18:32.670"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property green)))\")", "count": 569, "sessionId": "diu2invfm6", "time": "2018-09-14T11:18:37.024"}
+{"format": "lisp2json", "q": "(:q \"repeat 3 times { move left}\")", "count": 584, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:19:41.653"}
+{"format": "lisp2json", "q": "(:q \"repeat 5 times { move right}\")", "count": 586, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:20:08.639"}
+{"format": "lisp2json", "q": "(:accept \"repeat 5 times { move right}\" \"(:loop (number 5) (: move right))\")", "count": 587, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:20:13.533"}
+{"format": "lisp2json", "q": "(:q \"pick green square\")", "count": 595, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:20:30.792"}
+{"format": "lisp2json", "q": "(:q \"pick item is blue or is square\")", "count": 602, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:21:14.025"}
+{"format": "lisp2json", "q": "(:q \"pick item is green or is square\")", "count": 605, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:21:25.830"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green or is square\" \"(: itemActionHandler pick (call setLimit (number 1) (or (items?property green) (items?property square))))\")", "count": 606, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:21:29.043"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is yellow and {world containing item is circle }\")", "count": 611, "sessionId": "diu2invfm6", "time": "2018-09-14T11:22:41.803"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is yellow and {world containing item is circle }\" \"(: visitArea (and (call filterArea world (items?property yellow)) (call filterArea world (items?property circle))))\")", "count": 612, "sessionId": "diu2invfm6", "time": "2018-09-14T11:22:47.918"}
+{"format": "lisp2json", "q": "(:q \"pick yellow item\")", "count": 617, "sessionId": "diu2invfm6", "time": "2018-09-14T11:23:12.925"}
+{"format": "lisp2json", "q": "(:q \"pick item is yello w\")", "count": 619, "sessionId": "diu2invfm6", "time": "2018-09-14T11:23:31.895"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow\")", "count": 621, "sessionId": "diu2invfm6", "time": "2018-09-14T11:23:39.319"}
+{"format": "lisp2json", "q": "(:accept \"pick item is yellow\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property yellow)))\")", "count": 622, "sessionId": "diu2invfm6", "time": "2018-09-14T11:23:41.797"}
+{"format": "lisp2json", "q": "(:q \"visit empty space\")", "count": 627, "sessionId": "diu2invfm6", "time": "2018-09-14T11:24:12.938"}
+{"format": "lisp2json", "q": "(:q \"visit {room containing item is yellow} and {room containing item is circle}\")", "count": 635, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:24:48.367"}
+{"format": "lisp2json", "q": "(:q \"visit empty space\")", "count": 637, "sessionId": "diu2invfm6", "time": "2018-09-14T11:25:17.490"}
+{"format": "lisp2json", "q": "(:q \"visit {world containing item is yellow} and {world containing item is circle}\")", "count": 642, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:25:44.561"}
+{"format": "lisp2json", "q": "(:accept \"visit {world containing item is yellow} and {world containing item is circle}\" \"(: visitArea (and (call filterArea world (items?property yellow)) (call filterArea world (items?property circle))))\")", "count": 643, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:25:50.896"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow\")", "count": 647, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:26:10.987"}
+{"format": "lisp2json", "q": "(:accept \"pick item is yellow\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property yellow)))\")", "count": 649, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:26:13.116"}
+{"format": "lisp2json", "q": "(:q \"visit world minus {world containing item}\")", "count": 650, "sessionId": "diu2invfm6", "time": "2018-09-14T11:26:13.277"}
+{"format": "lisp2json", "q": "(:accept \"visit world minus {world containing item}\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 652, "sessionId": "diu2invfm6", "time": "2018-09-14T11:26:17.218"}
+{"format": "lisp2json", "q": "(:def_ret \"visit empty space \" \"[[\\\"visit world minus {world containing item}\\\",\\\"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\\\"]]\")", "count": 653, "sessionId": "diu2invfm6", "time": "2018-09-14T11:26:20.455"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 654, "sessionId": "diu2invfm6", "time": "2018-09-14T11:26:20.463"}
+{"format": "lisp2json", "q": "(:q \"visit world  containing  a green circle and a red triangle and a yellow square\")", "count": 660, "sessionId": "diu2invfm6", "time": "2018-09-14T11:28:57.065"}
+{"format": "lisp2json", "q": "(:q \"start Alruba\")", "count": 662, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:30:34.073"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world minus visit {room containing item }\")", "count": 664, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:31:18.528"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is circle\")", "count": 666, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:31:23.083"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is circle\" \"(: visitArea (call filterArea world (items?property circle)))\")", "count": 667, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:31:26.718"}
+{"format": "lisp2json", "q": "(:q \"pick item\")", "count": 669, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:31:30.225"}
+{"format": "lisp2json", "q": "(:accept \"pick item\" \"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\")", "count": 670, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:31:31.504"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world minus {room containing item }\")", "count": 672, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:31:40.011"}
+{"format": "lisp2json", "q": "(:q \"get green circle\")", "count": 674, "sessionId": "diu2invfm6", "time": "2018-09-14T11:31:48.665"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is green and is circle\")", "count": 676, "sessionId": "diu2invfm6", "time": "2018-09-14T11:32:07.554"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is green and is circle\" \"(: visitArea (call filterArea world (and (items?property green) (items?property circle))))\")", "count": 677, "sessionId": "diu2invfm6", "time": "2018-09-14T11:32:09.418"}
+{"format": "lisp2json", "q": "(:q \"pick item is green and is circle\")", "count": 679, "sessionId": "diu2invfm6", "time": "2018-09-14T11:32:16.730"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green and is circle\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property green) (items?property circle))))\")", "count": 680, "sessionId": "diu2invfm6", "time": "2018-09-14T11:32:18.207"}
+{"format": "lisp2json", "q": "(:def \"get green circle\" \"[[\\\"visit world containing item is green and is circle\\\",\\\"(: visitArea (call filterArea world (and (items?property green) (items?property circle))))\\\"],[\\\"pick item is green and is circle\\\",\\\"(: itemActionHandler pick (call setLimit (number 1) (and (items?property green) (items?property circle))))\\\"]]\")", "count": 681, "sessionId": "diu2invfm6", "time": "2018-09-14T11:32:19.643"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 682, "sessionId": "diu2invfm6", "time": "2018-09-14T11:32:19.659"}
+{"format": "lisp2json", "q": "(:q \"visit world minus {world containing item }\")", "count": 684, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:33:01.508"}
+{"format": "lisp2json", "q": "(:accept \"visit world minus {world containing item }\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 685, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:33:13.028"}
+{"format": "lisp2json", "q": "(:def_ret \"visit empty\" \"[[\\\"visit world minus {world containing item }\\\",\\\"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\\\"]]\")", "count": 686, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:33:23.996"}
+{"format": "lisp2json", "q": "(:q \"repeat 5 times {move right}\")", "count": 688, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:34:49.554"}
+{"format": "lisp2json", "q": "(:accept \"repeat 5 times {move right}\" \"(:loop (number 5) (: move right))\")", "count": 689, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:34:52.772"}
+{"format": "lisp2json", "q": "(:q \"visit empty space\")", "count": 691, "sessionId": "diu2invfm6", "time": "2018-09-14T11:34:56.955"}
+{"format": "lisp2json", "q": "(:accept \"visit empty space\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 692, "sessionId": "diu2invfm6", "time": "2018-09-14T11:34:58.638"}
+{"format": "lisp2json", "q": "(:q \"drop green circle\")", "count": 694, "sessionId": "diu2invfm6", "time": "2018-09-14T11:35:04.071"}
+{"format": "lisp2json", "q": "(:q \"drop item is green and is circle\")", "count": 696, "sessionId": "diu2invfm6", "time": "2018-09-14T11:35:13.369"}
+{"format": "lisp2json", "q": "(:accept \"drop item is green and is circle\" \"(: itemActionHandler drop (call setLimit (number 1) (and (items?property green) (items?property circle))))\")", "count": 697, "sessionId": "diu2invfm6", "time": "2018-09-14T11:35:14.256"}
+{"format": "lisp2json", "q": "(:def_ret \"drop green circle\" \"[[\\\"drop item is green and is circle\\\",\\\"(: itemActionHandler drop (call setLimit (number 1) (and (items?property green) (items?property circle))))\\\"]]\")", "count": 698, "sessionId": "diu2invfm6", "time": "2018-09-14T11:35:16.416"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 699, "sessionId": "diu2invfm6", "time": "2018-09-14T11:35:16.424"}
+{"format": "lisp2json", "q": "(:def \"green circle to empty\" \"[[\\\"get green circle\\\",\\\"(:s (: visitArea (call filterArea world (and (items?property green) (items?property circle)))) (: itemActionHandler pick (call setLimit (number 1) (and (items?property green) (items?property circle)))))\\\"],[\\\"visit empty space\\\",\\\"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\\\"],[\\\"drop green circle\\\",\\\"(: itemActionHandler drop (call setLimit (number 1) (and (items?property green) (items?property circle))))\\\"]]\")", "count": 700, "sessionId": "diu2invfm6", "time": "2018-09-14T11:35:36.632"}
+{"format": "lisp2json", "q": "(:q \"visit world minus world containing item\")", "count": 702, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:35:56.931"}
+{"format": "lisp2json", "q": "(:accept \"visit world minus world containing item\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 703, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:36:03.161"}
+{"format": "lisp2json", "q": "(:q \"pick item is green or is circle\")", "count": 705, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:36:13.124"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green or is circle\" \"(: itemActionHandler pick (call setLimit (number 1) (or (items?property green) (items?property circle))))\")", "count": 706, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:36:16.212"}
+{"format": "lisp2json", "q": "(:q \"visit empty space\")", "count": 708, "sessionId": "diu2invfm6", "time": "2018-09-14T11:36:34.973"}
+{"format": "lisp2json", "q": "(:accept \"visit empty space\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 709, "sessionId": "diu2invfm6", "time": "2018-09-14T11:36:38.674"}
+{"format": "lisp2json", "q": "(:q \"pick the green square\")", "count": 711, "sessionId": "diu2invfm6", "time": "2018-09-14T11:37:03.924"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is green and is circle\")", "count": 713, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:37:11.180"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is green and is circle\" \"(: visitArea (call filterArea world (and (items?property green) (items?property circle))))\")", "count": 714, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:37:13.852"}
+{"format": "lisp2json", "q": "(:q \"visit the green square\")", "count": 716, "sessionId": "diu2invfm6", "time": "2018-09-14T11:37:20.438"}
+{"format": "lisp2json", "q": "(:q \"pick item is green and is cirlce\")", "count": 718, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:37:24.768"}
+{"format": "lisp2json", "q": "(:q \"visit {room containing item is red} and {room containing item is triangle}\")", "count": 720, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:37:30.095"}
+{"format": "lisp2json", "q": "(:q \"visit green square\")", "count": 722, "sessionId": "diu2invfm6", "time": "2018-09-14T11:37:35"}
+{"format": "lisp2json", "q": "(:q \"pick every item is green and is cirlce\")", "count": 724, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:37:37.198"}
+{"format": "lisp2json", "q": "(:q \"visit {world containing item is red} and {world containing item is triangle}\")", "count": 726, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:37:48.268"}
+{"format": "lisp2json", "q": "(:accept \"visit {world containing item is red} and {world containing item is triangle}\" \"(: visitArea (and (call filterArea world (items?property red)) (call filterArea world (items?property triangle))))\")", "count": 727, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:38:01.397"}
+{"format": "lisp2json", "q": "(:q \"pick item is red or is triangle\")", "count": 729, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:38:27.973"}
+{"format": "lisp2json", "q": "(:q \"pick item is green or is triangle\")", "count": 731, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:38:50.514"}
+{"format": "lisp2json", "q": "(:q \"green square to empty space\")", "count": 733, "sessionId": "diu2invfm6", "time": "2018-09-14T11:38:55.169"}
+{"format": "lisp2json", "q": "(:q \"pick item is red or is triangle\")", "count": 735, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:38:55.959"}
+{"format": "lisp2json", "q": "(:q \"visit green item\")", "count": 737, "sessionId": "diu2invfm6", "time": "2018-09-14T11:39:12.860"}
+{"format": "lisp2json", "q": "(:q \"visit green square\")", "count": 739, "sessionId": "diu2invfm6", "time": "2018-09-14T11:39:22.890"}
+{"format": "lisp2json", "q": "(:q \"pick  item is green and is cirlce\")", "count": 741, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:39:28.229"}
+{"format": "lisp2json", "q": "(:q \"pick item is red or is triangle\")", "count": 743, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:39:38.283"}
+{"format": "lisp2json", "q": "(:q \"pick item is green and is circle\")", "count": 745, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:40:00.690"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green and is circle\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property green) (items?property circle))))\")", "count": 746, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:40:03.095"}
+{"format": "lisp2json", "q": "(:q \"pick item is red and is triangle\")", "count": 748, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:40:25.987"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red and is triangle\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property red) (items?property triangle))))\")", "count": 749, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:40:28.931"}
+{"format": "lisp2json", "q": "(:q \"pick item is green square\")", "count": 751, "sessionId": "diu2invfm6", "time": "2018-09-14T11:40:31.568"}
+{"format": "lisp2json", "q": "(:q \"pick item is red and is triangle\")", "count": 753, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:40:38.631"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red and is triangle\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property red) (items?property triangle))))\")", "count": 754, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:40:45.174"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 755, "sessionId": "diu2invfm6", "time": "2018-09-14T11:40:55.991"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 756, "sessionId": "diu2invfm6", "time": "2018-09-14T11:40:56.246"}
+{"format": "lisp2json", "q": "(:q \"green square  to empty\")", "count": 758, "sessionId": "diu2invfm6", "time": "2018-09-14T11:41:13.810"}
+{"format": "lisp2json", "q": "(:accept \"green square  to empty\" \"(:s (:s (: visitArea (call filterArea world (and (items?property green) (items?property square)))) (: itemActionHandler pick (call setLimit (number 1) (and (items?property green) (items?property square))))) (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (and (items?property green) (items?property square)))))\")", "count": 759, "sessionId": "diu2invfm6", "time": "2018-09-14T11:41:16.121"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is red and is triangle\")", "count": 762, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:41:24.130"}
+{"format": "lisp2json", "q": "(:q \"visit{world containing item is yellow}and {world containing item is square}\")", "count": 763, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:41:24.296"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is red and is triangle\" \"(: visitArea (call filterArea world (and (items?property red) (items?property triangle))))\")", "count": 764, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:41:26.543"}
+{"format": "lisp2json", "q": "(:accept \"visit{world containing item is yellow}and {world containing item is square}\" \"(: visitArea (and (call filterArea world (items?property yellow)) (call filterArea world (items?property square))))\")", "count": 765, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:41:31.889"}
+{"format": "lisp2json", "q": "(:q \"pick item is red and is triangle\")", "count": 767, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:41:39.018"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red and is triangle\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property red) (items?property triangle))))\")", "count": 768, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:41:47.974"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow and is square\")", "count": 770, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:41:49.053"}
+{"format": "lisp2json", "q": "(:accept \"pick item is yellow and is square\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property yellow) (items?property square))))\")", "count": 771, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:41:50.796"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is yellow and is square\")", "count": 773, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:42:07.017"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is yellow and is square\" \"(: visitArea (call filterArea world (and (items?property yellow) (items?property square))))\")", "count": 774, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:42:10.089"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow and is square\")", "count": 776, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:42:21.744"}
+{"format": "lisp2json", "q": "(:accept \"pick item is yellow and is square\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property yellow) (items?property square))))\")", "count": 777, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:42:24.533"}
+{"format": "lisp2json", "q": "(:q \"visit triangle and green item\")", "count": 779, "sessionId": "diu2invfm6", "time": "2018-09-14T11:42:36.705"}
+{"format": "lisp2json", "q": "(:q \"get green item and traingle\")", "count": 781, "sessionId": "diu2invfm6", "time": "2018-09-14T11:43:03.271"}
+{"format": "lisp2json", "q": "(:q \"visit{world containing item is green}and {world containing item is triangle}\")", "count": 783, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:43:25.667"}
+{"format": "lisp2json", "q": "(:accept \"visit{world containing item is green}and {world containing item is triangle}\" \"(: visitArea (and (call filterArea world (items?property green)) (call filterArea world (items?property triangle))))\")", "count": 784, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:43:29.401"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 786, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:43:42.218"}
+{"format": "lisp2json", "q": "(:accept \"pick every item\" \"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\")", "count": 787, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:43:44.946"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is green and {world containing item is triangle}\")", "count": 789, "sessionId": "diu2invfm6", "time": "2018-09-14T11:44:22.145"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is green and {world containing item is triangle}\" \"(: visitArea (and (call filterArea world (items?property green)) (call filterArea world (items?property triangle))))\")", "count": 790, "sessionId": "diu2invfm6", "time": "2018-09-14T11:44:25.157"}
+{"format": "lisp2json", "q": "(:def_ret \"visit triangle and green item \" \"[[\\\"visit world containing item is green and {world containing item is triangle}\\\",\\\"(: visitArea (and (call filterArea world (items?property green)) (call filterArea world (items?property triangle))))\\\"]]\")", "count": 791, "sessionId": "diu2invfm6", "time": "2018-09-14T11:44:27.684"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 792, "sessionId": "diu2invfm6", "time": "2018-09-14T11:44:27.694"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is green and is triangle\")", "count": 794, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:44:36.201"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is green and is triangle\" \"(: visitArea (call filterArea world (and (items?property green) (items?property triangle))))\")", "count": 795, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:44:47.522"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 797, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:44:52.891"}
+{"format": "lisp2json", "q": "(:accept \"pick every item\" \"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\")", "count": 798, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:44:54.525"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 799, "sessionId": "diu2invfm6", "time": "2018-09-14T11:45:04.626"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 800, "sessionId": "diu2invfm6", "time": "2018-09-14T11:45:04.667"}
+{"format": "lisp2json", "q": "(:q \"visit[7,6]\")", "count": 802, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:45:21.236"}
+{"format": "lisp2json", "q": "(:q \"visit[4,6]\")", "count": 804, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:45:32.467"}
+{"format": "lisp2json", "q": "(:q \"visit empty space\")", "count": 806, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:45:35.165"}
+{"format": "lisp2json", "q": "(:q \"visit[2,2]\")", "count": 808, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:45:38.553"}
+{"format": "lisp2json", "q": "(:q \"visit emptyspace\")", "count": 810, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:45:44.992"}
+{"format": "lisp2json", "q": "(:q \"pick item is green and is triangle\")", "count": 812, "sessionId": "diu2invfm6", "time": "2018-09-14T11:45:45.370"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green and is triangle\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property green) (items?property triangle))))\")", "count": 813, "sessionId": "diu2invfm6", "time": "2018-09-14T11:45:48.729"}
+{"format": "lisp2json", "q": "(:q \"visit[7,4]\")", "count": 815, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:46:09.109"}
+{"format": "lisp2json", "q": "(:accept \"visit[7,4]\" \"(: visit (call makePoint (number 7) (number 4)))\")", "count": 816, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:46:11.472"}
+{"format": "lisp2json", "q": "(:q \"pick every item is triangle\")", "count": 818, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:46:24.168"}
+{"format": "lisp2json", "q": "(:q \"visit item is red and is traingle\")", "count": 820, "sessionId": "diu2invfm6", "time": "2018-09-14T11:46:25.946"}
+{"format": "lisp2json", "q": "(:q \"pick item is triangle\")", "count": 822, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:46:35.445"}
+{"format": "lisp2json", "q": "(:q \"visit world containing red item and is triangle\")", "count": 824, "sessionId": "diu2invfm6", "time": "2018-09-14T11:46:55.820"}
+{"format": "lisp2json", "q": "(:q \"move left; drop item\")", "count": 826, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:46:59.890"}
+{"format": "lisp2json", "q": "(:accept \"move left; drop item\" \"(:s (: move left) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 827, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:47:07.798"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 828, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:47:44.888"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 829, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:47:45.115"}
+{"format": "lisp2json", "q": "(:q \"visit empty\")", "count": 831, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:47:57.695"}
+{"format": "lisp2json", "q": "(:q \"visit empty\")", "count": 833, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:48:03.180"}
+{"format": "lisp2json", "q": "(:q \"visit world minus {world containing item}\")", "count": 835, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:08.158"}
+{"format": "lisp2json", "q": "(:accept \"visit world minus {world containing item}\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 836, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:09.167"}
+{"format": "lisp2json", "q": "(:def_ret \"visit empty\" \"[[\\\"visit world minus {world containing item}\\\",\\\"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\\\"]]\")", "count": 837, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:11.326"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 838, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:11.335"}
+{"format": "lisp2json", "q": "(:q \"visit empty;drop item\")", "count": 840, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:48:13.756"}
+{"format": "lisp2json", "q": "(:accept \"visit empty;drop item\" \"(:s (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 841, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:48:17.048"}
+{"format": "lisp2json", "q": "(:q \"visit empty; drop item\")", "count": 843, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:18.861"}
+{"format": "lisp2json", "q": "(:accept \"visit empty; drop item\" \"(:s (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 844, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:20.239"}
+{"format": "lisp2json", "q": "(:q \"visit world containing a tringle and {world containing item green }\")", "count": 846, "sessionId": "diu2invfm6", "time": "2018-09-14T11:48:39.844"}
+{"format": "lisp2json", "q": "(:q \"visit empty; drop item\")", "count": 848, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:41.091"}
+{"format": "lisp2json", "q": "(:accept \"visit empty; drop item\" \"(:s (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 849, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:44.630"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow and is square\")", "count": 851, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:48:56.543"}
+{"format": "lisp2json", "q": "(:q \"visit empty; drop item\")", "count": 853, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:48:58.332"}
+{"format": "lisp2json", "q": "(:accept \"pick item is yellow and is square\" \"(: itemActionHandler pick (call setLimit (number 1) (and (items?property yellow) (items?property square))))\")", "count": 854, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:48:59.357"}
+{"format": "lisp2json", "q": "(:accept \"visit empty; drop item\" \"(:s (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 855, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:49:00.052"}
+{"format": "lisp2json", "q": "(:q \"visit empty; drop item\")", "count": 857, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:49:10.451"}
+{"format": "lisp2json", "q": "(:accept \"visit empty; drop item\" \"(:s (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 858, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:49:14.646"}
+{"format": "lisp2json", "q": "(:q \"visit world containing  item is red and is triangle\")", "count": 860, "sessionId": "diu2invfm6", "time": "2018-09-14T11:49:25.319"}
+{"format": "lisp2json", "q": "(:q \"visit world containing  item is green  and is triangle\")", "count": 862, "sessionId": "diu2invfm6", "time": "2018-09-14T11:49:46.769"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing  item is green  and is triangle\" \"(: visitArea (call filterArea world (and (items?property green) (items?property triangle))))\")", "count": 863, "sessionId": "diu2invfm6", "time": "2018-09-14T11:49:51.468"}
+{"format": "lisp2json", "q": "(:q \"repeat 3 times {visit empty; drop item}\")", "count": 865, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:49:52.118"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is red and is triangle\")", "count": 867, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:49:56.940"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is red and is triangle\" \"(: visitArea (call filterArea world (and (items?property red) (items?property triangle))))\")", "count": 868, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:50:05.674"}
+{"format": "lisp2json", "q": "(:q \"pick item\")", "count": 870, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:50:10.932"}
+{"format": "lisp2json", "q": "(:accept \"pick item\" \"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\")", "count": 871, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:50:14.344"}
+{"format": "lisp2json", "q": "(:accept \"repeat 3 times {visit empty; drop item}\" \"(:loop (number 3) (:s (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))))\")", "count": 872, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:50:21.871"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is red and is triangle\")", "count": 874, "sessionId": "diu2invfm6", "time": "2018-09-14T11:50:27.422"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is red\")", "count": 876, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:50:29.714"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is red and is triangle\" \"(: visitArea (call filterArea world (and (items?property red) (items?property triangle))))\")", "count": 877, "sessionId": "diu2invfm6", "time": "2018-09-14T11:50:30.636"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is red\" \"(: visitArea (call filterArea world (items?property red)))\")", "count": 878, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:50:32.550"}
+{"format": "lisp2json", "q": "(:q \"pick item\")", "count": 880, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:50:37.776"}
+{"format": "lisp2json", "q": "(:q \"pick all red items\")", "count": 882, "sessionId": "diu2invfm6", "time": "2018-09-14T11:50:47.482"}
+{"format": "lisp2json", "q": "(:q \"pick all red items\")", "count": 885, "sessionId": "diu2invfm6", "time": "2018-09-14T11:51:49.665"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 886, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:51:49.735"}
+{"format": "lisp2json", "q": "(:q \"pick all red items\")", "count": 888, "sessionId": "diu2invfm6", "time": "2018-09-14T11:51:52.038"}
+{"format": "lisp2json", "q": "(:q \"pick all red items\")", "count": 890, "sessionId": "diu2invfm6", "time": "2018-09-14T11:51:52.582"}
+{"format": "lisp2json", "q": "(:reject \"\" )", "count": 891, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:51:55.194"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 893, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:04.267"}
+{"format": "lisp2json", "q": "(:q \"visit{world containing item green}and{world containing item is triangle}\")", "count": 895, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:52:06.560"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 897, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:52:07.513"}
+{"format": "lisp2json", "q": "(:q \"pick every item is red\")", "count": 899, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:08.354"}
+{"format": "lisp2json", "q": "(:accept \"pick every item is red\" \"(: itemActionHandler pick (call setLimit (number -1) (items?property red)))\")", "count": 900, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:09.325"}
+{"format": "lisp2json", "q": "(:def_ret \"pick all red items\" \"[[\\\"pick every item is red\\\",\\\"(: itemActionHandler pick (call setLimit (number -1) (items?property red)))\\\"]]\")", "count": 901, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:11.062"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 902, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:11.074"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 903, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:11.132"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 904, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:11.295"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 905, "sessionId": "diu2invfm6", "time": "2018-09-14T11:52:11.343"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 906, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:52:30.767"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is red\")", "count": 908, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:52:50.256"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is red\" \"(: visitArea (call filterArea world (items?property red)))\")", "count": 909, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:52:52.731"}
+{"format": "lisp2json", "q": "(:q \"visit{world containing item green}and{world containing item is triangle}\")", "count": 911, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:52:57.073"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 913, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:52:57.851"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 914, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:52:59.702"}
+{"format": "lisp2json", "q": "(:q \"visit {world containing item is green}and{world containing item is triangle}\")", "count": 916, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:53:08.088"}
+{"format": "lisp2json", "q": "(:accept \"visit {world containing item is green}and{world containing item is triangle}\" \"(: visitArea (and (call filterArea world (items?property green)) (call filterArea world (items?property triangle))))\")", "count": 917, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:53:10.772"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 919, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:53:39.101"}
+{"format": "lisp2json", "q": "(:accept \"pick every item\" \"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\")", "count": 920, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:53:41.835"}
+{"format": "lisp2json", "q": "(:q \"pick every blue items and drop to room 3\")", "count": 922, "sessionId": "diu2invfm6", "time": "2018-09-14T11:53:49.817"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 924, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:54:04.377"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 925, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:54:07.690"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is blue\")", "count": 927, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:54:18.565"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is blue\" \"(: visitArea (call filterArea world (items?property blue)))\")", "count": 928, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:54:55.563"}
+{"format": "lisp2json", "q": "(:q \"drop every item is blue to room 3\")", "count": 930, "sessionId": "diu2invfm6", "time": "2018-09-14T11:55:16.663"}
+{"format": "lisp2json", "q": "(:q \"visit {world containing item is red}and {world containing item is triangle}\")", "count": 932, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:55:35.153"}
+{"format": "lisp2json", "q": "(:q \"drop every item is blue to room 3\")", "count": 934, "sessionId": "diu2invfm6", "time": "2018-09-14T11:55:36.210"}
+{"format": "lisp2json", "q": "(:q \"visit {world containing item is red}and {world containing item is triangle}\")", "count": 936, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:55:59.690"}
+{"format": "lisp2json", "q": "(:q \"pick all blue items\")", "count": 938, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:02.728"}
+{"format": "lisp2json", "q": "(:accept \"visit {world containing item is red}and {world containing item is triangle}\" \"(: visitArea (and (call filterArea world (items?property red)) (call filterArea world (items?property triangle))))\")", "count": 939, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:56:02.881"}
+{"format": "lisp2json", "q": "(:q \"get all blue items\")", "count": 941, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:11.278"}
+{"format": "lisp2json", "q": "(:q \"get all blue items\")", "count": 943, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:19.952"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item is blue {visit point; pick every item is blue}\")", "count": 945, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:35.320"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item is blue {visit point; pick every item is blue}\" \"(:foreach point (call filterArea world (items?property blue)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property blue)))))\")", "count": 946, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:36.118"}
+{"format": "lisp2json", "q": "(:q \"collect all blue items\")", "count": 948, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:56:37.850"}
+{"format": "lisp2json", "q": "(:def_ret \"get all blue items\" \"[[\\\"foreach point in world containing item is blue {visit point; pick every item is blue}\\\",\\\"(:foreach point (call filterArea world (items?property blue)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property blue)))))\\\"]]\")", "count": 949, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:44.160"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 950, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:44.170"}
+{"format": "lisp2json", "q": "(:q \"get all blue items\")", "count": 952, "sessionId": "diu2invfm6", "time": "2018-09-14T11:56:52.431"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 954, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:56:56.507"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 955, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:57:00.097"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item is blue {visit point; pick every item is blue}\")", "count": 957, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:06.019"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item is blue {visit point; pick every item is blue}\" \"(:foreach point (call filterArea world (items?property blue)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property blue)))))\")", "count": 958, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:07"}
+{"format": "lisp2json", "q": "(:def_ret \"get all blue items\" \"[[\\\"foreach point in world containing item is blue {visit point; pick every item is blue}\\\",\\\"(:foreach point (call filterArea world (items?property blue)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property blue)))))\\\"]]\")", "count": 959, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:09.750"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 960, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:09.758"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 961, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:09.796"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 962, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:09.991"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 963, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:10.055"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is blue\")", "count": 965, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:14.094"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is blue\" \"(: visitArea (call filterArea world (items?property blue)))\")", "count": 966, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:17.584"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 968, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:17.922"}
+{"format": "lisp2json", "q": "(:accept \"visit room3\" \"(: visitArea room3)\")", "count": 969, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:20.215"}
+{"format": "lisp2json", "q": "(:q \"pick item is blue\")", "count": 971, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:24.290"}
+{"format": "lisp2json", "q": "(:accept \"pick item is blue\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property blue)))\")", "count": 972, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:27.192"}
+{"format": "lisp2json", "q": "(:q \"drop all blue\")", "count": 974, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:27.500"}
+{"format": "lisp2json", "q": "(:q \"drop all blue items\")", "count": 976, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:33.849"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is blue\")", "count": 978, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:40.280"}
+{"format": "lisp2json", "q": "(:accept \"drop all blue items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property blue)))\")", "count": 979, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:42.306"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is blue\" \"(: visitArea (call filterArea world (items?property blue)))\")", "count": 980, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:42.364"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item { red; pick item }\")", "count": 982, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:57:44.523"}
+{"format": "lisp2json", "q": "(:q \"pick item is blue\")", "count": 984, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:48.002"}
+{"format": "lisp2json", "q": "(:accept \"pick item is blue\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property blue)))\")", "count": 985, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:57:50.287"}
+{"format": "lisp2json", "q": "(:def \"drop every item is blue to room 3\" \"[[\\\"get all blue items\\\",\\\"(:foreach point (call filterArea world (items?property blue)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property blue)))))\\\"],[\\\"visit room3\\\",\\\"(: visitArea room3)\\\"],[\\\"drop all blue items\\\",\\\"(: itemActionHandler drop (call setLimit (number -1) (items?property blue)))\\\"]]\")", "count": 986, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:50.287"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 987, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:50.299"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 988, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:50.343"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 989, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:50.538"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 990, "sessionId": "diu2invfm6", "time": "2018-09-14T11:57:50.595"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item red  {pick item }\")", "count": 992, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:58:00.325"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is blue\")", "count": 994, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:03.572"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is blue\" \"(: visitArea (call filterArea world (items?property blue)))\")", "count": 995, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:07.786"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item red\")", "count": 997, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:58:11.511"}
+{"format": "lisp2json", "q": "(:q \"pick item is blue\")", "count": 999, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:19.234"}
+{"format": "lisp2json", "q": "(:accept \"pick item is blue\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property blue)))\")", "count": 1000, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:21.755"}
+{"format": "lisp2json", "q": "(:def \"collect all blue items\" \"[[\\\"visit world containing item is blue\\\",\\\"(: visitArea (call filterArea world (items?property blue)))\\\"],[\\\"pick item is blue\\\",\\\"(: itemActionHandler pick (call setLimit (number 1) (items?property blue)))\\\"],[\\\"visit world containing item is blue\\\",\\\"(: visitArea (call filterArea world (items?property blue)))\\\"],[\\\"pick item is blue\\\",\\\"(: itemActionHandler pick (call setLimit (number 1) (items?property blue)))\\\"],[\\\"visit world containing item is blue\\\",\\\"(: visitArea (call filterArea world (items?property blue)))\\\"],[\\\"pick item is blue\\\",\\\"(: itemActionHandler pick (call setLimit (number 1) (items?property blue)))\\\"]]\")", "count": 1001, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:25.683"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1002, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:25.693"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 1004, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:41.480"}
+{"format": "lisp2json", "q": "(:accept \"visit room3\" \"(: visitArea room3)\")", "count": 1005, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:45.008"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1007, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:49.424"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1008, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:58:51.770"}
+{"format": "lisp2json", "q": "(:q \"collect all blue items\")", "count": 1010, "sessionId": "cjrt7xqf97", "time": "2018-09-14T11:59:23.165"}
+{"format": "lisp2json", "q": "(:q \"foreach point in {world containing item is red} and { visit point; pick item }\")", "count": 1012, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:59:29.638"}
+{"format": "lisp2json", "q": "(:q \"visit room 1\")", "count": 1014, "sessionId": "diu2invfm6", "time": "2018-09-14T11:59:30.275"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1016, "sessionId": "diu2invfm6", "time": "2018-09-14T11:59:36.217"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1017, "sessionId": "diu2invfm6", "time": "2018-09-14T11:59:45.274"}
+{"format": "lisp2json", "q": "(:q \"foreach point in {world containing item is red} and { pick item }\")", "count": 1019, "sessionId": "4cuvafr0sx", "time": "2018-09-14T11:59:46.798"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 1021, "sessionId": "diu2invfm6", "time": "2018-09-14T12:00:03.033"}
+{"format": "lisp2json", "q": "(:accept \"pick every item\" \"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\")", "count": 1022, "sessionId": "diu2invfm6", "time": "2018-09-14T12:00:06.460"}
+{"format": "lisp2json", "q": "(:q \"foreach point in {world containing item is red}  { pick item }\")", "count": 1024, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:00:12.039"}
+{"format": "lisp2json", "q": "(:q \"collect all items\")", "count": 1026, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:00:18.207"}
+{"format": "lisp2json", "q": "(:q \"visit the world\")", "count": 1028, "sessionId": "diu2invfm6", "time": "2018-09-14T12:00:18.773"}
+{"format": "lisp2json", "q": "(:reject \"foreach point in {world containing item is red}  { pick item }\" )", "count": 1030, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:00:32.063"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1031, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:00:32.092"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1033, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:00:36.891"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item\" \"(: visitArea (call filterArea world (call allItems)))\")", "count": 1034, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:00:40.075"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 1036, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:00:49.718"}
+{"format": "lisp2json", "q": "(:accept \"pick every item\" \"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\")", "count": 1037, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:00:51.385"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1039, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:00.200"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item\" \"(: visitArea (call filterArea world (call allItems)))\")", "count": 1040, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:02.330"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 1042, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:08.570"}
+{"format": "lisp2json", "q": "(:q \"visit room5\")", "count": 1044, "sessionId": "diu2invfm6", "time": "2018-09-14T12:01:09.085"}
+{"format": "lisp2json", "q": "(:accept \"pick every item\" \"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\")", "count": 1045, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:10.205"}
+{"format": "lisp2json", "q": "(:accept \"visit room5\" \"(: visitArea room5)\")", "count": 1046, "sessionId": "diu2invfm6", "time": "2018-09-14T12:01:16.965"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1048, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:21.290"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item\" \"(: visitArea (call filterArea world (call allItems)))\")", "count": 1049, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:23.873"}
+{"format": "lisp2json", "q": "(:q \"pick every items\")", "count": 1051, "sessionId": "diu2invfm6", "time": "2018-09-14T12:01:28.366"}
+{"format": "lisp2json", "q": "(:q \"foreach point in {world containing item is red}  { pick  item is red }\")", "count": 1053, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:01:35.767"}
+{"format": "lisp2json", "q": "(:reject \"foreach point in {world containing item is red}  { pick  item is red }\" )", "count": 1054, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:01:40.243"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 1056, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:42.286"}
+{"format": "lisp2json", "q": "(:accept \"pick every item\" \"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\")", "count": 1057, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:01:44.413"}
+{"format": "lisp2json", "q": "(:q \"foreach point in {world containing item is red}\")", "count": 1060, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:01:49.899"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 1061, "sessionId": "diu2invfm6", "time": "2018-09-14T12:01:50.082"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1063, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:00.573"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1065, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:04.955"}
+{"format": "lisp2json", "q": "(:q \"pick every item\")", "count": 1067, "sessionId": "diu2invfm6", "time": "2018-09-14T12:02:10.377"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1069, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:12.976"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item\" \"(: visitArea (call filterArea world (call allItems)))\")", "count": 1070, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:15.690"}
+{"format": "lisp2json", "q": "(:q \"pick item\")", "count": 1072, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:20.307"}
+{"format": "lisp2json", "q": "(:accept \"pick item\" \"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\")", "count": 1073, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:26.025"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1075, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:35.445"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item\" \"(: visitArea (call filterArea world (call allItems)))\")", "count": 1076, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:02:43.359"}
+{"format": "lisp2json", "q": "(:q \"foreach area in rooms containing item is red { pick red item }\")", "count": 1078, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:02:59.804"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1080, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:03:07.200"}
+{"format": "lisp2json", "q": "(:q \"foreach area in rooms containing item is red { pick  item }\")", "count": 1082, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:03:08.524"}
+{"format": "lisp2json", "q": "(:reject \"foreach area in rooms containing item is red { pick  item }\" )", "count": 1083, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:03:12.540"}
+{"format": "lisp2json", "q": "(:q \"foreach point in room5 containing item {visit point; pick every item}\")", "count": 1085, "sessionId": "diu2invfm6", "time": "2018-09-14T12:03:33.653"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in room5 containing item {visit point; pick every item}\" \"(:foreach point (call filterArea room5 (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems)))))\")", "count": 1086, "sessionId": "diu2invfm6", "time": "2018-09-14T12:03:36.512"}
+{"format": "lisp2json", "q": "(:q \"visit {world containing item is red}\")", "count": 1088, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:03:50.738"}
+{"format": "lisp2json", "q": "(:def \"take all from room5\" \"[[\\\"visit room5\\\",\\\"(: visitArea room5)\\\"],[\\\"foreach point in room5 containing item {visit point; pick every item}\\\",\\\"(:foreach point (call filterArea room5 (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems)))))\\\"]]\")", "count": 1089, "sessionId": "diu2invfm6", "time": "2018-09-14T12:03:53.067"}
+{"format": "lisp2json", "q": "(:q \"visit {world containing item is red}and {pick item}\")", "count": 1091, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:04:06.727"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item\" \"(: visitArea (call filterArea world (call allItems)))\")", "count": 1092, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:11.102"}
+{"format": "lisp2json", "q": "(:q \"take all from room4\")", "count": 1094, "sessionId": "diu2invfm6", "time": "2018-09-14T12:04:12.728"}
+{"format": "lisp2json", "q": "(:accept \"take all from room4\" \"(:s (: visitArea room4) (:foreach point (call filterArea room4 (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems))))))\")", "count": 1095, "sessionId": "diu2invfm6", "time": "2018-09-14T12:04:17.572"}
+{"format": "lisp2json", "q": "(:q \"pick item\")", "count": 1097, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:22.095"}
+{"format": "lisp2json", "q": "(:accept \"pick item\" \"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\")", "count": 1098, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:24.270"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item\")", "count": 1100, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:32.218"}
+{"format": "lisp2json", "q": "(:q \"take all from room3\")", "count": 1102, "sessionId": "diu2invfm6", "time": "2018-09-14T12:04:34.522"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item\" \"(: visitArea (call filterArea world (call allItems)))\")", "count": 1103, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:34.939"}
+{"format": "lisp2json", "q": "(:q \"pick item\")", "count": 1105, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:38.652"}
+{"format": "lisp2json", "q": "(:accept \"take all from room3\" \"(:s (: visitArea room3) (:foreach point (call filterArea room3 (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems))))))\")", "count": 1106, "sessionId": "diu2invfm6", "time": "2018-09-14T12:04:39.924"}
+{"format": "lisp2json", "q": "(:accept \"pick item\" \"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\")", "count": 1107, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:41.609"}
+{"format": "lisp2json", "q": "(:def_iso \"collect all items \" \"[[\\\"visit world containing item\\\",\\\"(: visitArea (call filterArea world (call allItems)))\\\"],[\\\"pick every item\\\",\\\"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\\\"],[\\\"visit world containing item\\\",\\\"(: visitArea (call filterArea world (call allItems)))\\\"],[\\\"pick every item\\\",\\\"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\\\"],[\\\"visit world containing item\\\",\\\"(: visitArea (call filterArea world (call allItems)))\\\"],[\\\"pick every item\\\",\\\"(: itemActionHandler pick (call setLimit (number -1) (call allItems)))\\\"],[\\\"visit world containing item\\\",\\\"(: visitArea (call filterArea world (call allItems)))\\\"],[\\\"pick item\\\",\\\"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\\\"],[\\\"visit world containing item\\\",\\\"(: visitArea (call filterArea world (call allItems)))\\\"],[\\\"pick item\\\",\\\"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\\\"],[\\\"visit world containing item\\\",\\\"(: visitArea (call filterArea world (call allItems)))\\\"],[\\\"pick item\\\",\\\"(: itemActionHandler pick (call setLimit (number 1) (call allItems)))\\\"]]\")", "count": 1108, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:45.357"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1109, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:45.369"}
+{"format": "lisp2json", "q": "(:q \"take all from room2\")", "count": 1111, "sessionId": "diu2invfm6", "time": "2018-09-14T12:04:52.538"}
+{"format": "lisp2json", "q": "(:accept \"take all from room2\" \"(:s (: visitArea room2) (:foreach point (call filterArea room2 (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems))))))\")", "count": 1113, "sessionId": "diu2invfm6", "time": "2018-09-14T12:04:56.767"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1114, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:04:56.790"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1115, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:05:00.681"}
+{"format": "lisp2json", "q": "(:q \"drop to room 1\")", "count": 1117, "sessionId": "diu2invfm6", "time": "2018-09-14T12:05:08.437"}
+{"format": "lisp2json", "q": "(:q \"drop to room1\")", "count": 1119, "sessionId": "diu2invfm6", "time": "2018-09-14T12:05:14.630"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item is red {visit point; pick every item is red}\")", "count": 1121, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:05:34.901"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1123, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:05:36.480"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1125, "sessionId": "diu2invfm6", "time": "2018-09-14T12:05:40.539"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item is red {visit point; pick every item is red}\" \"(:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1126, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:05:41.350"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1127, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:05:41.374"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item is red {visit point; pick every item is red}\")", "count": 1129, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:05:52.842"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item is red {visit point; pick every item is red}\" \"(:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1130, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:05:53.673"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1132, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:06:00.424"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1133, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:06:03.065"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1135, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:06:08.533"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1136, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:06:11.109"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1138, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:06:15.879"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1139, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:06:17.898"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1141, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:06:38.082"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item is blue{visit point;pick every item is blue}\")", "count": 1143, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:06:50.004"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1144, "sessionId": "diu2invfm6", "time": "2018-09-14T12:06:53.102"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item is blue{visit point;pick every item is blue}\" \"(:foreach point (call filterArea world (items?property blue)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property blue)))))\")", "count": 1145, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:06:57.589"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1147, "sessionId": "diu2invfm6", "time": "2018-09-14T12:07:13.876"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1148, "sessionId": "diu2invfm6", "time": "2018-09-14T12:07:15.657"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1150, "sessionId": "diu2invfm6", "time": "2018-09-14T12:07:18.197"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1151, "sessionId": "diu2invfm6", "time": "2018-09-14T12:07:20.045"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1153, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:07:34.912"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 1155, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:07:38.050"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1156, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:07:38.970"}
+{"format": "lisp2json", "q": "(:accept \"visit room3\" \"(: visitArea room3)\")", "count": 1157, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:07:43.023"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1159, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:07:44.352"}
+{"format": "lisp2json", "q": "(:q \"drop every item is blue\")", "count": 1161, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:07:48.691"}
+{"format": "lisp2json", "q": "(:accept \"drop every item is blue\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property blue)))\")", "count": 1162, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:07:59.527"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1164, "sessionId": "diu2invfm6", "time": "2018-09-14T12:08:11.677"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item is green\")", "count": 1166, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:08:16.799"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1167, "sessionId": "diu2invfm6", "time": "2018-09-14T12:08:17.491"}
+{"format": "lisp2json", "q": "(:accept \"repeat 2 times pick item is green\" \"(:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (items?property green))))\")", "count": 1168, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:08:20.892"}
+{"format": "lisp2json", "q": "(:q \"pick every item is red\")", "count": 1170, "sessionId": "diu2invfm6", "time": "2018-09-14T12:08:34.498"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item is blue\")", "count": 1172, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:08:36.533"}
+{"format": "lisp2json", "q": "(:accept \"repeat 2 times pick item is blue\" \"(:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))))\")", "count": 1173, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:08:38.681"}
+{"format": "lisp2json", "q": "(:q \"pick every item{{ is red}}\")", "count": 1175, "sessionId": "diu2invfm6", "time": "2018-09-14T12:08:53.342"}
+{"format": "lisp2json", "q": "(:q \"visit[1,1]\")", "count": 1177, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:08:58.564"}
+{"format": "lisp2json", "q": "(:accept \"visit[1,1]\" \"(: visit (call makePoint (number 1) (number 1)))\")", "count": 1178, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:09:02.717"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1180, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:09:06.923"}
+{"format": "lisp2json", "q": "(:q \"{pick every item{is red}}\")", "count": 1182, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:07.867"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1183, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:09:09.507"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1185, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:09:16.220"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1187, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:31.251"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1188, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:32.172"}
+{"format": "lisp2json", "q": "(:q \"foreach area in [room1, room2, room3,room4,room5] { visit area ;pick every item}\")", "count": 1190, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:09:33.881"}
+{"format": "lisp2json", "q": "(:q \"pick 3 red\")", "count": 1192, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:39.082"}
+{"format": "lisp2json", "q": "(:q \"repeat 3 times {pick item is red}\")", "count": 1194, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:46.291"}
+{"format": "lisp2json", "q": "(:accept \"repeat 3 times {pick item is red}\" \"(:loop (number 3) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\")", "count": 1195, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:47.422"}
+{"format": "lisp2json", "q": "(:def_ret \"pick 3 red\" \"[[\\\"repeat 3 times {pick item is red}\\\",\\\"(:loop (number 3) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\\\"]]\")", "count": 1196, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:48.896"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1197, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:49.309"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1199, "sessionId": "diu2invfm6", "time": "2018-09-14T12:09:53.482"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item { visit point ;pick every item}\")", "count": 1201, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:10:46.984"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item { visit point ;pick every item}\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems)))))\")", "count": 1202, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:10:48.077"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1204, "sessionId": "diu2invfm6", "time": "2018-09-14T12:11:08.348"}
+{"format": "lisp2json", "q": "(:q \"collect all red items\")", "count": 1206, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:11:24.294"}
+{"format": "lisp2json", "q": "(:accept \"collect all red items\" \"(:s (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))) (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))) (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\")", "count": 1207, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:11:32.393"}
+{"format": "lisp2json", "q": "(:q \"pick 3 yellow\")", "count": 1209, "sessionId": "diu2invfm6", "time": "2018-09-14T12:11:37.969"}
+{"format": "lisp2json", "q": "(:q \"drop every red item\")", "count": 1211, "sessionId": "diu2invfm6", "time": "2018-09-14T12:12:09.281"}
+{"format": "lisp2json", "q": "(:q \"put all red items\")", "count": 1213, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:12:10.644"}
+{"format": "lisp2json", "q": "(:q \"put all red items in a line\")", "count": 1215, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:12:21.519"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1217, "sessionId": "diu2invfm6", "time": "2018-09-14T12:12:27.891"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1218, "sessionId": "diu2invfm6", "time": "2018-09-14T12:12:34.018"}
+{"format": "lisp2json", "q": "(:q \"move left 3\")", "count": 1220, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:12:43.548"}
+{"format": "lisp2json", "q": "(:accept \"move left 3\" \"(:loop (number 3) (: move left))\")", "count": 1221, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:12:46.655"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1223, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:12:50.975"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1224, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:12:53.289"}
+{"format": "lisp2json", "q": "(:q \"drop every item is not yellow\")", "count": 1226, "sessionId": "diu2invfm6", "time": "2018-09-14T12:12:53.864"}
+{"format": "lisp2json", "q": "(:q \"move forward\")", "count": 1228, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:12:58.274"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1230, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:10.146"}
+{"format": "lisp2json", "q": "(:accept \"move up\" \"(: move up)\")", "count": 1231, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:11.713"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1233, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:23.782"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1234, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:25.610"}
+{"format": "lisp2json", "q": "(:q \"drop every item is yellow\")", "count": 1237, "sessionId": "diu2invfm6", "time": "2018-09-14T12:13:29.558"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1238, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:29.769"}
+{"format": "lisp2json", "q": "(:accept \"move up\" \"(: move up)\")", "count": 1239, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:37.768"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1241, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:42.290"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1242, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:44.122"}
+{"format": "lisp2json", "q": "(:def \"put all red items in a line\" \"[[\\\"move left 3\\\",\\\"(:loop (number 3) (: move left))\\\"],[\\\"drop item\\\",\\\"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\\\"],[\\\"move up\\\",\\\"(: move up)\\\"],[\\\"drop item\\\",\\\"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\\\"],[\\\"move up\\\",\\\"(: move up)\\\"],[\\\"drop item\\\",\\\"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\\\"]]\")", "count": 1243, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:46.087"}
+{"format": "lisp2json", "q": "(:q \"{drop every item{ is yellow}\")", "count": 1245, "sessionId": "diu2invfm6", "time": "2018-09-14T12:13:46.436"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1246, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:13:46.509"}
+{"format": "lisp2json", "q": "(:q \"{drop every item{ is yellow}}\")", "count": 1248, "sessionId": "diu2invfm6", "time": "2018-09-14T12:13:53.940"}
+{"format": "lisp2json", "q": "(:q \"{drop every item { is yellow}}\")", "count": 1250, "sessionId": "diu2invfm6", "time": "2018-09-14T12:14:06.795"}
+{"format": "lisp2json", "q": "(:q \"collect all green items\")", "count": 1252, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:14:37.289"}
+{"format": "lisp2json", "q": "(:accept \"collect all green items\" \"(:s (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))) (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))) (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))))\")", "count": 1253, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:14:46.563"}
+{"format": "lisp2json", "q": "(:q \"visit empty\")", "count": 1255, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:14:51.924"}
+{"format": "lisp2json", "q": "(:q \"pick item is red, drop every item is blue\")", "count": 1257, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:14:52.609"}
+{"format": "lisp2json", "q": "(:q \"pick every item is yellow\")", "count": 1259, "sessionId": "diu2invfm6", "time": "2018-09-14T12:14:55.264"}
+{"format": "lisp2json", "q": "(:accept \"pick every item is yellow\" \"(: itemActionHandler pick (call setLimit (number -1) (items?property yellow)))\")", "count": 1260, "sessionId": "diu2invfm6", "time": "2018-09-14T12:14:58.492"}
+{"format": "lisp2json", "q": "(:q \"drop every item is blue\")", "count": 1262, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:15:03.108"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1264, "sessionId": "diu2invfm6", "time": "2018-09-14T12:15:04.202"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1265, "sessionId": "diu2invfm6", "time": "2018-09-14T12:15:10.951"}
+{"format": "lisp2json", "q": "(:q \"drop every item is blue and every item is green\")", "count": 1267, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:15:32.202"}
+{"format": "lisp2json", "q": "(:q \"drop every item is blue and green\")", "count": 1269, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:15:47.070"}
+{"format": "lisp2json", "q": "(:q \"drop every item is blue\")", "count": 1271, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:15:56.461"}
+{"format": "lisp2json", "q": "(:accept \"drop every item is blue\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property blue)))\")", "count": 1272, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:15:59.231"}
+{"format": "lisp2json", "q": "(:q \"drop every item is green\")", "count": 1274, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:16:08.161"}
+{"format": "lisp2json", "q": "(:accept \"drop every item is green\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property green)))\")", "count": 1275, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:16:10.122"}
+{"format": "lisp2json", "q": "(:q \"repeat 3 times {visit empty; drop item}\")", "count": 1277, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:16:10.992"}
+{"format": "lisp2json", "q": "(:accept \"repeat 3 times {visit empty; drop item}\" \"(:loop (number 3) (:s (: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems)))) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))))\")", "count": 1278, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:16:13.338"}
+{"format": "lisp2json", "q": "(:q \"drop every item is yellow\")", "count": 1280, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:16:24.978"}
+{"format": "lisp2json", "q": "(:q \"pick every item is red and is green\")", "count": 1282, "sessionId": "diu2invfm6", "time": "2018-09-14T12:16:51.613"}
+{"format": "lisp2json", "q": "(:q \"drop item {not is red}\")", "count": 1284, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:17:09.268"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1286, "sessionId": "diu2invfm6", "time": "2018-09-14T12:17:13.030"}
+{"format": "lisp2json", "q": "(:q \"drop every item {not is red}\")", "count": 1288, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:17:19.391"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1290, "sessionId": "diu2invfm6", "time": "2018-09-14T12:17:24.308"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1291, "sessionId": "diu2invfm6", "time": "2018-09-14T12:17:26.190"}
+{"format": "lisp2json", "q": "(:q \"pick one item is green and is red\")", "count": 1293, "sessionId": "diu2invfm6", "time": "2018-09-14T12:17:45.931"}
+{"format": "lisp2json", "q": "(:q \"visit room4\")", "count": 1295, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:17:49.703"}
+{"format": "lisp2json", "q": "(:q \"pick item is green and is red\")", "count": 1297, "sessionId": "diu2invfm6", "time": "2018-09-14T12:17:55.229"}
+{"format": "lisp2json", "q": "(:q \"drop every item {not is red} and is green\")", "count": 1299, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:17:58.332"}
+{"format": "lisp2json", "q": "(:q \"drop every item {not is red} and is green and is blue\")", "count": 1301, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:18:15.055"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is red; pick item\")", "count": 1303, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:18:21.957"}
+{"format": "lisp2json", "q": "(:q \"drop every item {not is red}\")", "count": 1305, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:18:27.003"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is red; pick item\" \"(:s (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (call allItems))))\")", "count": 1306, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:18:27.645"}
+{"format": "lisp2json", "q": "(:q \"pick item {{is green}} and {{is red }}\")", "count": 1308, "sessionId": "diu2invfm6", "time": "2018-09-14T12:18:31.584"}
+{"format": "lisp2json", "q": "(:q \"visit room5; drop item\")", "count": 1310, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:18:38.256"}
+{"format": "lisp2json", "q": "(:accept \"visit room5; drop item\" \"(:s (: visitArea room5) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1311, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:18:43.751"}
+{"format": "lisp2json", "q": "(:q \"rop item not {is red}\")", "count": 1313, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:19:07.704"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1315, "sessionId": "diu2invfm6", "time": "2018-09-14T12:19:08.533"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1316, "sessionId": "diu2invfm6", "time": "2018-09-14T12:19:14.057"}
+{"format": "lisp2json", "q": "(:q \"drop item not {is red}\")", "count": 1318, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:19:16.066"}
+{"format": "lisp2json", "q": "(:q \"pick item is green\")", "count": 1320, "sessionId": "diu2invfm6", "time": "2018-09-14T12:19:21.389"}
+{"format": "lisp2json", "q": "(:q \"drop every item not {is red}\")", "count": 1322, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:19:23.880"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property green)))\")", "count": 1323, "sessionId": "diu2invfm6", "time": "2018-09-14T12:19:25.503"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1325, "sessionId": "diu2invfm6", "time": "2018-09-14T12:19:29.733"}
+{"format": "lisp2json", "q": "(:q \"drop every item not {is red or green}\")", "count": 1327, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:19:35.426"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1328, "sessionId": "diu2invfm6", "time": "2018-09-14T12:19:47.866"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1330, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:20:26.159"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1331, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:20:46.438"}
+{"format": "lisp2json", "q": "(:q \"collect all blue items\")", "count": 1333, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:20:48.419"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1335, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:20:52.585"}
+{"format": "lisp2json", "q": "(:q \"visit room5\")", "count": 1337, "sessionId": "diu2invfm6", "time": "2018-09-14T12:20:53.179"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1338, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:20:55.372"}
+{"format": "lisp2json", "q": "(:accept \"collect all blue items\" \"(:s (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))) (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))) (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))))\")", "count": 1339, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:20:55.787"}
+{"format": "lisp2json", "q": "(:accept \"visit room5\" \"(: visitArea room5)\")", "count": 1340, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:00.803"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1342, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:07.419"}
+{"format": "lisp2json", "q": "(:q \"visit [0,0]; drop every item\")", "count": 1344, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:21:11.485"}
+{"format": "lisp2json", "q": "(:accept \"visit [0,0]; drop every item\" \"(:s (: visit (call makePoint (number 0) (number 0))) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1345, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:21:15.425"}
+{"format": "lisp2json", "q": "(:q \"get item is red\")", "count": 1347, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:23.395"}
+{"format": "lisp2json", "q": "(:q \"collect all red items\")", "count": 1349, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:21:25.466"}
+{"format": "lisp2json", "q": "(:accept \"collect all red items\" \"(:s (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))) (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))) (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\")", "count": 1350, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:21:30.780"}
+{"format": "lisp2json", "q": "(:q \"move right\")", "count": 1352, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:40.504"}
+{"format": "lisp2json", "q": "(:accept \"move right\" \"(: move right)\")", "count": 1353, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:43.673"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1355, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:47.419"}
+{"format": "lisp2json", "q": "(:q \"visit [1,1]; drop every item\")", "count": 1357, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:21:48.881"}
+{"format": "lisp2json", "q": "(:accept \"move up\" \"(: move up)\")", "count": 1358, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:49.570"}
+{"format": "lisp2json", "q": "(:accept \"visit [1,1]; drop every item\" \"(:s (: visit (call makePoint (number 1) (number 1))) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1359, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:21:52.170"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1361, "sessionId": "diu2invfm6", "time": "2018-09-14T12:21:57.231"}
+{"format": "lisp2json", "q": "(:q \"collect all green items\")", "count": 1363, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:21:58.694"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1364, "sessionId": "diu2invfm6", "time": "2018-09-14T12:22:00.443"}
+{"format": "lisp2json", "q": "(:accept \"collect all green items\" \"(:s (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))) (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))) (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))))\")", "count": 1366, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:22:02.611"}
+{"format": "lisp2json", "q": "(:q \"repeat 3 times {pick item is red}\")", "count": 1367, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:22:02.618"}
+{"format": "lisp2json", "q": "(:accept \"repeat 3 times {pick item is red}\" \"(:loop (number 3) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\")", "count": 1368, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:22:09.337"}
+{"format": "lisp2json", "q": "(:q \"visit [3,4]; drop every item\")", "count": 1370, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:22:19.165"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1372, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:22:20.899"}
+{"format": "lisp2json", "q": "(:accept \"visit [3,4]; drop every item\" \"(:s (: visit (call makePoint (number 3) (number 4))) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1373, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:22:22.066"}
+{"format": "lisp2json", "q": "(:q \"drop to room3\")", "count": 1375, "sessionId": "diu2invfm6", "time": "2018-09-14T12:22:23.033"}
+{"format": "lisp2json", "q": "(:q \"collect all yellow items\")", "count": 1377, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:22:29.813"}
+{"format": "lisp2json", "q": "(:q \"drop item red to room3\")", "count": 1379, "sessionId": "diu2invfm6", "time": "2018-09-14T12:22:33.971"}
+{"format": "lisp2json", "q": "(:accept \"collect all yellow items\" \"(:s (: visitArea (call filterArea world (items?property yellow))) (: itemActionHandler pick (call setLimit (number 1) (items?property yellow))) (: visitArea (call filterArea world (items?property yellow))) (: itemActionHandler pick (call setLimit (number 1) (items?property yellow))) (: visitArea (call filterArea world (items?property yellow))) (: itemActionHandler pick (call setLimit (number 1) (items?property yellow))))\")", "count": 1380, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:22:38.074"}
+{"format": "lisp2json", "q": "(:q \"drop item is  red to room3\")", "count": 1382, "sessionId": "diu2invfm6", "time": "2018-09-14T12:22:42.145"}
+{"format": "lisp2json", "q": "(:q \"drop item is  red room3\")", "count": 1384, "sessionId": "diu2invfm6", "time": "2018-09-14T12:22:50.911"}
+{"format": "lisp2json", "q": "(:q \"visit [5,8]; drop every item\")", "count": 1386, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:22:56.242"}
+{"format": "lisp2json", "q": "(:accept \"visit [5,8]; drop every item\" \"(:s (: visit (call makePoint (number 5) (number 8))) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1387, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:22:59.666"}
+{"format": "lisp2json", "q": "(:q \"visit empty space\")", "count": 1389, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:10.833"}
+{"format": "lisp2json", "q": "(:accept \"visit empty space\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 1390, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:15.060"}
+{"format": "lisp2json", "q": "(:q \"drop the item\")", "count": 1392, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:25.076"}
+{"format": "lisp2json", "q": "(:q \"drop item is red\")", "count": 1394, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:34.517"}
+{"format": "lisp2json", "q": "(:accept \"drop item is red\" \"(: itemActionHandler drop (call setLimit (number 1) (items?property red)))\")", "count": 1395, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:38.103"}
+{"format": "lisp2json", "q": "(:q \"visit room 3\")", "count": 1397, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:46.480"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 1399, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:50.457"}
+{"format": "lisp2json", "q": "(:accept \"visit room3\" \"(: visitArea room3)\")", "count": 1400, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:52.782"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1402, "sessionId": "diu2invfm6", "time": "2018-09-14T12:23:59.958"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1404, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:06.548"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1405, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:09.020"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1407, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:12.911"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1408, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:14.869"}
+{"format": "lisp2json", "q": "(:q \"move down\")", "count": 1410, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:23.764"}
+{"format": "lisp2json", "q": "(:accept \"move down\" \"(: move down)\")", "count": 1411, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:27.193"}
+{"format": "lisp2json", "q": "(:q \"pick item is re d\")", "count": 1413, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:35.275"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1415, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:43.857"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1416, "sessionId": "diu2invfm6", "time": "2018-09-14T12:24:47.040"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1418, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:24:57.617"}
+{"format": "lisp2json", "q": "(:q \"collect all red items\")", "count": 1420, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:25:07.207"}
+{"format": "lisp2json", "q": "(:q \"visit empty space in room1\")", "count": 1422, "sessionId": "diu2invfm6", "time": "2018-09-14T12:25:08.316"}
+{"format": "lisp2json", "q": "(:q \"move left;drop item is red\")", "count": 1424, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:25:15.010"}
+{"format": "lisp2json", "q": "(:accept \"move left;drop item is red\" \"(:s (: move left) (: itemActionHandler drop (call setLimit (number 1) (items?property red))))\")", "count": 1425, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:25:19.196"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1426, "sessionId": "diu2invfm6", "time": "2018-09-14T12:25:42.489"}
+{"format": "lisp2json", "q": "(:q \"move right;pick item is blue\")", "count": 1428, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:25:42.919"}
+{"format": "lisp2json", "q": "(:accept \"move right;pick item is blue\" \"(:s (: move right) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))))\")", "count": 1429, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:25:49.917"}
+{"format": "lisp2json", "q": "(:q \"get all red items\")", "count": 1431, "sessionId": "diu2invfm6", "time": "2018-09-14T12:25:54.009"}
+{"format": "lisp2json", "q": "(:accept \"get all red items\" \"(:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1432, "sessionId": "diu2invfm6", "time": "2018-09-14T12:25:59.109"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1434, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:26:02.373"}
+{"format": "lisp2json", "q": "(:accept \"collect all red items\" \"(:s (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))) (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))) (: visitArea (call filterArea world (items?property red))) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\")", "count": 1435, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:26:05.384"}
+{"format": "lisp2json", "q": "(:q \"line red left\")", "count": 1437, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:18.360"}
+{"format": "lisp2json", "q": "(:q \"move left;pick every item is blue\")", "count": 1439, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:26:29.582"}
+{"format": "lisp2json", "q": "(:q \"move right;pick every item is blue\")", "count": 1441, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:26:36.101"}
+{"format": "lisp2json", "q": "(:q \"while robot has item is red {drop item is red; move left}\")", "count": 1443, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:41.231"}
+{"format": "lisp2json", "q": "(:accept \"move right;pick every item is blue\" \"(:s (: move right) (: itemActionHandler pick (call setLimit (number -1) (items?property blue))))\")", "count": 1444, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:26:41.624"}
+{"format": "lisp2json", "q": "(:accept \"while robot has item is red {drop item is red; move left}\" \"(:while (call robotHas (items?property red)) (:s (: itemActionHandler drop (call setLimit (number 1) (items?property red))) (: move left)))\")", "count": 1445, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:43.917"}
+{"format": "lisp2json", "q": "(:def_ret \"line red left\" \"[[\\\"while robot has item is red {drop item is red; move left}\\\",\\\"(:while (call robotHas (items?property red)) (:s (: itemActionHandler drop (call setLimit (number 1) (items?property red))) (: move left)))\\\"]]\")", "count": 1446, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:46.528"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1447, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:46.537"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1448, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:46.584"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1449, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:46.769"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1450, "sessionId": "diu2invfm6", "time": "2018-09-14T12:26:46.851"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is yellow and is square\")", "count": 1452, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:26:53.667"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1454, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:26:54.477"}
+{"format": "lisp2json", "q": "(:q \"move left;drop item is blue\")", "count": 1456, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:27:08.856"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is yellow and is square; drop every item\")", "count": 1458, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:27:14.128"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is yellow and is square; drop every item\" \"(:s (: visitArea (call filterArea world (and (items?property yellow) (items?property square)))) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1459, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:27:17.805"}
+{"format": "lisp2json", "q": "(:accept \"move left;drop item is blue\" \"(:s (: move left) (: itemActionHandler drop (call setLimit (number 1) (items?property blue))))\")", "count": 1460, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:27:27.875"}
+{"format": "lisp2json", "q": "(:q \"move right;pick every item is yellow\")", "count": 1462, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:27:58.846"}
+{"format": "lisp2json", "q": "(:q \"get all green items\")", "count": 1464, "sessionId": "diu2invfm6", "time": "2018-09-14T12:28:31.524"}
+{"format": "lisp2json", "q": "(:accept \"get all green items\" \"(:foreach point (call filterArea world (items?property green)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property green)))))\")", "count": 1465, "sessionId": "diu2invfm6", "time": "2018-09-14T12:28:34.175"}
+{"format": "lisp2json", "q": "(:q \"visit empty space\")", "count": 1467, "sessionId": "diu2invfm6", "time": "2018-09-14T12:28:45.207"}
+{"format": "lisp2json", "q": "(:accept \"visit empty space\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 1468, "sessionId": "diu2invfm6", "time": "2018-09-14T12:28:48.043"}
+{"format": "lisp2json", "q": "(:q \"drop all iterms\")", "count": 1470, "sessionId": "diu2invfm6", "time": "2018-09-14T12:28:55.220"}
+{"format": "lisp2json", "q": "(:q \"drop all items\")", "count": 1472, "sessionId": "diu2invfm6", "time": "2018-09-14T12:29:01.037"}
+{"format": "lisp2json", "q": "(:q \"drop all green items\")", "count": 1474, "sessionId": "diu2invfm6", "time": "2018-09-14T12:29:11.117"}
+{"format": "lisp2json", "q": "(:accept \"drop all green items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property green)))\")", "count": 1475, "sessionId": "diu2invfm6", "time": "2018-09-14T12:29:13.523"}
+{"format": "lisp2json", "q": "(:q \"visit room 4\")", "count": 1477, "sessionId": "diu2invfm6", "time": "2018-09-14T12:30:06.043"}
+{"format": "lisp2json", "q": "(:q \"visit room4\")", "count": 1479, "sessionId": "diu2invfm6", "time": "2018-09-14T12:30:11.491"}
+{"format": "lisp2json", "q": "(:q \"pick item is green\")", "count": 1481, "sessionId": "diu2invfm6", "time": "2018-09-14T12:30:34.671"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property green)))\")", "count": 1482, "sessionId": "diu2invfm6", "time": "2018-09-14T12:30:38.823"}
+{"format": "lisp2json", "q": "(:q \"collect all yellow items\")", "count": 1484, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:30:43.022"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 1486, "sessionId": "diu2invfm6", "time": "2018-09-14T12:30:46.575"}
+{"format": "lisp2json", "q": "(:q \"visit room4\")", "count": 1488, "sessionId": "diu2invfm6", "time": "2018-09-14T12:30:50.709"}
+{"format": "lisp2json", "q": "(:accept \"collect all yellow items\" \"(:s (: visitArea (call filterArea world (items?property yellow))) (: itemActionHandler pick (call setLimit (number 1) (items?property yellow))) (: visitArea (call filterArea world (items?property yellow))) (: itemActionHandler pick (call setLimit (number 1) (items?property yellow))) (: visitArea (call filterArea world (items?property yellow))) (: itemActionHandler pick (call setLimit (number 1) (items?property yellow))))\")", "count": 1489, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:30:52.263"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1491, "sessionId": "diu2invfm6", "time": "2018-09-14T12:31:01.519"}
+{"format": "lisp2json", "q": "(:q \"visit room2; drop every item\")", "count": 1493, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:31:03.509"}
+{"format": "lisp2json", "q": "(:accept \"visit room2\" \"(: visitArea room2)\")", "count": 1494, "sessionId": "diu2invfm6", "time": "2018-09-14T12:31:07.580"}
+{"format": "lisp2json", "q": "(:accept \"visit room2; drop every item\" \"(:s (: visitArea room2) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1495, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:31:08.197"}
+{"format": "lisp2json", "q": "(:q \"collect all blue items\")", "count": 1497, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:31:14.369"}
+{"format": "lisp2json", "q": "(:accept \"collect all blue items\" \"(:s (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))) (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))) (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))))\")", "count": 1498, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:31:27.179"}
+{"format": "lisp2json", "q": "(:q \"drop item is green\")", "count": 1500, "sessionId": "diu2invfm6", "time": "2018-09-14T12:31:30.239"}
+{"format": "lisp2json", "q": "(:accept \"drop item is green\" \"(: itemActionHandler drop (call setLimit (number 1) (items?property green)))\")", "count": 1501, "sessionId": "diu2invfm6", "time": "2018-09-14T12:31:33.764"}
+{"format": "lisp2json", "q": "(:q \"move right\")", "count": 1503, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:31:34.095"}
+{"format": "lisp2json", "q": "(:accept \"move right\" \"(: move right)\")", "count": 1504, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:31:35.331"}
+{"format": "lisp2json", "q": "(:q \"visit room1; drop every item\")", "count": 1506, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:31:35.595"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1508, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:31:39.854"}
+{"format": "lisp2json", "q": "(:accept \"visit room1; drop every item\" \"(:s (: visitArea room1) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1509, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:31:41.074"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1510, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:31:41.805"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 1512, "sessionId": "diu2invfm6", "time": "2018-09-14T12:31:44.030"}
+{"format": "lisp2json", "q": "(:q \"pick 2 red\")", "count": 1514, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:31:48.091"}
+{"format": "lisp2json", "q": "(:accept \"visit room3\" \"(: visitArea room3)\")", "count": 1515, "sessionId": "diu2invfm6", "time": "2018-09-14T12:31:48.370"}
+{"format": "lisp2json", "q": "(:q \"get item is green\")", "count": 1517, "sessionId": "diu2invfm6", "time": "2018-09-14T12:31:57.399"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick red\")", "count": 1519, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:31:57.673"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item is red\")", "count": 1521, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:03.971"}
+{"format": "lisp2json", "q": "(:accept \"repeat 2 times pick item is red\" \"(:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\")", "count": 1522, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:05.746"}
+{"format": "lisp2json", "q": "(:q \"pick item is green\")", "count": 1524, "sessionId": "diu2invfm6", "time": "2018-09-14T12:32:08.990"}
+{"format": "lisp2json", "q": "(:def_ret \"pick 2 red\" \"[[\\\"repeat 2 times pick item is red\\\",\\\"(:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (items?property red))))\\\"]]\")", "count": 1525, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:11.887"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1526, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:11.897"}
+{"format": "lisp2json", "q": "(:q \"pick 2 blue\")", "count": 1528, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:16.717"}
+{"format": "lisp2json", "q": "(:accept \"pick 2 blue\" \"(:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))))\")", "count": 1529, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:18.049"}
+{"format": "lisp2json", "q": "(:q \"pick 2 green\")", "count": 1531, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:21.615"}
+{"format": "lisp2json", "q": "(:accept \"pick 2 green\" \"(:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (items?property green))))\")", "count": 1532, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:25.737"}
+{"format": "lisp2json", "q": "(:q \"pick item is {green}\")", "count": 1534, "sessionId": "diu2invfm6", "time": "2018-09-14T12:32:26.323"}
+{"format": "lisp2json", "q": "(:q \"visit empty\")", "count": 1536, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:33.113"}
+{"format": "lisp2json", "q": "(:accept \"visit empty\" \"(: visitArea (call setOfLocationsDifference world (call filterArea world (call allItems))))\")", "count": 1537, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:34.577"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1539, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:39.775"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1540, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:32:42.282"}
+{"format": "lisp2json", "q": "(:q \"pick item  {is green}\")", "count": 1542, "sessionId": "diu2invfm6", "time": "2018-09-14T12:32:56.416"}
+{"format": "lisp2json", "q": "(:q \"{pick item  {is green}}\")", "count": 1544, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:07.477"}
+{"format": "lisp2json", "q": "(:q \"move right\")", "count": 1546, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:21.688"}
+{"format": "lisp2json", "q": "(:accept \"move right\" \"(: move right)\")", "count": 1547, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:22.181"}
+{"format": "lisp2json", "q": "(:q \"move right\")", "count": 1549, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:33.742"}
+{"format": "lisp2json", "q": "(:accept \"move right\" \"(: move right)\")", "count": 1550, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:36.282"}
+{"format": "lisp2json", "q": "(:q \"move right 3times\")", "count": 1552, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:47.595"}
+{"format": "lisp2json", "q": "(:q \"move right 3 times\")", "count": 1554, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:53.651"}
+{"format": "lisp2json", "q": "(:q \"move right\")", "count": 1556, "sessionId": "diu2invfm6", "time": "2018-09-14T12:33:59.190"}
+{"format": "lisp2json", "q": "(:accept \"move right\" \"(: move right)\")", "count": 1557, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:03.020"}
+{"format": "lisp2json", "q": "(:q \"move right\")", "count": 1559, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:09.963"}
+{"format": "lisp2json", "q": "(:accept \"move right\" \"(: move right)\")", "count": 1560, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:11.963"}
+{"format": "lisp2json", "q": "(:q \"move right\")", "count": 1562, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:15.523"}
+{"format": "lisp2json", "q": "(:accept \"move right\" \"(: move right)\")", "count": 1563, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:18.374"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item { visit point; pick every item is red }\")", "count": 1565, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:34:19.258"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1567, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:22.711"}
+{"format": "lisp2json", "q": "(:accept \"move up\" \"(: move up)\")", "count": 1568, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:25.201"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item { visit point; pick every item is red }\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1569, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:34:28.530"}
+{"format": "lisp2json", "q": "(:q \"pick item is green\")", "count": 1571, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:32.481"}
+{"format": "lisp2json", "q": "(:accept \"pick item is green\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property green)))\")", "count": 1572, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:35.504"}
+{"format": "lisp2json", "q": "(:q \"visit room 1\")", "count": 1574, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:45.350"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1576, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:52.142"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1577, "sessionId": "diu2invfm6", "time": "2018-09-14T12:34:55.641"}
+{"format": "lisp2json", "q": "(:q \"move down\")", "count": 1579, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:34:58.088"}
+{"format": "lisp2json", "q": "(:accept \"move down\" \"(: move down)\")", "count": 1580, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:35:01.512"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1582, "sessionId": "diu2invfm6", "time": "2018-09-14T12:35:03.601"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1583, "sessionId": "diu2invfm6", "time": "2018-09-14T12:35:05.794"}
+{"format": "lisp2json", "q": "(:q \"visit room5\")", "count": 1585, "sessionId": "diu2invfm6", "time": "2018-09-14T12:35:23.363"}
+{"format": "lisp2json", "q": "(:q \"while robot has item {drop item; move left}\")", "count": 1587, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:35:24.216"}
+{"format": "lisp2json", "q": "(:accept \"while robot has item {drop item; move left}\" \"(:while (call robotHas (call allItems)) (:s (: itemActionHandler drop (call setLimit (number 1) (call allItems))) (: move left)))\")", "count": 1588, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:35:26.370"}
+{"format": "lisp2json", "q": "(:accept \"visit room5\" \"(: visitArea room5)\")", "count": 1589, "sessionId": "diu2invfm6", "time": "2018-09-14T12:35:29.187"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1591, "sessionId": "diu2invfm6", "time": "2018-09-14T12:35:33.475"}
+{"format": "lisp2json", "q": "(:q \"pick item\")", "count": 1593, "sessionId": "diu2invfm6", "time": "2018-09-14T12:36:08.856"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1595, "sessionId": "diu2invfm6", "time": "2018-09-14T12:36:11.406"}
+{"format": "lisp2json", "q": "(:accept \"move up\" \"(: move up)\")", "count": 1596, "sessionId": "diu2invfm6", "time": "2018-09-14T12:36:15.357"}
+{"format": "lisp2json", "q": "(:q \"for each point in world containing item {visit point;pick every item is green}\")", "count": 1598, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:36:16.742"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item {visit point;pick every item is green}\")", "count": 1600, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:36:25.728"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item {visit point;pick every item is green}\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property green)))))\")", "count": 1601, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:36:35.829"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1603, "sessionId": "diu2invfm6", "time": "2018-09-14T12:36:52.254"}
+{"format": "lisp2json", "q": "(:q \"collect all red items\")", "count": 1605, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:29.792"}
+{"format": "lisp2json", "q": "(:q \"get all red items\")", "count": 1607, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:37.446"}
+{"format": "lisp2json", "q": "(:accept \"get all red items\" \"(:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1608, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:38.738"}
+{"format": "lisp2json", "q": "(:q \"move left ;drop ebry item\")", "count": 1610, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:37:40.571"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1612, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:45.863"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1613, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:46.854"}
+{"format": "lisp2json", "q": "(:q \"move left ;drop every item\")", "count": 1615, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:37:47.927"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1617, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:51.272"}
+{"format": "lisp2json", "q": "(:accept \"move left ;drop every item\" \"(:s (: move left) (: itemActionHandler drop (call setLimit (number -1) (call allItems))))\")", "count": 1618, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:37:53.422"}
+{"format": "lisp2json", "q": "(:q \"visit room2; drop item\")", "count": 1620, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:56.687"}
+{"format": "lisp2json", "q": "(:accept \"visit room2; drop item\" \"(:s (: visitArea room2) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1621, "sessionId": "diu2invfm6", "time": "2018-09-14T12:37:57.913"}
+{"format": "lisp2json", "q": "(:q \"visit room3;drop item\")", "count": 1623, "sessionId": "diu2invfm6", "time": "2018-09-14T12:38:37.878"}
+{"format": "lisp2json", "q": "(:accept \"visit room3;drop item\" \"(:s (: visitArea room3) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1624, "sessionId": "diu2invfm6", "time": "2018-09-14T12:38:41.481"}
+{"format": "lisp2json", "q": "(:q \"line up blue items\")", "count": 1626, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:39:02.728"}
+{"format": "lisp2json", "q": "(:q \"pick 2 items; move up\")", "count": 1628, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:39:27.577"}
+{"format": "lisp2json", "q": "(:q \"get all items\")", "count": 1630, "sessionId": "diu2invfm6", "time": "2018-09-14T12:39:34.158"}
+{"format": "lisp2json", "q": "(:q \"get all  red items\")", "count": 1632, "sessionId": "diu2invfm6", "time": "2018-09-14T12:39:50.505"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item; move up\")", "count": 1634, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:39:58.203"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item{visit point;pick every item is red}\")", "count": 1636, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:40:02.260"}
+{"format": "lisp2json", "q": "(:q \"get all  red items; get all green items\")", "count": 1638, "sessionId": "diu2invfm6", "time": "2018-09-14T12:40:07.691"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item; move up; drop item\")", "count": 1640, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:40:08.727"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item{visit point;pick every item is red}\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1641, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:40:14.436"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item; move up; drop item; move up; drop item\")", "count": 1643, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:40:21.331"}
+{"format": "lisp2json", "q": "(:accept \"repeat 2 times pick item; move up; drop item; move up; drop item\" \"(:s (:s (:s (:s (:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (call allItems)))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1644, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:40:23.945"}
+{"format": "lisp2json", "q": "(:q \"get all  red items; get all green items ; get all blue items\")", "count": 1646, "sessionId": "diu2invfm6", "time": "2018-09-14T12:40:28.657"}
+{"format": "lisp2json", "q": "(:q \"get all  red items; get all green items ; get all blue items; get all yeloow items\")", "count": 1648, "sessionId": "diu2invfm6", "time": "2018-09-14T12:40:41.480"}
+{"format": "lisp2json", "q": "(:q \"get all  red items; get all green items ; get all blue items; get all yellow items\")", "count": 1650, "sessionId": "diu2invfm6", "time": "2018-09-14T12:40:49.660"}
+{"format": "lisp2json", "q": "(:q \"collect all blue items\")", "count": 1652, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:41:24.487"}
+{"format": "lisp2json", "q": "(:accept \"get all  red items; get all green items ; get all blue items; get all yellow items\" \"(:s (:s (:s (:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red))))) (:foreach point (call filterArea world (items?property green)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property green)))))) (:foreach point (call filterArea world (items?property blue)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property blue)))))) (:foreach point (call filterArea world (items?property yellow)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property yellow))))))\")", "count": 1653, "sessionId": "diu2invfm6", "time": "2018-09-14T12:41:24.874"}
+{"format": "lisp2json", "q": "(:accept \"collect all blue items\" \"(:s (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))) (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))) (: visitArea (call filterArea world (items?property blue))) (: itemActionHandler pick (call setLimit (number 1) (items?property blue))))\")", "count": 1654, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:41:27.541"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item; move up; drop item; move up; drop item\")", "count": 1656, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:41:31.551"}
+{"format": "lisp2json", "q": "(:q \"visit point [0,0]\")", "count": 1658, "sessionId": "diu2invfm6", "time": "2018-09-14T12:41:37.517"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1660, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:41:40.854"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1661, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:41:45.206"}
+{"format": "lisp2json", "q": "(:q \"drop red item\")", "count": 1663, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:41:56.094"}
+{"format": "lisp2json", "q": "(:q \"drop item is red\")", "count": 1665, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:42:06.547"}
+{"format": "lisp2json", "q": "(:q \"visit point [0,0]; drop all red items\")", "count": 1667, "sessionId": "diu2invfm6", "time": "2018-09-14T12:42:08.105"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item; move up; drop item; move up; drop item\")", "count": 1669, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:42:18.056"}
+{"format": "lisp2json", "q": "(:accept \"drop item is red\" \"(: itemActionHandler drop (call setLimit (number 1) (items?property red)))\")", "count": 1670, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:42:20.074"}
+{"format": "lisp2json", "q": "(:accept \"repeat 2 times pick item; move up; drop item; move up; drop item\" \"(:s (:s (:s (:s (:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (call allItems)))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1671, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:42:20.156"}
+{"format": "lisp2json", "q": "(:def_ret \"line up blue items\" \"[[\\\"repeat 2 times pick item; move up; drop item; move up; drop item\\\",\\\"(:s (:s (:s (:s (:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (call allItems)))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\\\"]]\")", "count": 1672, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:42:24.995"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1673, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:42:25.011"}
+{"format": "lisp2json", "q": "(:q \"visit point [0,0]; drop all red items\")", "count": 1675, "sessionId": "diu2invfm6", "time": "2018-09-14T12:42:40.034"}
+{"format": "lisp2json", "q": "(:q \"visit point [0,0];\")", "count": 1677, "sessionId": "diu2invfm6", "time": "2018-09-14T12:42:48.500"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is yellow\")", "count": 1679, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:42:53.028"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is yellow\" \"(: visitArea (call filterArea world (items?property yellow)))\")", "count": 1680, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:42:55.710"}
+{"format": "lisp2json", "q": "(:q \"visit point [0,0];\")", "count": 1682, "sessionId": "diu2invfm6", "time": "2018-09-14T12:42:56.975"}
+{"format": "lisp2json", "q": "(:q \"visit [0,0]\")", "count": 1684, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:02.187"}
+{"format": "lisp2json", "q": "(:accept \"visit [0,0]\" \"(: visit (call makePoint (number 0) (number 0)))\")", "count": 1685, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:03.021"}
+{"format": "lisp2json", "q": "(:def_ret \"visit point [0,0]; \" \"[[\\\"visit [0,0]\\\",\\\"(: visit (call makePoint (number 0) (number 0)))\\\"]]\")", "count": 1686, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:07.423"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1687, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:07.431"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1688, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:07.464"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1690, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:07.747"}
+{"format": "lisp2json", "q": "(:q \"line up yellow items\")", "count": 1691, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:43:07.879"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1692, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:08.055"}
+{"format": "lisp2json", "q": "(:q \"drop all red items\")", "count": 1694, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:12.382"}
+{"format": "lisp2json", "q": "(:accept \"drop all red items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property red)))\")", "count": 1695, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:14.885"}
+{"format": "lisp2json", "q": "(:q \"while robot has item {drop item; room2}\")", "count": 1697, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:43:18.824"}
+{"format": "lisp2json", "q": "(:q \"pick item; move up; drop item\")", "count": 1699, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:43:31.360"}
+{"format": "lisp2json", "q": "(:accept \"pick item; move up; drop item\" \"(:s (:s (: itemActionHandler pick (call setLimit (number 1) (call allItems))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1700, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:43:33.833"}
+{"format": "lisp2json", "q": "(:def_ret \"line up yellow items\" \"[[\\\"pick item; move up; drop item\\\",\\\"(:s (:s (: itemActionHandler pick (call setLimit (number 1) (call allItems))) (: move up)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\\\"]]\")", "count": 1701, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:43:36.444"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1702, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:43:36.453"}
+{"format": "lisp2json", "q": "(:q \"visit poiny[1,1];\")", "count": 1704, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:38.069"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1706, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:43:47.015"}
+{"format": "lisp2json", "q": "(:q \"drop all green items\")", "count": 1708, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:51.721"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1709, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:55.767"}
+{"format": "lisp2json", "q": "(:accept \"drop all green items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property green)))\")", "count": 1710, "sessionId": "diu2invfm6", "time": "2018-09-14T12:43:57.372"}
+{"format": "lisp2json", "q": "(:def_ret \"visit poiny[1,1];\" \"[[\\\"drop all green items\\\",\\\"(: itemActionHandler drop (call setLimit (number -1) (items?property green)))\\\"]]\")", "count": 1711, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:00.552"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1712, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:00.559"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1713, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:00.790"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1714, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:00.989"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1715, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:01.136"}
+{"format": "lisp2json", "q": "(:q \"visit room 2\")", "count": 1717, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:04.672"}
+{"format": "lisp2json", "q": "(:q \"visit world containing item is red\")", "count": 1719, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:44:07.099"}
+{"format": "lisp2json", "q": "(:accept \"visit world containing item is red\" \"(: visitArea (call filterArea world (items?property red)))\")", "count": 1720, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:44:10.586"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1722, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:11.115"}
+{"format": "lisp2json", "q": "(:accept \"visit room2\" \"(: visitArea room2)\")", "count": 1723, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:12.282"}
+{"format": "lisp2json", "q": "(:q \"line up red items\")", "count": 1726, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:44:19.095"}
+{"format": "lisp2json", "q": "(:q \"drop item is red\")", "count": 1727, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:19.188"}
+{"format": "lisp2json", "q": "(:q \"drop all green items\")", "count": 1729, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:20.250"}
+{"format": "lisp2json", "q": "(:accept \"drop item is red\" \"(: itemActionHandler drop (call setLimit (number 1) (items?property red)))\")", "count": 1730, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:27.044"}
+{"format": "lisp2json", "q": "(:reject \"drop all green items\" )", "count": 1731, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:29.948"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 1733, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:34.329"}
+{"format": "lisp2json", "q": "(:accept \"visit room3\" \"(: visitArea room3)\")", "count": 1734, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:35.072"}
+{"format": "lisp2json", "q": "(:q \"drop item is red\")", "count": 1736, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:39.867"}
+{"format": "lisp2json", "q": "(:accept \"drop item is red\" \"(: itemActionHandler drop (call setLimit (number 1) (items?property red)))\")", "count": 1737, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:44:41.412"}
+{"format": "lisp2json", "q": "(:q \"visit point [1,1]\")", "count": 1739, "sessionId": "diu2invfm6", "time": "2018-09-14T12:44:59.562"}
+{"format": "lisp2json", "q": "(:q \"visit point [1,1];\")", "count": 1741, "sessionId": "diu2invfm6", "time": "2018-09-14T12:45:06.727"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times pick item; move left; drop item;move left; drop item\")", "count": 1743, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:45:20.170"}
+{"format": "lisp2json", "q": "(:accept \"repeat 2 times pick item; move left; drop item;move left; drop item\" \"(:s (:s (:s (:s (:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (call allItems)))) (: move left)) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))) (: move left)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1744, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:45:23.257"}
+{"format": "lisp2json", "q": "(:def_ret \"line up red items\" \"[[\\\"repeat 2 times pick item; move left; drop item;move left; drop item\\\",\\\"(:s (:s (:s (:s (:loop (number 2) (: itemActionHandler pick (call setLimit (number 1) (call allItems)))) (: move left)) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))) (: move left)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\\\"]]\")", "count": 1745, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:45:25.280"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1746, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:45:25.290"}
+{"format": "lisp2json", "q": "(:q \"visit point [1,1]; drop all green items\")", "count": 1748, "sessionId": "diu2invfm6", "time": "2018-09-14T12:45:28.863"}
+{"format": "lisp2json", "q": "(:q \"collect all green items\")", "count": 1750, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:45:37.107"}
+{"format": "lisp2json", "q": "(:q \"visit point [1,1];\")", "count": 1752, "sessionId": "diu2invfm6", "time": "2018-09-14T12:45:38.164"}
+{"format": "lisp2json", "q": "(:accept \"visit point [1,1];\" \"(: visit (call makePoint (number 1) (number 1)))\")", "count": 1753, "sessionId": "diu2invfm6", "time": "2018-09-14T12:45:41.167"}
+{"format": "lisp2json", "q": "(:accept \"collect all green items\" \"(:s (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))) (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))) (: visitArea (call filterArea world (items?property green))) (: itemActionHandler pick (call setLimit (number 1) (items?property green))))\")", "count": 1754, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:45:46.587"}
+{"format": "lisp2json", "q": "(:q \"drop all green items\")", "count": 1756, "sessionId": "diu2invfm6", "time": "2018-09-14T12:45:49.941"}
+{"format": "lisp2json", "q": "(:accept \"drop all green items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property green)))\")", "count": 1757, "sessionId": "diu2invfm6", "time": "2018-09-14T12:45:52.494"}
+{"format": "lisp2json", "q": "(:q \"foreach point in room4 { visit point;pick item is blue }\")", "count": 1759, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:46:12.890"}
+{"format": "lisp2json", "q": "(:q \"drop item; move left; drop item; move left; drop item\")", "count": 1761, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:46:15.721"}
+{"format": "lisp2json", "q": "(:q \"visit point [3,4];\")", "count": 1763, "sessionId": "diu2invfm6", "time": "2018-09-14T12:46:17.120"}
+{"format": "lisp2json", "q": "(:accept \"drop item; move left; drop item; move left; drop item\" \"(:s (:s (:s (:s (: itemActionHandler drop (call setLimit (number 1) (call allItems))) (: move left)) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))) (: move left)) (: itemActionHandler drop (call setLimit (number 1) (call allItems))))\")", "count": 1764, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:46:18.340"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in room4 { visit point;pick item is blue }\" \"(:foreach point room4 (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number 1) (items?property blue)))))\")", "count": 1765, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:46:19.467"}
+{"format": "lisp2json", "q": "(:accept \"visit point [3,4];\" \"(: visit (call makePoint (number 3) (number 4)))\")", "count": 1766, "sessionId": "diu2invfm6", "time": "2018-09-14T12:46:20.600"}
+{"format": "lisp2json", "q": "(:q \"drop all red items\")", "count": 1768, "sessionId": "diu2invfm6", "time": "2018-09-14T12:46:28.496"}
+{"format": "lisp2json", "q": "(:q \"drop all yellow items\")", "count": 1770, "sessionId": "diu2invfm6", "time": "2018-09-14T12:46:36.786"}
+{"format": "lisp2json", "q": "(:accept \"drop all yellow items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property yellow)))\")", "count": 1771, "sessionId": "diu2invfm6", "time": "2018-09-14T12:46:40.065"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1773, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:46:53.406"}
+{"format": "lisp2json", "q": "(:accept \"visit room2\" \"(: visitArea room2)\")", "count": 1774, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:46:58.303"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1776, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:47:04.744"}
+{"format": "lisp2json", "q": "(:q \"visit point [5,8];\")", "count": 1778, "sessionId": "diu2invfm6", "time": "2018-09-14T12:47:05.910"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1779, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:47:07.222"}
+{"format": "lisp2json", "q": "(:accept \"visit point [5,8];\" \"(: visit (call makePoint (number 5) (number 8)))\")", "count": 1780, "sessionId": "diu2invfm6", "time": "2018-09-14T12:47:08.801"}
+{"format": "lisp2json", "q": "(:q \"drop all blue items\")", "count": 1782, "sessionId": "diu2invfm6", "time": "2018-09-14T12:47:22.441"}
+{"format": "lisp2json", "q": "(:accept \"drop all blue items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property blue)))\")", "count": 1783, "sessionId": "diu2invfm6", "time": "2018-09-14T12:47:25.919"}
+{"format": "lisp2json", "q": "(:q \"get all yellow items\")", "count": 1785, "sessionId": "diu2invfm6", "time": "2018-09-14T12:48:08.047"}
+{"format": "lisp2json", "q": "(:accept \"get all yellow items\" \"(:foreach point (call filterArea world (items?property yellow)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property yellow)))))\")", "count": 1786, "sessionId": "diu2invfm6", "time": "2018-09-14T12:48:26.862"}
+{"format": "lisp2json", "q": "(:q \"drop all yellow items\")", "count": 1788, "sessionId": "diu2invfm6", "time": "2018-09-14T12:48:40.727"}
+{"format": "lisp2json", "q": "(:accept \"drop all yellow items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property yellow)))\")", "count": 1789, "sessionId": "diu2invfm6", "time": "2018-09-14T12:48:43.155"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item{ visit point;pick every item}\")", "count": 1791, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:48:50.609"}
+{"format": "lisp2json", "q": "(:q \"while robot has item {move left; drop item}\")", "count": 1793, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:48:58.041"}
+{"format": "lisp2json", "q": "(:q \"get all red items\")", "count": 1795, "sessionId": "diu2invfm6", "time": "2018-09-14T12:49:00.134"}
+{"format": "lisp2json", "q": "(:accept \"while robot has item {move left; drop item}\" \"(:while (call robotHas (call allItems)) (:s (: move left) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))))\")", "count": 1796, "sessionId": "cjrt7xqf97", "time": "2018-09-14T12:49:02.117"}
+{"format": "lisp2json", "q": "(:accept \"get all red items\" \"(:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1797, "sessionId": "diu2invfm6", "time": "2018-09-14T12:49:06.528"}
+{"format": "lisp2json", "q": "(:q \"visit room4\")", "count": 1799, "sessionId": "diu2invfm6", "time": "2018-09-14T12:49:20.837"}
+{"format": "lisp2json", "q": "(:accept \"visit room4\" \"(: visitArea room4)\")", "count": 1800, "sessionId": "diu2invfm6", "time": "2018-09-14T12:49:24.945"}
+{"format": "lisp2json", "q": "(:q \"drop all red items\")", "count": 1802, "sessionId": "diu2invfm6", "time": "2018-09-14T12:49:32.318"}
+{"format": "lisp2json", "q": "(:accept \"drop all red items\" \"(: itemActionHandler drop (call setLimit (number -1) (items?property red)))\")", "count": 1803, "sessionId": "diu2invfm6", "time": "2018-09-14T12:49:34.220"}
+{"format": "lisp2json", "q": "(:q \"get red item\")", "count": 1805, "sessionId": "diu2invfm6", "time": "2018-09-14T12:49:58.918"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item{ visit point;pick every item}\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems)))))\")", "count": 1806, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:50:02.671"}
+{"format": "lisp2json", "q": "(:q \"get  one red item\")", "count": 1808, "sessionId": "diu2invfm6", "time": "2018-09-14T12:50:05.467"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1810, "sessionId": "diu2invfm6", "time": "2018-09-14T12:50:25.063"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1811, "sessionId": "diu2invfm6", "time": "2018-09-14T12:50:27.746"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1813, "sessionId": "diu2invfm6", "time": "2018-09-14T12:50:33.861"}
+{"format": "lisp2json", "q": "(:accept \"visit room2\" \"(: visitArea room2)\")", "count": 1814, "sessionId": "diu2invfm6", "time": "2018-09-14T12:50:38.299"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1816, "sessionId": "diu2invfm6", "time": "2018-09-14T12:50:49.366"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1817, "sessionId": "diu2invfm6", "time": "2018-09-14T12:50:52.100"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1819, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:08.523"}
+{"format": "lisp2json", "q": "(:accept \"visit room2\" \"(: visitArea room2)\")", "count": 1820, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:11.633"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow\")", "count": 1822, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:23.563"}
+{"format": "lisp2json", "q": "(:q \"visit room 4\")", "count": 1824, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:36.512"}
+{"format": "lisp2json", "q": "(:q \"visit room4\")", "count": 1826, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:41.066"}
+{"format": "lisp2json", "q": "(:accept \"visit room4\" \"(: visitArea room4)\")", "count": 1827, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:45.361"}
+{"format": "lisp2json", "q": "(:q \"pick item is red\")", "count": 1829, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:55.339"}
+{"format": "lisp2json", "q": "(:accept \"pick item is red\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property red)))\")", "count": 1830, "sessionId": "diu2invfm6", "time": "2018-09-14T12:51:57.904"}
+{"format": "lisp2json", "q": "(:q \"visit room1\")", "count": 1832, "sessionId": "diu2invfm6", "time": "2018-09-14T12:52:04.403"}
+{"format": "lisp2json", "q": "(:accept \"visit room1\" \"(: visitArea room1)\")", "count": 1833, "sessionId": "diu2invfm6", "time": "2018-09-14T12:52:09.167"}
+{"format": "lisp2json", "q": "(:q \"foreach point in [[0,0],[1,1],[3,4],[5,8] { visit point;drop item is red }\")", "count": 1835, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:52:15.041"}
+{"format": "lisp2json", "q": "(:q \"drop item is red\")", "count": 1837, "sessionId": "diu2invfm6", "time": "2018-09-14T12:52:21.797"}
+{"format": "lisp2json", "q": "(:accept \"drop item is red\" \"(: itemActionHandler drop (call setLimit (number 1) (items?property red)))\")", "count": 1838, "sessionId": "diu2invfm6", "time": "2018-09-14T12:52:23.747"}
+{"format": "lisp2json", "q": "(:q \"foreach point in [[0,0],[1,1],[3,4],[5,8] { visit point}\")", "count": 1840, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:52:37.102"}
+{"format": "lisp2json", "q": "(:q \"visit room4\")", "count": 1842, "sessionId": "diu2invfm6", "time": "2018-09-14T12:52:47.478"}
+{"format": "lisp2json", "q": "(:accept \"visit room4\" \"(: visitArea room4)\")", "count": 1843, "sessionId": "diu2invfm6", "time": "2018-09-14T12:52:53.052"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow\")", "count": 1845, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:05.787"}
+{"format": "lisp2json", "q": "(:q \"get item is yellow\")", "count": 1847, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:20.280"}
+{"format": "lisp2json", "q": "(:q \"foreach point in [[0,0],[1,1],[3,4],[5,8]]{ visit point;drop item is red}\")", "count": 1849, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:53:22.217"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1851, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:29.846"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in [[0,0],[1,1],[3,4],[5,8]]{ visit point;drop item is red}\" \"(:foreach point (call makeArray (call combineAreas (call combineAreas (call combineAreas (call makePoint (number 0) (number 0)) (call makePoint (number 1) (number 1))) (call makePoint (number 3) (number 4))) (call makePoint (number 5) (number 8)))) (:s (: visit (call getSelectedPoint)) (: itemActionHandler drop (call setLimit (number 1) (items?property red)))))\")", "count": 1852, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:53:32.692"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1853, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:34.413"}
+{"format": "lisp2json", "q": "(:q \"move left\")", "count": 1855, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:38.378"}
+{"format": "lisp2json", "q": "(:accept \"move left\" \"(: move left)\")", "count": 1856, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:40.879"}
+{"format": "lisp2json", "q": "(:q \"move up\")", "count": 1858, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:45.509"}
+{"format": "lisp2json", "q": "(:accept \"move up\" \"(: move up)\")", "count": 1859, "sessionId": "diu2invfm6", "time": "2018-09-14T12:53:51.126"}
+{"format": "lisp2json", "q": "(:q \"pick item is yellow\")", "count": 1861, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:01.903"}
+{"format": "lisp2json", "q": "(:accept \"pick item is yellow\" \"(: itemActionHandler pick (call setLimit (number 1) (items?property yellow)))\")", "count": 1862, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:03.633"}
+{"format": "lisp2json", "q": "(:q \"visit room5\")", "count": 1864, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:11.622"}
+{"format": "lisp2json", "q": "(:accept \"visit room5\" \"(: visitArea room5)\")", "count": 1865, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:15.253"}
+{"format": "lisp2json", "q": "(:q \"drop item\")", "count": 1867, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:19.344"}
+{"format": "lisp2json", "q": "(:accept \"drop item\" \"(: itemActionHandler drop (call setLimit (number 1) (call allItems)))\")", "count": 1868, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:21.520"}
+{"format": "lisp2json", "q": "(:q \"foreach point in [[0,0],[1,1],[3,4],[5,8]] { visit point;drop item is blue }\")", "count": 1870, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:54:25.929"}
+{"format": "lisp2json", "q": "(:q \"visit room3\")", "count": 1872, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:30.189"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in [[0,0],[1,1],[3,4],[5,8]] { visit point;drop item is blue }\" \"(:foreach point (call makeArray (call combineAreas (call combineAreas (call combineAreas (call makePoint (number 0) (number 0)) (call makePoint (number 1) (number 1))) (call makePoint (number 3) (number 4))) (call makePoint (number 5) (number 8)))) (:s (: visit (call getSelectedPoint)) (: itemActionHandler drop (call setLimit (number 1) (items?property blue)))))\")", "count": 1873, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:54:31.234"}
+{"format": "lisp2json", "q": "(:q \"collect all\")", "count": 1875, "sessionId": "diu2invfm6", "time": "2018-09-14T12:54:54.035"}
+{"format": "lisp2json", "q": "(:q \"get all items\")", "count": 1877, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:03.237"}
+{"format": "lisp2json", "q": "(:q \"foreach point in [[0,0],[1,1],[3,4],[5,8]] { visit point;drop item is green }\")", "count": 1879, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:55:13.962"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item {visit point; pick every item}\")", "count": 1881, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:17.846"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item {visit point; pick every item}\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems)))))\")", "count": 1882, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:18.758"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in [[0,0],[1,1],[3,4],[5,8]] { visit point;drop item is green }\" \"(:foreach point (call makeArray (call combineAreas (call combineAreas (call combineAreas (call makePoint (number 0) (number 0)) (call makePoint (number 1) (number 1))) (call makePoint (number 3) (number 4))) (call makePoint (number 5) (number 8)))) (:s (: visit (call getSelectedPoint)) (: itemActionHandler drop (call setLimit (number 1) (items?property green)))))\")", "count": 1883, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:55:21.370"}
+{"format": "lisp2json", "q": "(:def_ret \"get all items\" \"[[\\\"foreach point in world containing item {visit point; pick every item}\\\",\\\"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems)))))\\\"]]\")", "count": 1884, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:21.683"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1885, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:21.928"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1886, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:22.102"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1887, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:22.195"}
+{"format": "lisp2json", "q": "(:q \"foreach area in rooms {visit area; drop item}\")", "count": 1889, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:32.368"}
+{"format": "lisp2json", "q": "(:accept \"foreach area in rooms {visit area; drop item}\" \"(:foreach area all_rooms (:s (: visitArea (call getSelectedArea)) (: itemActionHandler drop (call setLimit (number 1) (call allItems)))))\")", "count": 1890, "sessionId": "diu2invfm6", "time": "2018-09-14T12:55:37.922"}
+{"format": "lisp2json", "q": "(:q \"get all items\")", "count": 1892, "sessionId": "diu2invfm6", "time": "2018-09-14T12:56:37.016"}
+{"format": "lisp2json", "q": "(:accept \"get all items\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (call allItems)))))\")", "count": 1893, "sessionId": "diu2invfm6", "time": "2018-09-14T12:56:46.600"}
+{"format": "lisp2json", "q": "(:q \"pick all red items\")", "count": 1895, "sessionId": "diu2invfm6", "time": "2018-09-14T12:57:23.627"}
+{"format": "lisp2json", "q": "(:q \"get  all red items\")", "count": 1897, "sessionId": "diu2invfm6", "time": "2018-09-14T12:57:33.316"}
+{"format": "lisp2json", "q": "(:accept \"get  all red items\" \"(:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1898, "sessionId": "diu2invfm6", "time": "2018-09-14T12:57:39.973"}
+{"format": "lisp2json", "q": "(:q \"get all item is red\")", "count": 1900, "sessionId": "diu2invfm6", "time": "2018-09-14T12:57:56.275"}
+{"format": "lisp2json", "q": "(:q \"get all red items\")", "count": 1902, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:09.775"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item { visit point; pick itemis red }\")", "count": 1904, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:58:10.883"}
+{"format": "lisp2json", "q": "(:accept \"get all red items\" \"(:foreach point (call filterArea world (items?property red)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number -1) (items?property red)))))\")", "count": 1905, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:25.826"}
+{"format": "lisp2json", "q": "(:q \"foreach point in world containing item { visit point; pick item is red }\")", "count": 1907, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:58:30.553"}
+{"format": "lisp2json", "q": "(:accept \"foreach point in world containing item { visit point; pick item is red }\" \"(:foreach point (call filterArea world (call allItems)) (:s (: visit (call getSelectedPoint)) (: itemActionHandler pick (call setLimit (number 1) (items?property red)))))\")", "count": 1908, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:58:37.614"}
+{"format": "lisp2json", "q": "(:q \"while robot has item is red {drop item is red; move left}\")", "count": 1910, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:47.791"}
+{"format": "lisp2json", "q": "(:accept \"while robot has item is red {drop item is red; move left}\" \"(:while (call robotHas (items?property red)) (:s (: itemActionHandler drop (call setLimit (number 1) (items?property red))) (: move left)))\")", "count": 1911, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:49.744"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1912, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:52.661"}
+{"format": "lisp2json", "q": "(:def_ret \"line red left\" \"[[\\\"while robot has item is red {drop item is red; move left}\\\",\\\"(:while (call robotHas (items?property red)) (:s (: itemActionHandler drop (call setLimit (number 1) (items?property red))) (: move left)))\\\"]]\")", "count": 1913, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:57.578"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1914, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:57.816"}
+{"format": "lisp2json", "q": "(:dictionary)", "count": 1915, "sessionId": "diu2invfm6", "time": "2018-09-14T12:58:58.058"}
+{"format": "lisp2json", "q": "(:q \"line blue left\")", "count": 1917, "sessionId": "diu2invfm6", "time": "2018-09-14T12:59:02.364"}
+{"format": "lisp2json", "q": "(:accept \"line blue left\" \"(:while (call robotHas (items?property blue)) (:s (: itemActionHandler drop (call setLimit (number 1) (items?property blue))) (: move left)))\")", "count": 1918, "sessionId": "diu2invfm6", "time": "2018-09-14T12:59:04.681"}
+{"format": "lisp2json", "q": "(:q \"line yellow left\")", "count": 1920, "sessionId": "diu2invfm6", "time": "2018-09-14T12:59:08.998"}
+{"format": "lisp2json", "q": "(:accept \"line yellow left\" \"(:while (call robotHas (items?property yellow)) (:s (: itemActionHandler drop (call setLimit (number 1) (items?property yellow))) (: move left)))\")", "count": 1921, "sessionId": "diu2invfm6", "time": "2018-09-14T12:59:10.685"}
+{"format": "lisp2json", "q": "(:q \"line green up\")", "count": 1923, "sessionId": "diu2invfm6", "time": "2018-09-14T12:59:14.583"}
+{"format": "lisp2json", "q": "(:accept \"line green up\" \"(:while (call robotHas (items?property green)) (:s (: itemActionHandler drop (call setLimit (number 1) (items?property green))) (: move up)))\")", "count": 1924, "sessionId": "diu2invfm6", "time": "2018-09-14T12:59:16.275"}
+{"format": "lisp2json", "q": "(:q \"if robot has item is blue { drop every item room2 }\")", "count": 1926, "sessionId": "4cuvafr0sx", "time": "2018-09-14T12:59:50.899"}
+{"format": "lisp2json", "q": "(:q \"if robot has item is red{ drop every item room2 }\")", "count": 1928, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:00:03.300"}
+{"format": "lisp2json", "q": "(:q \"visit room2\")", "count": 1930, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:00:32.769"}
+{"format": "lisp2json", "q": "(:q \"visit room4\")", "count": 1932, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:00:53.330"}
+{"format": "lisp2json", "q": "(:accept \"visit room4\" \"(: visitArea room4)\")", "count": 1933, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:00:57.703"}
+{"format": "lisp2json", "q": "(:q \"drop every item\")", "count": 1935, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:01:10.256"}
+{"format": "lisp2json", "q": "(:accept \"drop every item\" \"(: itemActionHandler drop (call setLimit (number -1) (call allItems)))\")", "count": 1936, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:01:11.691"}
+{"format": "lisp2json", "q": "(:q \"stop 7.3\")", "count": 1938, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:23.244"}
+{"format": "lisp2json", "q": "(:q \"stop 7.3\")", "count": 1941, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:23.577"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times {pick item is red}\")", "count": 1942, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:23.622"}
+{"format": "lisp2json", "q": "(:q \"stop 7.3\")", "count": 1944, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:24.344"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times {pick item is red}\")", "count": 1946, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:26.043"}
+{"format": "lisp2json", "q": "(:q \"stop 7.3\")", "count": 1948, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:28.819"}
+{"format": "lisp2json", "q": "(:q \"repeat 2 times {pick item is red}\")", "count": 1950, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:33.004"}
+{"format": "lisp2json", "q": "(:q \"stop 7.3\")", "count": 1952, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:04:58.675"}
+{"format": "lisp2json", "q": "(:q \"stop 7\")", "count": 1954, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:05:14.872"}
+{"format": "lisp2json", "q": "(:q \"stop7\")", "count": 1956, "sessionId": "4cuvafr0sx", "time": "2018-09-14T13:05:21.981"}

@@ -1,0 +1,117 @@
+.Dictionary{
+  width: 350px !important;
+  right: 0;
+  background-color: #FFF;
+  height: 50vh !important;
+  position: absolute;
+  bottom: 42%;
+  box-shadow: 0 4px 8px rgba(51,51,51,0.15);
+  display: flex;
+  flex-direction: column;
+  transition: width 0.2s ease;
+  overflow: hidden;
+}
+
+@media (max-height: 600px) {
+  .Dictionary {
+    top: 50px;
+  }
+}
+
+.Dictionary-header {
+  font-size: 1.8rem;
+  font-weight: 900;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  height: 40px;
+  min-height: 40px;
+  border-bottom: 1px solid #efefef;
+  justify-content: space-between;
+}
+
+.Dictionary-header-arrow{
+	cursor: pointer;
+}
+
+.Dictionary-content{
+	padding: 10px;
+	overflow-y: auto;
+}
+
+.Dictionary-content table{
+  border-collapse: collapse; 
+  width: 320px;
+  min-width: 320px;
+}
+
+.Dictionary-content tr, 
+.Dictionary-content td{
+	border: 1px solid black;
+}
+
+.Dictionary-content td{
+	padding: 5px;
+	height: 40px;
+}
+
+.Dictionary-content tr:not(.Explanation):hover {
+  background-color: rgba(0,255,255,0.2);
+  transition: 0.s;
+}
+
+.Dictionary-list{
+	max-height: 100%;
+	overflow: auto;
+}
+
+.DictionaryElement{
+	font-size: 75%; 
+}
+
+.Dictionary.collapsed{
+	width: 50px !important;
+}
+
+.Dictionary.collapsed .Dictionary-header-name,
+.Dictionary.collapsed .Dictionary-content,
+.Dictionary.collapsed #dictionaryReload{
+	display: none;
+}
+
+.Dictionary .Explanation{
+	text-align: center;
+	padding: 5px;
+}
+
+td.deleteButton{
+  width:10% !important;
+  border-right: 0px solid;
+}
+
+td.headButton{
+  width: 35% !important;
+  border-left: 0px solid;
+}
+
+td.body{
+  width: 55% !important;
+}
+
+td.headWidthButton{
+  width: 45% !important;
+  border-left: 0px solid;
+}
+
+.deleteButton button{
+  font-size: 0.7em;
+  padding: 3px 6px;
+  height:auto;
+}
+
+#dictionaryReload {
+  float: right;
+  height: auto;
+  cursor: pointer;
+  text-align: right;
+}

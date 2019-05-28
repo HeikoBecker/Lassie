@@ -1,0 +1,5 @@
+id,group,number of queries,length of queries,number of tokens,number of definitions,number of unparsable queries,number of induced queries,number of core language queries,length of successful queries,tokens in unsuccessful,queries by others,queries by self
+62jwi4ee4s,C,227,4113,857,0,14,30,183,3716,774,30,0
+p6fjeds6lr,C,133,2689,534,18,28,67,38,1949,393,45,22
+d8uy7sqcib,C,129,3930,729,12,33,72,24,2668,506,47,25
+9a9fe4k1ga,C,103,2275,447,26,32,54,17,1430,282,47,7

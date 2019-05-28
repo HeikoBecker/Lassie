@@ -1,0 +1,21 @@
+if item has color blue at [0,0] { visit [0,0] ; pick item has color blue }
+if item has color blue at [1,0] { visit [0,0] ; pick item has color blue }
+if item has color orange at [0,0] visit [0,-4]
+foreach point in world containing item has color red { visit point ; pick item }
+foreach area in [room1, room2, room3, room4, room5] containing item has color red visit area
+visit [0,0]; repeat 3 times pick item; repeat 2 times drop item
+visit any point in room1
+foreach point in room1 + room5 visit point
+visit world * room1
+visit world - room3
+foreach point in area with corners [0,-1] and [-1,1] visit point
+visit [0,1]; visit [-2,1] while avoiding [[-1,0],[-1,1]]
+strict { visit [0,0]; pick item ; visit [-4,0] }
+strict { visit [-1,0]; pick item ; visit [-4,0] }
+if possible visit [0,0] visit [0,0]
+if possible visit [-9,-9] visit [0,0]
+visit [0,0]; if robot at [0,0] pick item
+visit [0,0]; if robot at [0,1] pick item
+visit [0,0]; pick every item has color green || has color red
+visit [0,0]; pick every item has color green && has color red
+visit [0,0]; pick every item ! has color green

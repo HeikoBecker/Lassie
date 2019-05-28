@@ -1,0 +1,9 @@
+node_modules
+data/*.json
+data/*.lisp
+npm-debug.log
+coverage
+/build
+.DS_Store
+.env
+.vscode
