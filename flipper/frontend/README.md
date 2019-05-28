@@ -15,7 +15,7 @@ eventually a newcomer to Flipper won't need to know the core language at all.
 
 # Technical details
  - you can try out Flipper [here](http://flipper.mpi-sws.org/#/about) and check out [the paper](https://arxiv.org/abs/1803.02238)
- - the setup of the system is described [here](/voxelurn).
+ - the setup of the system is described [here](/flipper/frontend/voxelurn).
  - the fork of semantic parser used with flipper is available [here](https://github.com/mpi-sws-rse/sempre-interactive-flipper)
  - the system is inspired by the [Voxelurn system](https://github.com/sidaw/shrdlurn/blob/master/Voxelurn.md), that performs the same naturalization process for building in a simple world of Voxels.
 
