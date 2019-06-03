@@ -1,24 +1,60 @@
-open bossLib realTheory arithmeticTheory;
+open bossLib realTheory arithmeticTheory RealArith;
 
 val _ = new_theory "examples";
 
 Theorem binom1:
   ! (a b:real). (a + b) pow 2 = a pow 2 + 2 * a * b + b pow 2
 Proof
-  (* TODO *)
+rpt strip_tac
+\\ fs [POW_2]
+\\ fs [REAL_RDISTRIB, REAL_LDISTRIB]
+\\ fs [REAL_ADD_ASSOC]
+\\ qspecl_then
+     [`a * a`, `a * b + b * a`, `2 * a * b`]
+     assume_tac
+     REAL_EQ_LADD
+\\ rewrite_tac [GSYM REAL_ADD_ASSOC]
+\\ pop_assum (fn thm => irule (snd (EQ_IMP_RULE thm)))
+\\ fs [GSYM REAL_DOUBLE]
+\\ fs [REAL_RDISTRIB]
+\\ fs [REAL_MUL_SYM]
 QED
 
 Theorem binom2:
   ! (a b:real). (a - b) pow 2 = a pow 2 - 2 * a * b + b pow 2
 Proof
-  (* TODO *)
+rpt strip_tac
+\\ fs [POW_2]
+\\ fs [REAL_SUB_RDISTRIB, REAL_SUB_LDISTRIB]
+\\ fs [GSYM REAL_DOUBLE]
+\\ fs [real_sub]
+\\ fs [REAL_NEG_ADD, REAL_NEG_LMUL]
+\\ fs [REAL_RDISTRIB]
+\\ fs [REAL_ADD_ASSOC]
+\\ fs [GSYM REAL_NEG_LMUL]
+\\ fs [REAL_MUL_SYM]
 QED
 
 Theorem binom3:
   ! (a b:real). (a + b) * (a - b) = a pow 2 - b pow 2
 Proof
-  (* TODO *)
+rpt strip_tac
+\\ fs [POW_2]
+\\ fs [REAL_RDISTRIB]
+\\ fs [REAL_SUB_LDISTRIB]
+\\ fs [real_sub]
+\\ fs [REAL_NEG_LMUL]
+\\ fs [REAL_ADD_ASSOC]
+\\ fs [GSYM REAL_NEG_LMUL]
+\\ fs [REAL_MUL_SYM]
+\\ qspecl_then
+  [`a * a`, `-(a * b) + a * b`]
+  assume_tac
+  REAL_ADD_RID_UNIQ
+\\ fs [REAL_ADD_ASSOC] (* ? *)
 QED
+
+val _ = ParseExtras.temp_tight_equality();
 
 (*
   Gaussian formula
@@ -30,7 +66,25 @@ val sum_def = Define `
 Theorem gaussian_sum:
   ! n. (sum n = (((&n):real) * (1 + &n)) / 2)
 Proof
-  (* TODO *)
+Induct_on `n`
+>-(fs[sum_def]
+   \\ fs[REAL_DIV_LZERO])
+\\ fs [sum_def]
+\\ fs [real_div]
+\\ rewrite_tac [GSYM REAL_MUL, GSYM REAL_ADD]
+\\ rewrite_tac [REAL]
+\\ rewrite_tac [REAL_ADD_RDISTRIB, REAL_ADD_LDISTRIB]
+\\ rewrite_tac [REAL_MUL_RID, REAL_MUL_LID]
+\\ rewrite_tac [REAL_ADD_ASSOC]
+\\ fs [GSYM REAL_ADD_SYM]
+\\ once_rewrite_tac [REAL_ADD_ASSOC]
+\\ fs [REAL_DOUBLE]
+\\ ` 2 * inv 2 = 1` by (irule REAL_MUL_RINV \\ fs[])
+\\ fs [REAL_ADD_ASSOC]
+\\ fs [REAL_ADD_SYM]
+\\ fs [REAL_ADD_ASSOC]
+\\ fs [GSYM real_div]
+\\ fs [REAL_HALF_DOUBLE]
 QED
 
 (*
@@ -43,21 +97,77 @@ val square_number_def = Define `
 Theorem square_number_is_square:
   ! n. square_number n = (&n+1) * (&n+1)
 Proof
-  (* TODO *)
+Induct_on `n`
+>-(fs [square_number_def])
+\\ fs [square_number_def]
+\\ fs [SUM_SQUARED]
+\\ fs [REAL]
+\\ fs [SUC_ONE_ADD]
+\\ fs [LEFT_ADD_DISTRIB]
+\\ fs [SUM_SQUARED]
 QED
 
 val sum_of_cubes_def = Define `
   (sum_of_cubes 0 = 0:real) /\
   (sum_of_cubes (SUC n) = (&(SUC n)) pow 3 + sum_of_cubes n)`;
-
 (**
   The sum of cubed numbers up to n is the squared sum
 **)
 Theorem sum_of_cubes_is_squared_sum:
   ! n. sum_of_cubes n = (sum n) pow 2
 Proof
-  (* TODO *)
+Induct_on `n`
+>-(fs [sum_of_cubes_def, sum_def, POW_2]) (* Base case *)
+
+(* Definitions and identities *)
+\\ fs [sum_def, sum_of_cubes_def, gaussian_sum]
+
+(* Destruct 3 *)
+\\ `3 = SUC 2` by DECIDE_TAC
+\\ pop_assum (fn thm => rewrite_tac [thm])
+
+(* expanding... *)
+\\ rewrite_tac [pow, POW_2, REAL]
+\\ rewrite_tac [REAL_ADD_RDISTRIB, REAL_ADD_LDISTRIB]
+
+\\ rewrite_tac [real_div]
+\\ rewrite_tac [REAL_ADD_RDISTRIB, REAL_ADD_LDISTRIB]
+\\ rewrite_tac [REAL_MUL_ASSOC]
+\\ rewrite_tac [REAL_ADD_ASSOC]
+ 
+\\ rewrite_tac [GSYM REAL_ADD, GSYM REAL_MUL]
+\\ rewrite_tac [REAL_ADD_RDISTRIB, REAL_ADD_LDISTRIB]
+
+\\ rewrite_tac [REAL_MUL_ASSOC]
+\\ rewrite_tac [REAL_ADD_ASSOC]
+\\ rewrite_tac [REAL_MUL_RID, REAL_MUL_LID]
+(* ...expanded *)
+
+\\ fs [] (* simplify *)
+
+\\ once_rewrite_tac [REAL_MUL_SYM]
+\\ fs [REAL_MUL_ASSOC]
+\\ once_rewrite_tac [REAL_MUL_SYM]
+\\ fs [GSYM real_div]
+\\ once_rewrite_tac [REAL_MUL_SYM]
+\\ fs [GSYM real_div]
+
+(* Reorder and REFL *)
+\\ `&(n + n²) + &n³ / 2 + &n² / 2 + &n + 1 + &n² / 2 + &n / 2 + &n³ / 2 +
+    &n² / 2 + &n² / 2 + &n / 2 =
+   (&n² / 2 + &n² / 2) + (&n² / 2 + &n² / 2) + (&n /2 + &n / 2) + &(n + n²) + (&n³ / 2 + &n³ / 2) + &n + 1 `
+by (REAL_ASM_ARITH_TAC)
+
+\\ pop_assum (fn thm => once_rewrite_tac [thm])
+\\ fs[REAL_HALF_DOUBLE]
 QED
+
+fun impl_subgoal_tac th =
+    let
+	val hyp_to_prove = lhand (concl th)
+    in
+	SUBGOAL_THEN hyp_to_prove (fn thm => assume_tac (MP th thm))
+    end;
 
 val SOS2_def = Define `
   (SOS2 0 = 0) /\
@@ -66,7 +176,117 @@ val SOS2_def = Define `
 Theorem sos2_3:
   ! n. 3 * (SOS2 n) = ((n * (n+1))*(2 * n + 1)) DIV 2
 Proof
-  (* TODO *)
+Induct_on `n`
+>-(fs [SOS2_def])
+\\ fs [SOS2_def]
+
+(* Best would be to eliminate DIV 2 here *)
+(* But I can't find a way to manifest the associativity of DIV with MULT*)
+
+\\ rewrite_tac [LEFT_ADD_DISTRIB, RIGHT_ADD_DISTRIB]
+\\ pop_assum (fn thm => once_rewrite_tac [thm])
+\\ fs [ADD1]
+\\ fs [LEFT_ADD_DISTRIB, RIGHT_ADD_DISTRIB]
+
+(* Nat *)
+\\ `3 = SUC 2` by DECIDE_TAC
+\\ pop_assum (fn thm => rewrite_tac [thm])
+\\ `2 = SUC 1` by DECIDE_TAC
+\\ pop_assum (fn thm => rewrite_tac [thm])
+\\ `1 = SUC 0` by DECIDE_TAC
+\\ pop_assum (fn thm => rewrite_tac [thm])
+
+(* Expanding *)
+\\ STRIP_ASSUME_TAC EXP
+\\ first_assum (fn thm => once_rewrite_tac [thm])
+\\ first_assum (fn thm => once_rewrite_tac [thm])
+\\ first_x_assum (fn thm => once_rewrite_tac [thm])
+\\ first_x_assum (fn thm => once_rewrite_tac [thm])
+\\ rewrite_tac [LEFT_ADD_DISTRIB, RIGHT_ADD_DISTRIB]
+\\ fs[]
+
+\\ `13 * n + (2 * n³ + (9 * n² + 6))
+  = ((6 * n) * 2) + (n + 2 * n³ + 9 * n² + 6)`
+by (fs [])
+\\ pop_assum (fn thm => once_rewrite_tac [thm])
+
+\\ qspec_then `2`
+assume_tac
+ADD_DIV_RWT
+\\ first_x_assum impl_subgoal_tac
+>-(DECIDE_TAC)
+
+\\ pop_assum
+(fn thm => qspecl_then
+[`6 * n * 2`, `n + 2 * n³ + 9 * n² + 6`]
+assume_tac
+thm)
+\\ first_x_assum impl_subgoal_tac
+>-(DISJ1_TAC \\ fs [])
+
+\\ pop_assum
+(fn thm => rewrite_tac [thm])
+
+\\ qspecl_then
+[`2`, `6 * n`]
+assume_tac
+MULT_DIV
+\\ first_x_assum impl_subgoal_tac
+>-(DECIDE_TAC)
+\\ pop_assum
+(fn thm => rewrite_tac [thm])
+
+\\ `n + 2 * n³ + 9 * n² + 6
+  = (n + (2 * n³ + 3 * n²)) + ((3 * (n EXP 2) + 3) * 2)`
+by (fs [])
+\\ pop_assum (fn thm => once_rewrite_tac [thm])
+
+\\ qspec_then `2`
+assume_tac
+ADD_DIV_RWT
+\\ first_x_assum impl_subgoal_tac
+>-(DECIDE_TAC)
+
+\\ pop_assum
+(fn thm => qspecl_then
+[`n + (2 * n³ + 3 * n²)`,`(3 * n² + 3) * 2`]
+assume_tac
+thm)
+\\ first_x_assum impl_subgoal_tac
+>-(DISJ2_TAC \\ fs [])
+
+\\ pop_assum
+(fn thm => rewrite_tac [thm])
+
+\\ qspecl_then
+[`2`,`3 * n² + 3`]
+(fn thm => fs [thm])
+MULT_DIV
 QED
 
 val _ = export_theory();
+
+(* Forgot what this code was supposed to do *)
+(* v v v v v v v v v v v v v v v v v v v v  *)
+(* \\ pop_assum *)
+(* (fn thm => *)
+(*     qspecl_then  *)
+(* 	[`n`, `2 * n³ + 3 * n²`] *)
+(* 	assume_tac *)
+(* 	thm) *)
+(* \\  first_x_assum impl_subgoal_tac *)
+(* \\ DISJ2_TAC *)
+(* \\ qspec_then `2` *)
+(* assume_tac *)
+(* MOD_EQ_0 *)
+(* \\ first_x_assum impl_subgoal_tac *)
+(* >-(DECIDE_TAC) *)
+(* \\ pop_assum *)
+(* (fn thm => qspec_then *)
+(* `6 * k` *)
+(* (fn thm => fs [thm]) *)
+(* thm) *)
+
+(* \\ pop_assum *)
+(* (fn thm => rewrite_tac [thm]) *)
+
