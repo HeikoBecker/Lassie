@@ -19,12 +19,9 @@ Proof
 rpt strip_tac
 \\ fs [POW_2]
 \\ fs [REAL_RDISTRIB, REAL_LDISTRIB, REAL_ADD_ASSOC]
+\\ fs [GSYM REAL_DOUBLE]
+\\ fs [REAL_RDISTRIB, REAL_ADD_ASSOC]
 \\ fs [REAL_MUL_SYM]
-\\ rw (GSYM REAL_ADD_ASSOC)
-\\ qspec_then `a * b`
-  rw
-  REAL_DOUBLE
-\\ fs [REAL_MUL_SYM, REAL_MUL_ASSOC]
 QED
 
 Theorem binom2:
@@ -47,18 +44,13 @@ Theorem binom3:
 Proof
 rpt strip_tac
 \\ fs [POW_2]
-\\ fs [REAL_RDISTRIB]
-\\ fs [REAL_SUB_LDISTRIB]
+\\ fs [REAL_RDISTRIB, REAL_SUB_LDISTRIB]
 \\ fs [real_sub]
 \\ fs [REAL_NEG_LMUL]
 \\ fs [REAL_ADD_ASSOC]
 \\ fs [GSYM REAL_NEG_LMUL]
 \\ fs [REAL_MUL_SYM]
-\\ qspecl_then
-  [`a * a`, `-(a * b) + a * b`]
-  assume_tac
-  REAL_ADD_RID_UNIQ
-\\ fs [REAL_ADD_ASSOC]
+\\ fs [GSYM REAL_ADD_ASSOC]
 QED
 
 val _ = ParseExtras.temp_tight_equality();
