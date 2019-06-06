@@ -2,9 +2,9 @@ open bossLib realTheory arithmeticTheory RealArith;
 
 val _ = new_theory "examples";
 
-val use_assum = pop_assum (fn thm => rewrite_tac [thm])
-
 fun rw thm = rewrite_tac [thm]
+val use_last_assum = pop_assum rw
+
 fun impl_subgoal_tac th =
     let
 	val hyp_to_prove = lhand (concl th)
@@ -122,7 +122,7 @@ Induct_on `n`
 
 (* Destruct 3 *)
 \\ `3 = SUC 2` by DECIDE_TAC
-\\ use_assum
+\\ use_last_assum
 
 (* expanding... *)
 \\ rewrite_tac [pow, POW_2, REAL]
@@ -153,7 +153,7 @@ Induct_on `n`
    (&n² / 2 + &n² / 2) + (&n² / 2 + &n² / 2) + (&n /2 + &n / 2) + &(n + n²) + (&n³ / 2 + &n³ / 2) + &n + 1 `
   by (REAL_ASM_ARITH_TAC)
 
-\\ use_assum
+\\ use_last_assum
 \\ fs[REAL_HALF_DOUBLE]
 QED
 
@@ -169,17 +169,17 @@ Induct_on `n`
 \\ fs [SOS2_def]
 
 \\ rewrite_tac [LEFT_ADD_DISTRIB, RIGHT_ADD_DISTRIB]
-\\ use_assum
+\\ use_last_assum
 \\ fs [ADD1]
 \\ fs [LEFT_ADD_DISTRIB, RIGHT_ADD_DISTRIB]
 
 (* Nat *)
 \\ `3 = SUC 2` by DECIDE_TAC
-\\ use_assum
+\\ use_last_assum
 \\ `2 = SUC 1` by DECIDE_TAC
-\\ use_assum
+\\ use_last_assum
 \\ `1 = SUC 0` by DECIDE_TAC
-\\ use_assum
+\\ use_last_assum
 
 (* Expanding *)
 \\ STRIP_ASSUME_TAC EXP
@@ -193,7 +193,7 @@ Induct_on `n`
 \\ `13 * n + (2 * n³ + (9 * n² + 6))
   = ((6 * n) * 2) + (n + 2 * n³ + 9 * n² + 6)`
   by (fs [])
-\\ use_assum
+\\ use_last_assum
 
 \\ qspec_then `2`
   impl_subgoal_tac
@@ -206,7 +206,7 @@ Induct_on `n`
     impl_subgoal_tac
     thm)
 >-(DISJ1_TAC \\ fs [])
-\\ use_assum
+\\ use_last_assum
 
 \\ qspecl_then
   [`2`, `6 * n`]
@@ -214,12 +214,12 @@ Induct_on `n`
   MULT_DIV
 \\ first_x_assum impl_subgoal_tac
 >-(DECIDE_TAC)
-\\ use_assum
+\\ use_last_assum
 
 \\ `n + 2 * n³ + 9 * n² + 6
   = (n + (2 * n³ + 3 * n²)) + ((3 * (n EXP 2) + 3) * 2)`
   by (fs [])
-\\ use_assum
+\\ use_last_assum
 
 \\ qspec_then `2` impl_subgoal_tac ADD_DIV_RWT
 >-(DECIDE_TAC)
@@ -230,7 +230,7 @@ Induct_on `n`
     impl_subgoal_tac
     thm)
 >-(DISJ2_TAC \\ fs [])
-\\ use_assum
+\\ use_last_assum
 
 \\ qspecl_then
   [`2`,`3 * n² + 3`]
