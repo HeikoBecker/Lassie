@@ -252,7 +252,7 @@ A grammar is a set of rules, and each rule has the following form:
 
 1. Target category (e.g., `$ROOT`): any derivation produced by this rule is
    labeled with this category.  `$ROOT` is the designated top-level category.
-   Derivations of type `$ROOT` than span the entire utterance are returned to the
+   Derivations of type `$ROOT` that span the entire utterance are returned to the
    user.
 2. Source sequence (e.g., `three`): in general, this is a sequence of tokens and categories
    (all categories start with `$` by convention).  Tokens (e.g., `three`) are
