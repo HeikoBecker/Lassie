@@ -1,0 +1,37 @@
+########## ROOT
+# We allow four basic interactions with the goal stack
+(rule $ROOT ($g) (IdentityFn)) # Set goal
+(rule $ROOT ($e) (IdentityFn)) # Expand with a tactic
+
+#(rule $ROOT ($p) (IdentityFn)) # Proof state
+#(rule $ROOT ($b) (IdentityFn)) # Go back
+
+(rule $g
+      (add as goal $Theorem)
+      (lambda term (: g (var term))))
+
+(rule $e
+      ($Tactic)
+      (lambda tac (e tac)))
+
+(rule $p (print goal) ())
+(rule $b (go back))
+
+
+########## Tactics
+(rule $Tactic ($Tactic then $Tactic))
+
+(rule $Tactic ($Induction) (IdentityFn))
+(rule $Tactic ($Simplification) (IdentityFn))
+(rule $Tactic ($Rewrite) (IdentityFn))
+(rule $Tactic ($AssumTac) (IdentityFn))
+(rule $Tactic ($Strip) (IdentityFn))
+
+(rule $Induction
+      (induct on $Var)
+      (lambda var (: e ())))
+
+
+# Tactics on assumptions
+
+# Induction
