@@ -500,6 +500,7 @@ public final class SimpleWorld {
       case "basketball": domain = new BasketballDomain(); break;
       case "recipes": domain = new RecipesDomain(); break;
       case "geo880": opts.dbPath = "lib/data/overnight/geo880.db"; domain = new ExternalDomain(); break;
+      case "lassie": opts.dbPath = "overnight/lassie.db"; domain = new ExternalDomain(); break;
       case "external": domain = new ExternalDomain(); break;
       default: throw new RuntimeException("Unknown domain: " + opts.domain);
     }
@@ -805,6 +806,7 @@ public final class SimpleWorld {
       LogInfo.begin_track("ExternalDomain.createEntities: %s", opts.dbPath);
       // Load up from database
       for (String line : IOUtils.readLinesHard(opts.dbPath)) {
+	if (line.startsWith("#")) continue; // Comments
         String[] tokens = line.split("\t");
         String pred = tokens[0];
         Value e = makeValue(tokens[1]);
@@ -812,7 +814,7 @@ public final class SimpleWorld {
           insertDB(e, pred);
         } else if (tokens.length == 3) {  // Binary
           Value f;
-          if (tokens[2].startsWith("fb:en."))  // Named entity
+          if (tokens[2].startsWith("fb:en.") || tokens[2].startsWith("en."))  // Named entity
             f = makeValue(tokens[2]);
           else
             f = Value.fromString(tokens[2]);  // Number
