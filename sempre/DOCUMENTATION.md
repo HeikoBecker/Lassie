@@ -936,7 +936,7 @@ To handle this,
     (rule $Wh (who) (ConstantFn null))
     (rule $ROOT ($Wh $Set) (SelectFn 1)) 
 
-This rules allow us to simply ignore the presence of *what* or *who*.
+These rules allow us to simply ignore the presence of *what* or *who*.
 
 ### Freebase-specific semantic functions
 

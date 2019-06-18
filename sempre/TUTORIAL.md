@@ -777,7 +777,7 @@ for `x`.
 
 We can refactor the first rule:
 
-    (rule $ROOT ($Unary in $Entity) (lambda x (and (var u) (fb:location.location.containedby (var e)))))
+    (rule $ROOT ($Unary in $Entity) (lambda u (lambda e (and (var u) (fb:location.location.containedby (var e))))))
     (rule $Unary (cities) (ConstantFn (fb:type.object.type fb:location.citytown)))
 
 and so on...
