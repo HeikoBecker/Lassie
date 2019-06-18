@@ -980,7 +980,6 @@ addMode('genovernight', 'Generate utterances for overnight semantic parsing', la
   # These domains are all based on SimpleWorld
   required(:domain),
   o('Grammar.inPaths', lambda { |e| 'overnight/' + e[:domain] + '.grammar' }),
-  o('SimpleLexicon.inPaths', lambda { |e| 'overnight/' + e[:domain] + '.lexicon' }),
   o('SimpleWorld.domain', lambda { |e| e[:domain] }),
   o('initialization', 'denotation :: error,-1000', 'denotation :: empty,-100', 'paraphrase :: size,+0.01', 'denotation :: value_in_formula,-100'),
   o('FeatureExtractor.featureComputers','overnight.OvernightFeatureComputer'),
