@@ -7,19 +7,21 @@
 #(rule $ROOT ($b) (IdentityFn)) # Go back
 
 (rule $g
-      (add as goal $Theorem)
-      (lambda term (: g (var term))))
+      (add as goal $Term)
+      (lambda term (: set_goal ``(var term)``)))
 
 (rule $e
       ($Tactic)
-      (lambda tac (e tac)))
+      (lambda tac (: expand (var tac))))
 
-(rule $p (print goal) ())
-(rule $b (go back))
+#(rule $p (print goal) ())
+#(rule $b (go back) ())
 
 
 ########## Tactics
-(rule $Tactic ($Tactic then $Tactic))
+(rule $Tactic
+      ($Tactic then $Tactic)
+      (lambda t1 (lambda t2 ((var t1) THEN (var t2)))))
 
 (rule $Tactic ($Induction) (IdentityFn))
 (rule $Tactic ($Simplification) (IdentityFn))
@@ -29,9 +31,12 @@
 
 (rule $Induction
       (induct on $Var)
-      (lambda var (: e ())))
+      (lambda var (Induct_on `(var)`)))
 
+(rule $Simplification
+      (simplify)
+      (ConstantFn fs[]))
 
-# Tactics on assumptions
-
-# Induction
+# 
+(rule $Rewrite
+      ())
