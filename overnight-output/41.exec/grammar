@@ -1,0 +1,282 @@
+####### overnight/lassie.grammar
+# Types
+(rule $TypeNP (theorem) (ConstantFn en.theorem))
+# (rule $EntityNP1 ($PHRASE) (SimpleLexiconFn (type en.theorem)))
+
+(rule $TypeNP (domain) (ConstantFn en.domain))
+# (rule $EntityNP1 ($PHRASE) (SimpleLexiconFn (type en.domain)))
+
+(rule $TypeNP (effect) (ConstantFn en.effect))
+# (rule $EntityNP1 ($PHRASE) (SimpleLexiconFn (type en.effect)))
+
+(rule $TypeNP (operator) (ConstantFn en.operator))
+# (rule $EntityNP1 ($PHRASE) (SimpleLexiconFn (type en.operator)))
+
+(rule $TypeNP (side) (ConstantFn en.side))
+# (rule $EntityNP1 ($PHRASE) (SimpleLexiconFn (type en.side)))
+
+
+# Properties
+(rule $RelNP (domain) (ConstantFn (string theorem_domain)))
+(rule $RelNP (effect) (ConstantFn (string theorem_effect)))
+(rule $RelNP (main operator) (ConstantFn (string theorem_main_operator)))
+(rule $RelNP (secondary operator) (ConstantFn (string theorem_sec_operator)))
+(rule $RelNP (orientation) (ConstantFn (string theorem_side)))
+
+# Entities
+(rule $EntityNP1 (POW_2) (ConstantFn en.theorem.POW_2))
+(rule $EntityNP1 (GSYM POW_2) (ConstantFn en.theorem.GSYM_POW_2))
+(rule $EntityNP1 (REAL) (ConstantFn en.theorem.REAL))
+(rule $EntityNP1 (GSYM REAL) (ConstantFn en.theorem.GSYM_REAL))
+(rule $EntityNP1 (REAL_ADD) (ConstantFn en.theorem.REAL_ADD))
+(rule $EntityNP1 (GSYM REAL_ADD) (ConstantFn en.theorem.GSYM_REAL_ADD))
+(rule $EntityNP1 (REAL_ADD_ASSOC) (ConstantFn en.theorem.REAL_ADD_ASSOC))
+(rule $EntityNP1 (GSYM REAL_ADD_ASSOC) (ConstantFn en.theorem.GSYM_REAL_ADD_ASSOC))
+(rule $EntityNP1 (REAL_ADD_LDISTRIB) (ConstantFn en.theorem.REAL_ADD_LDISTRIB))
+(rule $EntityNP1 (GSYM REAL_ADD_LDISTRIB) (ConstantFn en.theorem.GSYM_REAL_ADD_LDISTRIB))
+(rule $EntityNP1 (REAL_ADD_RDISTRIB) (ConstantFn en.theorem.REAL_ADD_RDISTRIB))
+(rule $EntityNP1 (GSYM REAL_ADD_RDISTRIB) (ConstantFn en.theorem.GSYM_REAL_ADD_RDISTRIB))
+(rule $EntityNP1 (REAL_ADD_SYM) (ConstantFn en.theorem.REAL_ADD_SYM))
+(rule $EntityNP1 (GSYM REAL_DIV_LZERO) (ConstantFn en.theorem.GSYM_REAL_DIV_LZERO))
+(rule $EntityNP1 (REAL_DOUBLE) (ConstantFn en.theorem.REAL_DOUBLE))
+(rule $EntityNP1 (GSYM REAL_DOUBLE) (ConstantFn en.theorem.GSYM_REAL_DOUBLE))
+(rule $EntityNP1 (REAL_HALF_DOUBLE) (ConstantFn en.theorem.REAL_HALF_DOUBLE))
+(rule $EntityNP1 (GSYM REAL_HALF_DOUBLE) (ConstantFn en.theorem.GSYM_REAL_HALF_DOUBLE))
+(rule $EntityNP1 (REAL_MUL) (ConstantFn en.theorem.REAL_MUL))
+(rule $EntityNP1 (GSYM REAL_MUL) (ConstantFn en.theorem.GSYM_REAL_MUL))
+(rule $EntityNP1 (numbers) (ConstantFn en.domain.num))
+(rule $EntityNP1 (the reals) (ConstantFn en.domain.real))
+(rule $EntityNP1 (associate) (ConstantFn en.effect.associate))
+(rule $EntityNP1 (compute) (ConstantFn en.effect.compute))
+(rule $EntityNP1 (convert) (ConstantFn en.effect.convert))
+(rule $EntityNP1 (dissociate) (ConstantFn en.effect.dissociate))
+(rule $EntityNP1 (distribute) (ConstantFn en.effect.distribute))
+(rule $EntityNP1 (double) (ConstantFn en.effect.double))
+(rule $EntityNP1 (eliminate) (ConstantFn en.effect.eliminate))
+(rule $EntityNP1 (expand) (ConstantFn en.effect.expand))
+(rule $EntityNP1 (factorize) (ConstantFn en.effect.factorize))
+(rule $EntityNP1 (half) (ConstantFn en.effect.half))
+(rule $EntityNP1 (introduce) (ConstantFn en.effect.introduce))
+(rule $EntityNP1 (rotate) (ConstantFn en.effect.rotate))
+(rule $EntityNP1 (simplify) (ConstantFn en.effect.simplify))
+(rule $EntityNP1 (split) (ConstantFn en.effect.split))
+(rule $EntityNP1 (square) (ConstantFn en.effect.square))
+(rule $EntityNP1 (symmetry) (ConstantFn en.effect.symmetry))
+(rule $EntityNP1 (zero) (ConstantFn en.effect.zero))
+(rule $EntityNP1 (cast) (ConstantFn en.operator.&))
+(rule $EntityNP1 (add) (ConstantFn en.operator.add))
+(rule $EntityNP1 (divide) (ConstantFn en.operator.divide))
+(rule $EntityNP1 (half) (ConstantFn en.operator.half))
+(rule $EntityNP1 (multiply) (ConstantFn en.operator.multiply))
+(rule $EntityNP1 (none) (ConstantFn en.operator.none))
+(rule $EntityNP1 (power) (ConstantFn en.operator.power))
+(rule $EntityNP1 (square) (ConstantFn en.operator.square))
+(rule $EntityNP1 (successor) (ConstantFn en.operator.suc))
+(rule $EntityNP1 (left) (ConstantFn en.side.left))
+(rule $EntityNP1 (right) (ConstantFn en.side.right))
+
+
+############################################################
+# Simplified General grammar
+#
+# SEMPRE's General grammar but without numeric properties, superlatives,
+# comparatives, aggregate, events, reverse relations, etc.
+
+(def @domain edu.stanford.nlp.sempre.overnight.SimpleWorld.domain)
+(def @singleton edu.stanford.nlp.sempre.overnight.SimpleWorld.singleton)
+(def @filter edu.stanford.nlp.sempre.overnight.SimpleWorld.filter)
+(def @getProperty edu.stanford.nlp.sempre.overnight.SimpleWorld.getProperty)
+(def @concat edu.stanford.nlp.sempre.overnight.SimpleWorld.concat)
+(def @arithOp edu.stanford.nlp.sempre.overnight.SimpleWorld.arithOp)
+(def @sortAndToString edu.stanford.nlp.sempre.overnight.SimpleWorld.sortAndToString)
+(def @listValue edu.stanford.nlp.sempre.overnight.SimpleWorld.listValue)
+
+############################################################
+# Base cases
+
+(when parse
+  # G1
+  # Generic values
+  (rule $EntityNP ($PHRASE) (NumberFn) (anchored 1))
+  (rule $EntityNP ($PHRASE) (DateFn) (anchored 1))
+
+  # Currently, just cheat and use the entities defined in the base grammar.
+  # In the future, want actually NER.
+  (rule $EntityNP ($EntityNP1) (IdentityFn))
+  (rule $EntityNP ($EntityNP2) (IdentityFn))
+  #(rule $EntityNP ($PHRASE) (FilterNerSpanFn PERSON ORGANIZATION LOCATION MISC) (anchored 1))
+  #(rule $EntityNP ($PHRASE) (FilterPosTagFn span NNP) (anchored 1))
+)
+
+(when (and parse general)
+  # G1
+  (rule $NP ($EntityNP) (IdentityFn))
+  # G2
+  (rule $NP ($TypeNP) (lambda t (call @getProperty (call @singleton (var t)) (string !type)))) # Unary
+)
+(when (and generate general)
+  (rule $UnaryNP ($TypeNP) (lambda t (call @getProperty (call @singleton (var t)) (string !type)))) # Unary
+)
+
+(when (and parse regex)
+  (rule $NP ($EntityNP) (IdentityFn))
+  (rule $NP ($TypeNP) (IdentityFn))
+)
+(when (and generate regex)
+  (rule $UnaryNP ($TypeNP) (IdentityFn))
+)
+
+############################################################
+# Complementizer phrase (filtering)
+
+(when (and parse general)
+  # R0
+  (rule $CP (that $VP) (lambda r (lambda s (call @filter (var s) (var r))))) # Vunary
+  # R1
+  (rule $CP (whose $RelNP is              $NP) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =)  (var n)))))) # Req
+  (rule $CP (whose $RelNP is not          $NP) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string !=) (var n)))))) # Rnot
+  # R2
+  (rule $CP (that     $VP/NP $NP) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =)  (var n)))))) # Vobj
+  (rule $CP (that not $VP/NP $NP) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string !=) (var n)))))) # Vobj-not
+)
+(when (and generate general)
+  # R0
+  (rule $CP00 (that $VP) (lambda r (lambda s (call @filter (var s) (var r))))) # Vunary
+  # R1
+  (rule $CP00 (whose $RelNP is $EntityNP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Req
+  (rule $CP1 (whose $RelNP is $NP0) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Req
+  (rule $CP0 (whose $RelNP is not $EntityNP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string !=) (var n)))))) # Rnot
+  # R2
+  (rule $CP00 (that $VP/NP $EntityNP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Vobj
+  (rule $CP0 (that not $VP/NP $EntityNP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string !=) (var n)))))) # Vobj-neg
+  (rule $CP1 (that $VP/NP $NP0) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Vobj
+  # R3
+  (rule $CP2 (that $VP/NP $NP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Vobj
+  (rule $CP2 (whose $RelNP is $NP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Req
+)
+(when geo440
+  (rule $CP2 (that $VP/NP $NP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Vobj
+  (rule $CP2 (whose $RelNP is $NP1) (lambda r (lambda n (lambda s (call @filter (var s) (var r) (string =) (var n)))))) # Req
+)
+
+(when (and parse regex)
+  # I use modifier for negation, we did not have this negation in previous grammars
+  (rule $Modifier ($VP/NP $NP) (JoinFn forward betaReduce))
+  (rule $Modifier ($VP/NP1 $NP) (JoinFn forward betaReduce))
+  (rule $CP (that $Modifier) (IdentityFn))
+  (rule $CP (that not $Modifier) (lambda m (call + (string "~\(") (var m) (string "\)"))))
+)
+(when (and generate regex)
+  (rule $Modifier0 ($VP/NP $EntityNP1) (JoinFn forward betaReduce))
+  (rule $Modifier1 ($VP/NP $NP0) (JoinFn forward betaReduce))
+  (rule $Modifier0 ($VP/NP1 $EntityNP1) (JoinFn forward betaReduce))
+  (rule $Modifier1 ($VP/NP1 $NP0) (JoinFn forward betaReduce))
+  (rule $CP00 (that $Modifier0) (IdentityFn))
+  (rule $CP1 (that $Modifier1) (IdentityFn))
+  (rule $CP1 (that not $Modifier0) (lambda m (call + (string "~\(") (var m) (string "\)"))))
+)
+
+############################################################
+# Construct NPs from CPs
+
+(when (and parse general)
+  # G3
+  (rule $NPCP ($NP $CP) (JoinFn backward betaReduce))
+  (rule $NPCP ($NPCP and $CP) (JoinFn backward betaReduce))
+  (rule $NP ($NPCP) (IdentityFn)) 
+)
+(when (and generate general)
+  # G3
+  (rule $NP0 ($UnaryNP $CP00) (JoinFn backward betaReduce))
+  (rule $NP1 ($UnaryNP $CP0) (JoinFn backward betaReduce))
+  (rule $NP1 ($UnaryNP $CP1) (JoinFn backward betaReduce))
+  (rule $NPCP1 ($UnaryNP $CP00) (JoinFn backward betaReduce))
+  (rule $NP1 ($NPCP1 and $CP00) (JoinFn backward betaReduce)) 
+)
+(when geo880 
+  (rule $NP2 ($NP0 $CP00) (JoinFn backward betaReduce))
+  (rule $NP2 ($NP0 $CP0) (JoinFn backward betaReduce))
+  (rule $NP2 ($NP0 $CP1) (JoinFn backward betaReduce))
+  (rule $NP2 ($UnaryNP $CP2) (JoinFn backward betaReduce))
+)
+(when geo440
+  (rule $NP2 ($NP0 $CP00) (JoinFn backward betaReduce))
+  (rule $NP2 ($NP0 $CP0) (JoinFn backward betaReduce))
+  (rule $NP2 ($UnaryNP $CP2) (JoinFn backward betaReduce))
+)
+
+# Regex
+(when (and parse regex)
+  (rule $CP ($CP and $CP) (lambda c1 (lambda c2 (call + (string "\(\(") (var c1) (string "\)&\(") (var c2) (string "\)\)")))))
+  (rule $NP ($NP $CP) (JoinFn betaReduce forward))
+)
+(when (and generate regex)
+  (rule $CP1 ($CP00 and $CP00) (lambda c1 (lambda c2 (call + (string "\(\(") (var c1) (string "\)&\(") (var c2) (string "\)\)")))))
+  (rule $NP1 ($UnaryNP $CP0) (JoinFn betaReduce forward))
+  (rule $NP1 ($UnaryNP $CP1) (JoinFn betaReduce forward))
+)
+
+############################################################
+# Transformations
+
+(when (and parse general)
+  # T1
+  (rule $NP ($RelNP of $NP) (lambda r (lambda s (call @getProperty (var s) (var r))))) # Tr
+  # T3
+  (rule $NP ($NP or $NP) (lambda n1 (lambda n2 (call @concat (var n1) (var n2))))) # Tdisj
+)
+(when (and generate general)
+  # T1
+  (rule $NP0 ($RelNP of $EntityNP1) (lambda r (lambda s (call @getProperty (var s) (var r))))) # Tr
+  # T3
+  (rule $NP0 ($EntityNP1 or $EntityNP2) (lambda n1 (lambda n2 (call @concat (var n1) (var n2))))) # Tdisj
+)
+(when (or geo880 geo440)
+  (rule $NP2 ($RelNP of $NP0) (lambda r (lambda s (call @getProperty (var s) (var r))))) # Tr
+  (rule $NP2 ($RelNP of $NP1) (lambda r (lambda s (call @getProperty (var s) (var r))))) # Tr
+)
+
+(when (and parse regex)
+  (rule $NP ($NP or $NP) (lambda n1 (lambda n2 (call + (string "\(") (var n1) (string "|") (var n2) (string "\)")))))
+)
+(when (and generate regex)
+  # TODO - do we want "location of meeting"? I think not, probably only "area of california"??
+  (rule $NP0 ($EntityNP1 or $EntityNP2) (lambda n1 (lambda n2 (call + (string "\(") (var n1) (string "|") (var n2) (string "\)")))))
+)
+
+############################################################
+# Transformations: binary operators
+
+(when parse
+  # T4
+  (rule $BinaryOpRight ($BinaryOp $NP) (JoinFn betaReduce forward))
+  (rule $NP ($NP $BinaryOpRight) (JoinFn betaReduce backward))
+)
+(when generate
+  # T4
+  (rule $BinaryOpRight ($BinaryOp $EntityNP2) (JoinFn betaReduce forward))
+  (rule $NP0 ($EntityNP1 $BinaryOpRight) (JoinFn betaReduce backward))
+)
+
+############################################################
+# Top-level
+
+(when (and parse general)
+  (rule $ROOT ($NP) (lambda x (call @listValue (var x))))
+)
+(when (and generate general)
+  (rule $ROOT ($NP0) (lambda x (call @listValue (var x))))
+  (rule $ROOT ($NP1) (lambda x (call @listValue (var x))))
+)
+(when (or geo880 geo440)
+  (rule $ROOT ($NP2) (lambda x (call @listValue (var x))))
+  (rule $ROOT ($UnaryNP) (lambda x (call @listValue (var x))))
+)
+
+(when (and parse regex)
+  (rule $ROOT ($NP) (IdentityFn))
+)
+(when (and generate regex)
+  (rule $ROOT ($NP0) (IdentityFn))
+  (rule $ROOT ($NP1) (IdentityFn))
+)

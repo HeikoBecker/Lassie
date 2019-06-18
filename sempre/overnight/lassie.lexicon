@@ -18,7 +18,7 @@
 {"lexeme": "GSYM REAL_HALF_DOUBLE", "formula": "en.theorem.GSYM_REAL_HALF_DOUBLE", "type": "en.theorem"}
 {"lexeme": "REAL_MUL", "formula": "en.theorem.REAL_MUL", "type": "en.theorem"}
 {"lexeme": "GSYM REAL_MUL", "formula": "en.theorem.GSYM_REAL_MUL", "type": "en.theorem"}
-{"lexeme": "number arithmetics", "formula": "en.domain.num", "type": "en.domain"}
+{"lexeme": "numbers", "formula": "en.domain.num", "type": "en.domain"}
 {"lexeme": "the reals", "formula": "en.domain.real", "type": "en.domain"}
 {"lexeme": "associate", "formula": "en.effect.associate", "type": "en.effect"}
 {"lexeme": "compute", "formula": "en.effect.compute", "type": "en.effect"}
