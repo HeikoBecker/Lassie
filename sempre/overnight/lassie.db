@@ -1,35 +1,35 @@
-# POW_2
-theorem_theorem	en.theorem.POW_2
-theorem_domain	en.theorem.POW_2	en.domain.real
-theorem_main_operator	en.theorem.POW_2	en.operator.power
-theorem_main_operator	en.theorem.POW_2	en.operator.square
-theorem_sec_operator	en.theorem.POW_2	en.operator.none
-theorem_effect	en.theorem.POW_2	en.effect.expand
-
-# GSYM POW_2
-theorem_theorem	en.theorem.GSYM_POW_2
-theorem_domain	en.theorem.GSYM_POW_2	en.domain.real
-theorem_main_operator	en.theorem.GSYM_POW_2	en.operator.multiply
-theorem_sec_operator	en.theorem.GSYM_POW_2	en.operator.none
-theorem_effect	en.theorem.GSYM_POW_2	en.effect.square
-theorem_effect	en.theorem.GSYM_POW_2	en.effect.simplify
-
 # REAL
 theorem_theorem	en.theorem.REAL
 theorem_domain	en.theorem.REAL	en.domain.real
 theorem_domain	en.theorem.REAL	en.domain.num
 theorem_main_operator	en.theorem.REAL	en.operator.&
 theorem_sec_operator	en.theorem.REAL	en.operator.suc
-theorem_effect	en.theorem.REAL	en.effect.convert
-theorem_effect	en.theorem.REAL	en.effect.eliminate
+theorem_effect_convert	en.theorem.REAL
+theorem_effect_eliminate	en.theorem.REAL
 
 # GSYM REAL
 theorem_theorem	en.theorem.GSYM_REAL
 theorem_domain	en.theorem.GSYM_REAL	en.domain.real
 theorem_main_operator	en.theorem.GSYM_REAL	en.operator.add
 theorem_sec_operator	en.theorem.GSYM_REAL	en.operator.&
-theorem_effect	en.theorem.GSYM_REAL	en.effect.convert
-theorem_effect	en.theorem.GSYM_REAL	en.effect.introduce
+theorem_effect_convert	en.theorem.GSYM_REAL
+theorem_effect_introduce	en.theorem.GSYM_REAL
+
+# POW_2
+theorem_theorem	en.theorem.POW_2
+theorem_domain	en.theorem.POW_2	en.domain.real
+theorem_main_operator	en.theorem.POW_2	en.operator.power
+theorem_main_operator	en.theorem.POW_2	en.operator.square
+theorem_sec_operator	en.theorem.POW_2	en.operator.none
+theorem_effect_expand	en.theorem.POW_2
+
+# GSYM POW_2
+theorem_theorem	en.theorem.GSYM_POW_2
+theorem_domain	en.theorem.GSYM_POW_2	en.domain.real
+theorem_main_operator	en.theorem.GSYM_POW_2	en.operator.multiply
+theorem_sec_operator	en.theorem.GSYM_POW_2	en.operator.none
+theorem_effect_square	en.theorem.GSYM_POW_2
+theorem_effect_simplify	en.theorem.GSYM_POW_2
 
 # REAL_ADD
 theorem_theorem	en.theorem.REAL_ADD
@@ -37,8 +37,8 @@ theorem_domain	en.theorem.REAL_ADD	en.domain.real
 theorem_domain	en.theorem.REAL_ADD	en.domain.num
 theorem_main_operator	en.theorem.REAL_ADD	en.operator.add
 theorem_sec_operator	en.theorem.REAL_ADD	en.operator.&
-theorem_effect	en.theorem.REAL_ADD	en.effect.factorize
-theorem_effect	en.theorem.REAL_ADD	en.effect.convert
+theorem_effect_factorize	en.theorem.REAL_ADD
+theorem_effect_convert	en.theorem.REAL_ADD
 
 # GSYM REAL_ADD
 theorem_theorem	en.theorem.GSYM_REAL_ADD
@@ -46,29 +46,29 @@ theorem_domain	en.theorem.GSYM_REAL_ADD	en.domain.real
 theorem_domain	en.theorem.GSYM_REAL_ADD	en.domain.num
 theorem_main_operator	en.theorem.GSYM_REAL_ADD	en.operator.&
 theorem_sec_operator	en.theorem.GSYM_REAL_ADD	en.operator.add
-theorem_effect	en.theorem.GSYM_REAL_ADD	en.effect.distribute
-theorem_effect	en.theorem.GSYM_REAL_ADD	en.effect.convert
+theorem_effect_distribute	en.theorem.GSYM_REAL_ADD
+theorem_effect_convert	en.theorem.GSYM_REAL_ADD
 
 # REAL_ADD_ASSOC
 theorem_theorem	en.theorem.REAL_ADD_ASSOC
 theorem_domain	en.theorem.REAL_ADD_ASSOC	en.domain.real
 theorem_main_operator	en.theorem.REAL_ADD_ASSOC	en.operator.add
 theorem_sec_operator	en.theorem.REAL_ADD_ASSOC	en.operator.add
-theorem_effect	en.theorem.REAL_ADD_ASSOC	en.effect.dissociate
+theorem_effect_dissociate	en.theorem.REAL_ADD_ASSOC
 
 # GSYM REAL_ADD_ASSOC
 theorem_theorem	en.theorem.GSYM_REAL_ADD_ASSOC
 theorem_domain	en.theorem.GSYM_REAL_ADD_ASSOC	en.domain.real
 theorem_main_operator	en.theorem.GSYM_REAL_ADD_ASSOC	en.operator.add
 theorem_sec_operator	en.theorem.GSYM_REAL_ADD_ASSOC	en.operator.add
-theorem_effect	en.theorem.GSYM_REAL_ADD_ASSOC	en.effect.associate
+theorem_effect_associate	en.theorem.GSYM_REAL_ADD_ASSOC
 
 # REAL_ADD_LDISTRIB
 theorem_theorem	en.theorem.REAL_ADD_LDISTRIB
 theorem_domain	en.theorem.REAL_ADD_LDISTRIB	en.domain.real
 theorem_main_operator	en.theorem.REAL_ADD_LDISTRIB	en.operator.multiply
 theorem_sec_operator	en.theorem.REAL_ADD_LDISTRIB	en.operator.add
-theorem_effect	en.theorem.REAL_ADD_LDISTRIB	en.effect.distribute
+theorem_effect_distribute	en.theorem.REAL_ADD_LDISTRIB
 theorem_side	en.theorem.REAL_ADD_LDISTRIB	en.side.left
 
 # GSYM REAL_ADD_LDISTRIB
@@ -76,7 +76,7 @@ theorem_theorem	en.theorem.GSYM_REAL_ADD_LDISTRIB
 theorem_domain	en.theorem.GSYM_REAL_ADD_LDISTRIB	en.domain.real
 theorem_main_operator	en.theorem.GSYM_REAL_ADD_LDISTRIB	en.operator.add
 theorem_sec_operator	en.theorem.GSYM_REAL_ADD_LDISTRIB	en.operator.multiply
-theorem_effect	en.theorem.GSYM_REAL_ADD_LDISTRIB	en.effect.factorize
+theorem_effect_factorize	en.theorem.GSYM_REAL_ADD_LDISTRIB
 theorem_side	en.theorem.GSYM_REAL_ADD_LDISTRIB	en.side.left
 
 # REAL_ADD_RDISTRIB
@@ -84,7 +84,7 @@ theorem_theorem	en.theorem.REAL_ADD_RDISTRIB
 theorem_domain	en.theorem.REAL_ADD_RDISTRIB	en.domain.real
 theorem_main_operator	en.theorem.REAL_ADD_RDISTRIB	en.operator.multiply
 theorem_sec_operator	en.theorem.REAL_ADD_RDISTRIB	en.operator.add
-theorem_effect	en.theorem.REAL_ADD_RDISTRIB	en.effect.distribute
+theorem_effect_distribute	en.theorem.REAL_ADD_RDISTRIB
 theorem_side	en.theorem.REAL_ADD_RDISTRIB	en.side.right
 
 # GSYM REAL_ADD_RDISTRIB
@@ -92,7 +92,7 @@ theorem_theorem	en.theorem.GSYM_REAL_ADD_RDISTRIB
 theorem_domain	en.theorem.GSYM_REAL_ADD_RDISTRIB	en.domain.real
 theorem_main_operator	en.theorem.GSYM_REAL_ADD_RDISTRIB	en.operator.add
 theorem_sec_operator	en.theorem.GSYM_REAL_ADD_RDISTRIB	en.operator.multiply
-theorem_effect	en.theorem.GSYM_REAL_ADD_RDISTRIB	en.effect.factorize
+theorem_effect_factorize	en.theorem.GSYM_REAL_ADD_RDISTRIB
 theorem_side	en.theorem.REAL_ADD_RDISTRIB	en.side.right
 
 # REAL_ADD_SYM
@@ -100,8 +100,8 @@ theorem_theorem	en.theorem.REAL_ADD_SYM
 theorem_domain	en.theorem.REAL_ADD_SYM	en.domain.real
 theorem_main_operator	en.theorem.REAL_ADD_SYM	en.operator.add
 theorem_sec_operator	en.theorem.REAL_ADD_SYM	en.operator.none
-theorem_effect	en.theorem.REAL_ADD_SYM	en.effect.rotate
-theorem_effect	en.theorem.REAL_ADD_SYM	en.effect.symmetry
+theorem_effect_rotate	en.theorem.REAL_ADD_SYM
+theorem_effect_symmetry	en.theorem.REAL_ADD_SYM
 
 # NO GSYM REAL_ADD_SYM
 
@@ -110,36 +110,36 @@ theorem_theorem	en.theorem.REAL_DIV_LZERO
 theorem_domain	en.theorem.REAL_DIV_LZERO	en.domain.real
 theorem_main_operator	en.theorem.REAL_DIV_LZERO	en.operator.divide
 theorem_sec_operator	en.theorem.REAL_DIV_LZERO	en.operator.none
-theorem_effect	en.theorem.REAL_DIV_LZERO	en.effect.eliminate
-theorem_effect	en.theorem.REAL_DIV_LZERO	en.effect.simplify
-theorem_effect	en.theorem.REAL_DIV_LZERO	en.effect.compute
-theorem_rhs	en.theorem.REAL_DIV_LZERO	en.effect.zero
+theorem_effect_eliminate	en.theorem.REAL_DIV_LZERO
+theorem_effect_simplify	en.theorem.REAL_DIV_LZERO
+theorem_effect_compute	en.theorem.REAL_DIV_LZERO
+theorem_rhs	en.theorem.REAL_DIV_LZERO	en.rhs.zero
 
 # GSYM REAL_DIV_LZERO
 theorem_theorem	en.theorem.GSYM_REAL_DIV_LZERO
 theorem_domain	en.theorem.GSYM_REAL_DIV_LZERO	en.domain.real
 theorem_main_operator	en.theorem.GSYM_REAL_DIV_LZERO	en.operator.none
 theorem_sec_operator	en.theorem.GSYM_REAL_DIV_LZERO	en.operator.none
-theorem_effect	en.theorem.GSYM_REAL_DIV_LZERO	en.effect.introduce
-theorem_effect	en.theorem.GSYM_REAL_DIV_LZERO	en.effect.expand
-theorem_lhs	en.theorem.GSYM_REAL_DIV_LZERO	en.effect.zero
+theorem_effect_introduce	en.theorem.GSYM_REAL_DIV_LZERO
+theorem_effect_expand	en.theorem.GSYM_REAL_DIV_LZERO
+theorem_lhs	en.theorem.GSYM_REAL_DIV_LZERO	en.lhs.zero
 
 # REAL_DOUBLE
 theorem_theorem	en.theorem.REAL_DOUBLE
 theorem_domain	en.theorem.REAL_DOUBLE	en.domain.real
 theorem_main_operator	en.theorem.REAL_DOUBLE	en.operator.add
 theorem_sec_operator	en.theorem.REAL_DOUBLE	en.operator.none
-theorem_effect	en.theorem.REAL_DOUBLE	en.effect.simplify
-theorem_effect	en.theorem.REAL_DOUBLE	en.effect.factorize
-theorem_effect	en.theorem.REAL_DOUBLE	en.effect.double
+theorem_effect_simplify	en.theorem.REAL_DOUBLE
+theorem_effect_factorize	en.theorem.REAL_DOUBLE
+theorem_effect_double	en.theorem.REAL_DOUBLE
 
 # GSYM REAL_DOUBLE
 theorem_theorem	en.theorem.GSYM_REAL_DOUBLE
 theorem_domain	en.theorem.GSYM_REAL_DOUBLE	en.domain.real
 theorem_main_operator	en.theorem.GSYM_REAL_DOUBLE	en.operator.multiply
 theorem_sec_operator	en.theorem.GSYM_REAL_DOUBLE	en.operator.none
-theorem_effect	en.theorem.GSYM_REAL_DOUBLE	en.effect.expand
-theorem_effect	en.theorem.GSYM_REAL_DOUBLE	en.effect.double
+theorem_effect_expand	en.theorem.GSYM_REAL_DOUBLE
+theorem_effect_double	en.theorem.GSYM_REAL_DOUBLE
 
 # REAL_HALF_DOUBLE
 theorem_theorem	en.theorem.REAL_HALF_DOUBLE
@@ -147,17 +147,17 @@ theorem_domain	en.theorem.REAL_HALF_DOUBLE	en.domain.real
 theorem_main_operator	en.theorem.REAL_HALF_DOUBLE	en.operator.add
 theorem_sec_operator	en.theorem.REAL_HALF_DOUBLE	en.operator.divide
 theorem_sec_operator	en.theorem.REAL_HALF_DOUBLE	en.operator.half
-theorem_effect	en.theorem.REAL_HALF_DOUBLE	en.effect.double
-theorem_effect	en.theorem.REAL_HALF_DOUBLE	en.effect.compute
-theorem_effect	en.theorem.REAL_HALF_DOUBLE	en.effect.simplify
+theorem_effect_double	en.theorem.REAL_HALF_DOUBLE
+theorem_effect_compute	en.theorem.REAL_HALF_DOUBLE
+theorem_effect_simplify	en.theorem.REAL_HALF_DOUBLE
 
 # GSYM REAL_HALF_DOUBLE
 theorem_theorem	en.theorem.GSYM_REAL_HALF_DOUBLE
 theorem_domain	en.theorem.GSYM_REAL_HALF_DOUBLE	en.domain.real
 theorem_main_operator	en.theorem.GSYM_REAL_HALF_DOUBLE	en.operator.none
 theorem_sec_operator	en.theorem.GSYM_REAL_HALF_DOUBLE	en.operator.none
-theorem_effect	en.theorem.GSYM_REAL_HALF_DOUBLE	en.effect.split
-theorem_effect	en.theorem.GSYM_REAL_HALF_DOUBLE	en.effect.half
+theorem_effect_split	en.theorem.GSYM_REAL_HALF_DOUBLE
+theorem_effect_half	en.theorem.GSYM_REAL_HALF_DOUBLE
 
 # REAL_MUL
 theorem_theorem	en.theorem.REAL_MUL
@@ -165,8 +165,8 @@ theorem_domain	en.theorem.REAL_MUL	en.domain.real
 theorem_domain	en.theorem.REAL_MUL	en.domain.num
 theorem_main_operator	en.theorem.REAL_MUL	en.operator.multiply
 theorem_sec_operator	en.theorem.REAL_MUL	en.operator.&
-theorem_effect	en.theorem.REAL_MUL	en.effect.factorize
-theorem_effect	en.theorem.REAL_MUL	en.effect.convert
+theorem_effect_factorize	en.theorem.REAL_MUL
+theorem_effect_convert	en.theorem.REAL_MUL
 
 # GSYM REAL_MUL
 theorem_theorem	en.theorem.GSYM_REAL_MUL
@@ -174,8 +174,8 @@ theorem_domain	en.theorem.GSYM_REAL_MUL	en.domain.real
 theorem_domain	en.theorem.GSYM_REAL_MUL	en.domain.num
 theorem_main_operator	en.theorem.GSYM_REAL_MUL	en.operator.&
 theorem_sec_operator	en.theorem.GSYM_REAL_MUL	en.operator.add
-theorem_effect	en.theorem.GSYM_REAL_MUL	en.effect.distribute
-theorem_effect	en.theorem.GSYM_REAL_MUL	en.effect.convert
+theorem_effect_distribute	en.theorem.GSYM_REAL_MUL
+theorem_effect_convert	en.theorem.GSYM_REAL_MUL
 
 # # REAL_MUL_LID
 # theorem_theorem	en.theorem.REAL_MUL_LID
