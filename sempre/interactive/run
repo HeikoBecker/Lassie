@@ -227,9 +227,8 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('LanguageAnalyzer', 'interactive.DALAnalyzer'),
   o('DALExecutor.convertNumberValues', true),
   o('DALExecutor.printStackTrace', true),
-  o('VoxelWorld.maxBlocks', 100000),
-  selo(0, 'DALExecutor.worldType', 'VoxelWorld', 'CalendarWorld', 'Otherworld'),
-  selo(0, 'Grammar.inPaths', "./#{$path}/lassie.grammar"),
+  o('DALExecutor.worldType', 'VoxelWorld'),
+  o('Grammar.inPaths', "./#{$path}/lassie.grammar"),
 
   o('Params.initWeightsRandomly', false),
   o('Grammar.binarizeRules', false),
@@ -287,7 +286,7 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('Derivation.anchoredBonus', 1.0),
 
   o('NumberFn.allowedRange', 0, 100),
-  o('SimpleLexicon.inPaths', "./#{$path}/csscolors.lexicon"),
+  o('SimpleLexicon.inPaths', "./#{$path}/lassie.lexicon"),
 
   lambda { |e| system 'mkdir -p ./int-output/'; nil},
   lambda { |e| system 'mkdir -p ./int-output/log/'; nil},
