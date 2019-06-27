@@ -12,7 +12,8 @@ fun sleep t =
 fun flush instream = case TextIO.canInput(instream, 5000) of
 			 SOME _ => (TextIO.input(instream); flush(instream))
 		       | NONE => ()
-				     
+
+(* run SEMPRE as a subprocess, through its run script returns outstream of its shell *)
 fun launchSempre () = 
     let
 	val LASSIEDIR = case OS.Process.getEnv "LASSIEDIR" of
@@ -20,42 +21,40 @@ fun launchSempre () =
 			  | NONE => raise Fail "Variable LASSIEDIR not defined in environment";
 	(* SEMPRE's run script is dependent on being at the top of its directory *)
 	val _ = OS.FileSys.chDir (LASSIEDIR ^ "/sempre")
-				 
-	val instream' = Unix.textInstreamOf(Unix.execute("interactive/run",["-n","@mode=lassie"]))
-					  
+	val instream' = Unix.textInstreamOf(Unix.executeInEnv("interactive/run",["-n","@mode=lassie"],Posix.ProcEnv.environ()))
 	val execCommand = TextIO.input(instream')
-				      
 	val (cmd::args)	= String.tokens Char.isSpace execCommand
-
-	val (instream, outstream) = Unix.streamsOf(Unix.execute(cmd,args))
-
-	(* Need to wait for all intro text before flushing it, more than 4k chars *)
-	fun wait instream = case TextIO.canInput(instream, 4000) of
-				SOME 4000 => ()
-			      | _ => wait instream
-    in	  
-	wait instream; flush instream; (ref instream, ref outstream)
+    in
+	Unix.textOutstreamOf(Unix.execute(cmd,args))
     end
 
-val (inref,outref) = launchSempre();
+val outStreamRef = ref (launchSempre())
+val SEMPRE_OUTPUT = ref (proofManagerLib.e bossLib.cheat)
 
-fun waitIO () = case TextIO.canInput(!inref, 5000) of
-		    NONE => waitIO()
-		  | SOME _ => ()
-
-fun readIO () = case TextIO.canInput(!inref, 5000) of
-		    NONE => ""
-		  | SOME _ => TextIO.input(!inref) ^ (readIO())
+fun writeSempre (cmd : string) = TextIO.output(!outStreamRef, cmd ^ "\n")
+fun readSempre () =
+    let
+	val _ = use "interactive/sempre-out-socket.sml";
+    in
+	!SEMPRE_OUTPUT (* ideally, all parsed commands return unit *)
+    end
 
 (* send a command to SEMPRE *)
-fun s cmd = (readIO(); (* flush *)
-	     TextIO.output(!outref, cmd ^ "\n");
-	     waitIO();
-	     sleep 0.05; (* reading IO immediately only returns whitespaces *)
-	     readIO())
+fun s cmd = ( writeSempre cmd;
+	      sleep 0.1;
+	      readSempre() )
 
-    
-										       
+
+(* run the content of a string as SML code *)
+fun runString string =
+    let
+	val instream' = Unix.textInstreamOf(Unix.execute("/bin/echo",[string]))
+	val getChar = fn () => TextIO.input1 instream'
+    in
+	PolyML.compiler (getChar, []) ()
+    end
+
+
                       (* Manipulating a goalstack *)
 
 (* val the_proofs = ref (Manager.initial_proofs()); *)
@@ -82,6 +81,3 @@ fun s cmd = (readIO(); (* flush *)
 (*         handle Manager.NO_PROOFS => *)
 (*          (say "No goalstack is currently being managed.\n"; *)
 (*           raise mk_HOL_ERR "proofManagerLib" "p" "") *)
-
-
-										       
