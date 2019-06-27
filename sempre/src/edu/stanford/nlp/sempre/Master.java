@@ -12,6 +12,8 @@ import java.io.StringWriter;
 import java.lang.reflect.Field;
 import java.util.*;
 
+import java.io.*;
+
 /**
  * A Master manages multiple sessions. Currently, they all share the same model,
  * but they need not in the future.
@@ -25,6 +27,9 @@ public class Master {
     @Option(gloss = "Write a log of this session to this path")
     public String logPath;
 
+    @Option(gloss = "Temporary flag signalling we are calling from Lassie")
+    public boolean lassieFlag = false;  
+      
     @Option(gloss = "Print help on startup")
     public boolean printHelp = true;
 
@@ -259,6 +264,17 @@ public class Master {
     LogInfo.logs("%s", deriv.formula);
     LogInfo.end_track();
     if (deriv.value != null) {
+	if (opts.lassieFlag) { // If from Lassie, send ouput to file as with a socket
+	    try (Writer writer =
+		 new BufferedWriter
+		 (new OutputStreamWriter
+		  (new FileOutputStream("interactive/sempre-out-socket.sml"), "utf-8"))) {
+		writer.write("val _ = SEMPRE_OUTPUT := ("+deriv.value.toString()+")");
+		writer.close();
+	    } catch (IOException ex) {
+		System.err.println("Error writing to file interactive/sempre-out-socket.sml");
+	    }
+	}
       LogInfo.begin_track("Top value");
       deriv.value.log();
       LogInfo.end_track();

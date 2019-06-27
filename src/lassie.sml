@@ -29,7 +29,7 @@ fun launchSempre () =
     end
 
 val outStreamRef = ref (launchSempre())
-val SEMPRE_OUTPUT = ref (proofManagerLib.e bossLib.cheat)
+val SEMPRE_OUTPUT = ref Tactical.NO_TAC
 
 fun writeSempre (cmd : string) = TextIO.output(!outStreamRef, cmd ^ "\n")
 fun readSempre () =
@@ -39,10 +39,10 @@ fun readSempre () =
 	!SEMPRE_OUTPUT (* ideally, all parsed commands return unit *)
     end
 
-(* send a command to SEMPRE *)
+(* send an utterance to SEMPRE and evaluate the response *)
 fun s cmd = ( writeSempre cmd;
 	      sleep 0.1;
-	      readSempre() )
+	      proofManagerLib.e (readSempre()) )
 
 
 (* run the content of a string as SML code *)
