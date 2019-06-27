@@ -270,12 +270,6 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
 
   o('DefinitionAligner.strategies', 'ExactExclusion'),
 
-  o('InteractiveServer.numThreads', 16),
-  o('InteractiveServer.maxCandidates', 50),
-  o('InteractiveServer.queryLogPath', './int-output/query.log'),
-  o('InteractiveServer.responseLogPath', './int-output/response.log'),
-  o('InteractiveServer.port', 8410),
-
   o('GrammarInducer.useBestPacking', true),
   o('GrammarInducer.useSimplePacking', true),
   o('GrammarInducer.maxNonterminals', 3),
