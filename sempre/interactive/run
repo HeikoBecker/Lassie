@@ -227,7 +227,7 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('LanguageAnalyzer', 'interactive.DALAnalyzer'),
   o('DALExecutor.convertNumberValues', true),
   o('DALExecutor.printStackTrace', true),
-  o('DALExecutor.worldType', 'VoxelWorld'),
+  o('DALExecutor.worldType', 'TacticWorld'),
   o('Grammar.inPaths', "./#{$path}/lassie.grammar"),
 
   o('Master.lassieFlag', true),

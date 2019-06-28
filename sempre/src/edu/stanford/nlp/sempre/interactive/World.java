@@ -2,9 +2,11 @@ package edu.stanford.nlp.sempre.interactive;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Collections;
 
 import edu.stanford.nlp.sempre.ContextValue;
 import edu.stanford.nlp.sempre.interactive.voxelurn.VoxelWorld;
+import edu.stanford.nlp.sempre.interactive.lassie.TacticWorld;
 
 /**
  * The world consists of Items, and tracks allItems: the whole world selected:
@@ -23,6 +25,8 @@ public abstract class World {
   public static World fromContext(String worldname, ContextValue context) {
     if (worldname.equals("VoxelWorld"))
       return VoxelWorld.fromContext(context);
+    if (worldname.equals("TacticWorld"))
+	return new TacticWorld();
     throw new RuntimeException("World does not exist: " + worldname);
   }
 
