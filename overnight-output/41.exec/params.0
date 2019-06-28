@@ -1,0 +1,4 @@
+paraphrase :: size	0.01
+denotation :: empty	-100.0
+denotation :: value_in_formula	-100.0
+denotation :: error	-1000.0

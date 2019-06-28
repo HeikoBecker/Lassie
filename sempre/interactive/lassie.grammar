@@ -1,0 +1,71 @@
+# We are currently piggy-backing on the DALExecutor for semantics. There
+# are several layers to evaluation. Lambda expressions are reduced by
+# SEMPRE's Java executor (I think). The beta-reduced term is a command
+# for the DALExecutor.
+
+# Commands of the form '(: cmd arg1 arg2 ...)' are Action Commands: they
+# return void but have an effect on the world.
+
+# Commands of the form '(call cmd arg1 arg2 ...)' are world specific
+# functions which can return values and thus, be chained together.
+
+# Both types have their command 'cmd' defined as functions in the world
+# class corresponding to the mode's world used (in our case
+# TacticWorld).
+
+(rule $ROOT ($Tactic) (lambda t (: tacReturn (var t))) (anchored 1))
+
+(for @then (THEN //)
+     (rule $Tactic ($Tactic @then $Tactic) (lambda t1 (lambda t2 (call tacThen (var t1) (var t2)))) (anchored 1)))
+
+(rule $Tactic ($Tactical $Theorem) (lambda t1 (lambda t2 (call tacApply (var t1) (var t2)))) (anchored 1))
+(rule $Tactic ($Tactical [$Theorems]) (lambda t1 (lambda t2 (call tacApply (var t1) (var t2)))) (anchored 1))
+(rule $Tactic ($TOKEN) (IdentityFn) (anchored 1))
+
+(rule $Tactical (rewrite_tac) (ConstantFn rewrite_tac) (anchored 1))
+(rule $Tactical (fs) (ConstantFn fs) (anchored 1))
+
+(rule $Theorem (POW_2) (ConstantFn POW_2) (anchored 1))
+(rule $Theorem (REAL) (ConstantFn REAL) (anchored 1))
+
+
+# (rule $ROOT ($Theorem) (IdentityFn) (anchored 1))
+
+# # Theorems
+# (rule $Theorem ($TOKEN) (SimpleLexiconFn (type en.theorem)) (anchored 1))
+# (rule $Theorem (theorem $CP) (lambda c (call listValue (var c))) (anchored 1))
+
+
+# # Theorem features
+# (rule $Effect ($TOKEN) (SimpleLexiconFn (type en.effect)) (anchored 1))
+# (rule $CP (that $Effect) (lambda e (call has (string theorem_effect) (var e))) (anchored 1))
+# (rule $CP (which $Effect) (lambda e (call has (string theorem_effect) (var e))) (anchored 1))
+
+# (rule $Domain ($TOKEN) (SimpleLexiconFn (type en.domain)) (anchored 1))
+# (rule $CP (in the $Domain) (lambda d (call has (string theorem_domain) (var d))) (anchored 1))
+
+
+# # Set operations
+# (rule $CP ($CP and $CP) (lambda c1 (lambda c2 (and (var c1) (var c2)))) (anchored 1))
+# (rule $CP ($CP $CP) (lambda c1 (lambda c2 (and (var c1) (var c2)))) (anchored 1))
+
+# (rule $CP ($CP or $CP) (lambda c1 (lambda c2 (or (var c1) (var c2)))) (anchored 1))
+
+
+# # Contexts
+# (rule $Context ($MathExp) (IdentityFn) (anchored 1))
+# (rule $CP (on $Context) (lambda e (call fromContext (var e))) (anchored 1))
+
+
+# # Math expressions (ideally quotes from goal)
+# (rule $MathExp ($Number) (IdentityFn) (anchored 1))
+# (rule $Number ($TOKEN) (NumberFn) (anchored 1))
+
+# (rule $MathExp ($Var) (IdentityFn) (anchored 1))
+# (rule $Var ($TOKEN) (IdentityFn) (anchored 1))
+
+# (for @op (+ -)
+#      (rule $MathExp
+#      	   ($MathExp @op $MathExp)
+# 	   (lambda n1  (lambda n2 (@op (var n1) (var n2))))
+# 	   (anchored 1)))

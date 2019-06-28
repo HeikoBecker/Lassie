@@ -1,9 +1,0 @@
-**.gz
-**.log
-**.aux
-*.swp
-**.project
-.DS_STORE
-*.fdb_latexmk
-*.fls
-*.out
