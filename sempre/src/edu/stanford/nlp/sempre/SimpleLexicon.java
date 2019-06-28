@@ -45,6 +45,7 @@ public final class SimpleLexicon {
   public static class Options {
     @Option(gloss = "Path to load lexicon files from") public List<String> inPaths;
     @Option(gloss = "Types to allow suffix (last word) matche (for people names") public List<String> matchSuffixTypes;
+    @Option(gloss = "Normalize lexicon phrases to lowercase") public boolean lowerCaseTokens = true;      
   }
   public static Options opts = new Options();
 
@@ -92,7 +93,10 @@ public final class SimpleLexicon {
 
         // Add verbatim feature
         Entry entry = new Entry(rawPhrase, formula, type, features);
-        String phrase = entry.rawPhrase.toLowerCase();
+	String phrase = rawPhrase;
+	if (opts.lowerCaseTokens) {
+	    phrase = entry.rawPhrase.toLowerCase();
+	}
         MapUtils.addToList(entries, phrase, entry);
 
         // For last names

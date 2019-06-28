@@ -237,6 +237,7 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('Grammar.useApplyFn', 'interactive.ApplyFn'),
 
   o('LanguageAnalyzer.lowerCaseTokens', false),
+  o('SimpleLexicon.lowerCaseTokens', false),
 
   o('Parser.pruneErrorValues', true),
   o('Parser', 'interactive.InteractiveBeamParser'),
