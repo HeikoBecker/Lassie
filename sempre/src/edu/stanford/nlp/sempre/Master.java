@@ -189,7 +189,11 @@ public class Master {
     LogInfo.setFileOut(new PrintWriter(stringOut));
 
     if (line.startsWith("("))
-      handleCommand(session, line, response);
+	try {
+	    handleCommand(session, line, response);
+	} catch (Throwable t) {
+	    handleUtterance(session, line, response);
+	}
     else
       handleUtterance(session, line, response);
 
