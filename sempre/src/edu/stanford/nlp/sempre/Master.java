@@ -411,7 +411,7 @@ public class Master {
         session.context.exchanges, graph);
     }
     else {
-      LogInfo.log("Invalid command: " + tree);
+	throw new RuntimeException("Invalid command: " + tree);
     }
   }
 

@@ -58,7 +58,7 @@ public class DALAnalyzer extends LanguageAnalyzer {
         separate = !(i + 1 < utterance.length())
             || ((utterance.charAt(i + 1) != '=' && utterance.charAt(i + 1) != '='));
       else
-        separate = (",?'\"[];{}+-".indexOf(c) != -1);
+        separate = (",?'\"[];{}+-()".indexOf(c) != -1);
 
       if (separate)
         buf.append(' ');
