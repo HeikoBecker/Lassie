@@ -1,26 +1,39 @@
 (rule $ROOT ($Tactic) (lambda t (: tacReturn (var t))) (anchored 1))
+(for @cat ($Tactic $ListTactic $ThmTactic)
+     (rule @cat (\( @cat \)) (lambda t (call parens (var t))) (anchored 1)))
 
-(for @then (THEN //)
+# Tactics
+(for @then (THEN \\\\)
      (rule $Tactic ($Tactic @then $Tactic) (lambda t1 (lambda t2 (call tacThen (var t1) (var t2)))) (anchored 1)))
 
-(rule $Tactic ($Tactical $Theorem) (lambda t1 (lambda t2 (call tacApply (var t1) (var t2)))) (anchored 1))
-(rule $Tactic ($LTactical $ThmList) (lambda t1 (lambda t2 (call tacApply (var t1) (var t2)))) (anchored 1))
+(for @then (THEN1 >-)
+     (rule $Tactic ($Tactic @then $Tactic) (lambda t1 (lambda t2 (call tacThen1 (var t1) (var t2)))) (anchored 1)))
+
+(rule $Tactic ($TOKEN) (SimpleLexiconFn (type en.tactic)) (anchored 1))
+(rule $Tactic ($ThmTactic $Theorem) (lambda t1 (lambda t2 (call fnApp (var t1) (var t2)))) (anchored 1))
+(rule $Tactic ($ListTactic $ThmList) (lambda t1 (lambda t2 (call fnApp (var t1) (var t2)))) (anchored 1))
+(rule $Tactic ($Quotation by $Tactic) (lambda q (lambda t (call infix by (var q) (var t)))) (anchored 1))
 
 # Tacticals
-(rule $Tactical (rewrite_tac) (ConstantFn rewrite_tac) (anchored 1))
-(rule $LTactical (fs) (ConstantFn fs) (anchored 1))
+(rule $ListTactic ($TOKEN) (SimpleLexiconFn (type en.listtactic)) (anchored 1))
+(rule $ThmTactic ($TOKEN) (SimpleLexiconFn (type en.thmtactic)) (anchored 1))
 
 # Theorems
-#(rule $Theorem ($TOKEN) (SimpleLexiconFn (type en.theorem)) (anchored 1))
+(rule $Theorem ($TOKEN) (SimpleLexiconFn (type en.theorem)) (anchored 1))
 (rule $Theorems ($Theorem) (IdentityFn) (anchored 1))
-(rule $Theorems ($Theorem, $Theorems) (lambda t1 (lambda t2 (call thmListCons (var t1) (var t2)))) (anchored 1))
-(rule $ThmList ([ $Theorems ]) (lambda thms (call mkThmList (var thms))) (anchored 1))
+(rule $Theorems ($Theorem , $Theorems) (lambda t1 (lambda t2 (call seqCons (var t1) (var t2)))) (anchored 1))
+
+(rule $ThmList ([ $Theorems ]) (lambda thms (call mkList (var thms))) (anchored 1))
 (rule $ThmList ([ ]) (ConstantFn []) (anchored 1))
 
-(rule $Theorem (REAL) (ConstantFn RealTheory.REAL) (anchored 1))
-(rule $Theorem (POW_2) (ConstantFn POW_2) (anchored 1))
+(rule $Tactic (cheat) (ConstantFn cheat) (anchored 1))
 
-(rule $Tactic (mycheat) (ConstantFn cheat) (anchored 1))
+# Other
+(rule $Quotation (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
+
+# Modifiers/special cases
+(rule $Tactic (rpt $Tactic) (lambda t (call fnApp rpt (var t))) (anchored 1))
+(rule $Theorem (GSYM $Theorem) (lambda t (call fnApp GSYM (var t))) (anchored 1))
 
 # Any token not recognized is assumed to be a custom tactic
 #(rule $Tactic ($TOKEN) (IdentityFn) (anchored 1))
