@@ -1,4 +1,4 @@
-structure lassie : LASSIE =
+structure lassie =
 struct
 
 fun sleep t =
@@ -31,7 +31,7 @@ fun launchSempre () =
 val outStreamRef = ref (launchSempre())
 val SEMPRE_OUTPUT = ref Tactical.NO_TAC
 
-fun writeSempre (cmd : string) = TextIO.output(!outStreamRef, cmd ^ "\n")
+fun writeSempre (cmd : string) = TextIO.output(!outStreamRef, (String.toString cmd) ^ "\n")
 fun readSempre () =
     let
 	val _ = use "interactive/sempre-out-socket.sml";
@@ -53,6 +53,8 @@ fun runString string =
     in
 	PolyML.compiler (getChar, []) ()
     end
+
+end
 
 
                       (* Manipulating a goalstack *)

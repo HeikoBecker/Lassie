@@ -273,7 +273,7 @@ public class Master {
 		 new BufferedWriter
 		 (new OutputStreamWriter
 		  (new FileOutputStream("interactive/sempre-out-socket.sml"), "utf-8"))) {
-		writer.write("val _ = SEMPRE_OUTPUT := ("+deriv.value.pureString()+")");
+		writer.write("val _ = lassie.SEMPRE_OUTPUT := (" + deriv.value.pureString().replace("\\","\\\\") + ")");
 		writer.close();
 	    } catch (IOException ex) {
 		System.err.println("Error writing to file interactive/sempre-out-socket.sml");
