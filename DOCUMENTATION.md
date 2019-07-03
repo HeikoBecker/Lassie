@@ -15,4 +15,4 @@ Commands of the form `(call cmd arg1 arg2 ...)` are Call Formulas: as Java defin
 Both Action and Call Formulas have their `cmd` part defined as functions in the `TacticWorld` class.
 
 ### Tips
-- On the source side of a rule definition, don't hug brackets to their content; e.g. instead of `[$Head, $Tail]`, write `[ $Head , $Tail ]` and instead of `[]`, write `[ ]`.
+- On the source (i.e. matching) side of a rule definition, split symbol tokens well with spaces, e.g. don't hug brackets to their contents: instead of `[$Head, $Tail]`, write `[ $Head , $Tail ]` and instead of `[]`, write `[ ]`.
