@@ -41,6 +41,14 @@ public class TacticWorld extends World {
 	return (tac1 + " // " + tac2);
     }
 
+    public String thmListCons(String tac, String tacs) {
+	return (tac + ", " + tacs);
+    }
+
+    public String mkThmList(String cst) {
+	return ("[" + cst + "]");
+    }
+    
     public void tacReturn(String str) {
 	this.returnString = str;
     }
