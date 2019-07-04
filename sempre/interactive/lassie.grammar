@@ -30,12 +30,14 @@
 
 # Other
 (rule $Term (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
+(rule $Number ($TOKEN) (NumberFn) (anchored 1))
 
 # Modifiers/special cases
 (rule $Tactic (rpt $Tactic) (lambda t (call fnApp rpt (var t))) (anchored 1))
 (rule $Theorem (GSYM $Theorem) (lambda t (call fnApp GSYM (var t))) (anchored 1))
 (rule $Tactic (Induct_on $Term) (lambda t (call fnApp Induct_on (var t))) (anchored 1))
+(rule $Tactic (ntac $Number $Tactic) (lambda n (lambda t (call fnApp (call fnApp ntac (call int2string (var n))) (var t)))) (anchored 1))
 
-# Unrecognized tokens can be custom tactics, theorems (definitions) 
-(rule $Tactic ($TOKEN) (IdentityFn) (anchored 1))
-(rule $Theorem ($TOKEN) (IdentityFn) (anchored 1))
+# Unrecognized tokens can be custom definitions
+(for @cat ($Tactic $Theorem $ListTactic $ThmTactic)
+     (rule @cat ($TOKEN) (IdentityFn) (anchored 1)))
