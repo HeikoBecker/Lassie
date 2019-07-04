@@ -262,29 +262,33 @@ public class Master {
     Map<String, Integer> choices = new LinkedHashMap<>();
     deriv.incrementAllChoices(1, choices);
     FeatureVector.logChoices("Pred", choices);
-
+    
     // Print denotation
     LogInfo.begin_track("Top formula");
     LogInfo.logs("%s", deriv.formula);
     LogInfo.end_track();
     if (deriv.value != null) {
 	if (opts.lassieFlag) { // If from Lassie, send ouput to file as with a socket
-	    try (Writer writer =
-		 new BufferedWriter
-		 (new OutputStreamWriter
-		  (new FileOutputStream("interactive/sempre-out-socket.sml"), "utf-8"))) {
-		writer.write("val _ = lassie.SEMPRE_OUTPUT := (" + deriv.value.pureString().replace("\\","\\\\") + ")");
+	    try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
+		writer.println("val _ = lassie.SEMPRE_OUTPUT := SOME (" + deriv.value.pureString().replace("\\","\\\\") + ")");
 		writer.close();
 	    } catch (IOException ex) {
 		System.err.println("Error writing to file interactive/sempre-out-socket.sml");
 	    }
 	}
-      LogInfo.begin_track("Top value");
-      deriv.value.log();
-      LogInfo.end_track();
+	LogInfo.begin_track("Top value");
+	deriv.value.log();
+	LogInfo.end_track();
+    } else {
+	try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
+	    writer.println("val _ = lassie.SEMPRE_OUTPUT := NONE");
+	    writer.close();
+	} catch (IOException ex) {
+	    System.err.println("Error writing to file interactive/sempre-out-socket.sml");
+	}
     }
   }
-
+    
   private void handleCommand(Session session, String line, Response response) {
     LispTree tree = LispTree.proto.parseFromString(line);
     tree = builder.grammar.applyMacros(tree);
