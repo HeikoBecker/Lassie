@@ -53,7 +53,7 @@ fun readSempre () =
 	(* val _ = OS.FileSys.remove "interactive/sempre-out-socket.sml" *)
     in
 	case !SEMPRE_OUTPUT of
-	    NONE => raise Fail "ERROR: SEMPRE did not produce a tactic"
+	    NONE => raise Fail "SEMPRE could not produce a tactic"
 	  | SOME tac => tac
     end
 	     

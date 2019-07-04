@@ -246,8 +246,15 @@ public class Master {
     response.ex = ex;
     ex.logWithoutContext();
     if (ex.predDerivations.size() > 0) {
-      response.candidateIndex = 0;
-      printDerivation(response.getDerivation());
+	response.candidateIndex = 0;
+	printDerivation(response.getDerivation());
+    } else {
+	try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
+	    writer.println("val _ = lassie.SEMPRE_OUTPUT := NONE");
+	    writer.close();
+	} catch (IOException e) {
+	    System.err.println("Error writing to file interactive/sempre-out-socket.sml");
+	}
     }
     session.updateContext(ex, opts.contextMaxExchanges);
   }
@@ -279,15 +286,9 @@ public class Master {
 	LogInfo.begin_track("Top value");
 	deriv.value.log();
 	LogInfo.end_track();
-    } else {
-	try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
-	    writer.println("val _ = lassie.SEMPRE_OUTPUT := NONE");
-	    writer.close();
-	} catch (IOException ex) {
-	    System.err.println("Error writing to file interactive/sempre-out-socket.sml");
-	}
-    }
+    } 
   }
+  
     
   private void handleCommand(Session session, String line, Response response) {
     LispTree tree = LispTree.proto.parseFromString(line);

@@ -26,8 +26,6 @@
 (rule $ThmList ([ $Theorems ]) (lambda thms (call mkList (var thms))) (anchored 1))
 (rule $ThmList ([ ]) (ConstantFn []) (anchored 1))
 
-(rule $Tactic (cheat) (ConstantFn cheat) (anchored 1))
-
 # Other
 (rule $Term (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
