@@ -88,7 +88,7 @@ public class InteractiveMaster extends Master {
     Response response = new Response();
     if (line.startsWith("(:"))
       handleCommand(session, line, response);
-    else if (line.startsWith("(") && opts.allowRegularCommands || session.id.equals("stdin"))
+    else if (line.startsWith("(") && opts.allowRegularCommands)
       super.processQuery(session, line);
     else
       handleCommand(session, String.format("(:q \"%s\")", line), response);
@@ -121,6 +121,12 @@ public class InteractiveMaster extends Master {
 
       LogInfo.logs("parse stats: %s", response.stats);
       response.ex = ex;
+
+      ex.logWithoutContext();
+      if (ex.predDerivations.size() > 0) {
+	  response.candidateIndex = 0;
+	  printDerivation(response.getDerivation());
+      }
     } else if (command.equals(":qdbg")) {
       // Create example
       String utt = tree.children.get(1).value;

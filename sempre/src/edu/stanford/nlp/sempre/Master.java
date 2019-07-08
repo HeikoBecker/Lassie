@@ -53,7 +53,7 @@ public class Master {
     public Example ex;
 
     // Which derivation we're selecting to show
-    int candidateIndex = -1;
+    public int candidateIndex = -1;
 
     // Detailed information
     public Map<String, Object> stats = new LinkedHashMap<>();
@@ -259,7 +259,7 @@ public class Master {
     session.updateContext(ex, opts.contextMaxExchanges);
   }
 
-  private void printDerivation(Derivation deriv) {
+  public void printDerivation(Derivation deriv) {
     // Print features
     HashMap<String, Double> featureVector = new HashMap<>();
     deriv.incrementAllFeatureVector(1, featureVector);

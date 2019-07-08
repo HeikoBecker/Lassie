@@ -231,6 +231,7 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('Grammar.inPaths', "./#{$path}/lassie.grammar"),
 
   o('Master.lassieFlag', true), # Makes sempre print resuling value to file-socket
+  o('InteractiveMaster.allowRegularCommands', true),
   
   o('Params.initWeightsRandomly', false),
   o('Grammar.binarizeRules', false),
