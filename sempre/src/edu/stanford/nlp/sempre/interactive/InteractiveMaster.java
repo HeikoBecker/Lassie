@@ -21,6 +21,7 @@ import edu.stanford.nlp.sempre.ParserState;
 import edu.stanford.nlp.sempre.Rule;
 import edu.stanford.nlp.sempre.RuleSource;
 import edu.stanford.nlp.sempre.Session;
+import edu.stanford.nlp.sempre.Json;
 import fig.basic.IOUtils;
 import fig.basic.LispTree;
 import fig.basic.LogInfo;
@@ -261,6 +262,7 @@ public class InteractiveMaster extends Master {
     } else {
       LogInfo.log("Invalid command: " + tree);
     }
+    LogInfo.log(Json.writeValueAsStringHard(InteractiveServer.makeJson(response)));
   }
 
   private static Example exampleFromUtterance(String utt, Session session) {
