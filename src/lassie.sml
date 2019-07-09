@@ -59,16 +59,21 @@ fun readSempre () =
 	  if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ();
 	  OS.FileSys.rename {old = socketPath, new = historyPath})
 	     
-(* send an utterance to SEMPRE and evaluate the response *)
-fun e cmd = (writeSempre cmd;
-	     readSempre();
-	     case !SEMPRE_OUTPUT of
-		 NONE => raise Fail "SEMPRE wrote an empty response"
-	       | SOME response => case #candidates response of
-				      [] => raise Fail "SEMPRE did not understand the utterance, you can provide a definition"
-				    | deriv::tail => proofManagerLib.e (#value deriv)
-	    )
-
+(* naturalize-an-utterance tactic *)
+fun semtac utt : tactic =
+    (writeSempre utt;
+     readSempre();
+     case !SEMPRE_OUTPUT of
+	 NONE => raise Fail "SEMPRE wrote an empty response"
+       | SOME response => case #candidates response of
+			      [] => raise Fail "SEMPRE did not understand the utterance, you can provide a definition"
+			    | deriv::tail => #value deriv
+    )
+	
+fun las uttl : tactic = case uttl of
+			    [] => ALL_TAC
+			  | utt::tail => (semtac utt) THEN (las tail)
+						      
 (* run the content of a string as SML code *)
 fun runString string =
     let
