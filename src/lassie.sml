@@ -31,10 +31,19 @@ fun launchSempre () =
     end
 
 val (inStreamRef, outStreamRef) = launchSempre()
-val SEMPRE_OUTPUT = ref (SOME Tactical.NO_TAC)
+val SEMPRE_OUTPUT = ref (SOME {candidates= [{score= 0.0,
+					     prob= ~1.0,
+					     anchored= true,
+					     formula= "do nothing",
+					     value= NO_TAC}],
+			       stats= {cmd= "q",
+				       size= 2,
+				       status= "Core"},
+			       lines= [""]})
 val socketPath = "interactive/sempre-out-socket.sml"
 val historyPath = "interactive/last-sempre-output.sml"
-			
+		      
+		      
 fun writeSempre (cmd : string) =
     let
 	val _ = if OS.FileSys.access (socketPath, []) then OS.FileSys.remove socketPath else ()
@@ -45,21 +54,19 @@ fun writeSempre (cmd : string) =
 (* read SEMPRE's response from the "socket" file once there and remove it *)
 fun readSempre () =
     if not (OS.FileSys.access ("interactive/sempre-out-socket.sml", [])) then readSempre()
-    else let
-	val _ = sleep 0.1 (* Mandatory delay, breaks otherwise *)
-	val _ = use socketPath
-	val _ = if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ()
-	val _ = OS.FileSys.rename {old = socketPath, new = historyPath}
-	(* val _ = OS.FileSys.remove "interactive/sempre-out-socket.sml" *)
-    in
-	case !SEMPRE_OUTPUT of
-	    NONE => raise Fail "SEMPRE could not produce a tactic"
-	  | SOME tac => tac
-    end
+    else (sleep 0.1; (* Allow SEMPRE to finish writing *)
+	  use socketPath;
+	  if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ();
+	  OS.FileSys.rename {old = socketPath, new = historyPath})
 	     
 (* send an utterance to SEMPRE and evaluate the response *)
-fun e cmd = ( writeSempre cmd;
-	      proofManagerLib.e (readSempre())
+fun e cmd = (writeSempre cmd;
+	     readSempre();
+	     case !SEMPRE_OUTPUT of
+		 NONE => raise Fail "SEMPRE wrote an empty response"
+	       | SOME response => case #candidates response of
+				      [] => raise Fail "SEMPRE did not understand the utterance, you can provide a definition"
+				    | deriv::tail => proofManagerLib.e (#value deriv)
 	    )
 
 (* run the content of a string as SML code *)
