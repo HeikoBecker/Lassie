@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
+import edu.stanford.nlp.sempre.interactive.lassie.LassieUtils;
+
 import edu.stanford.nlp.sempre.Builder;
 import edu.stanford.nlp.sempre.ContextValue;
 import edu.stanford.nlp.sempre.Derivation;
@@ -43,6 +45,9 @@ public class InteractiveMaster extends Master {
     @Option(gloss = "only allow interactive commands")
     public boolean onlyInteractive = false;
 
+    // @Option(gloss = "Temporary flag signalling we are calling from Lassie")
+    // public boolean lassieFlag = false;  
+      
     @Option(gloss = "try partial matches")
     public boolean useAligner = true;
 
@@ -128,6 +133,9 @@ public class InteractiveMaster extends Master {
 	  response.candidateIndex = 0;
 	  printDerivation(response.getDerivation());
       }
+
+      LassieUtils.printToSocket(LassieUtils.json2sml(Json.writeValueAsStringHard(InteractiveServer.makeJson(response))));
+      
     } else if (command.equals(":qdbg")) {
       // Create example
       String utt = tree.children.get(1).value;
