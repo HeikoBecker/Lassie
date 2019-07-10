@@ -49,16 +49,16 @@ public class DALAnalyzer extends LanguageAnalyzer {
       boolean boundaryBefore = !(i - 1 >= 0) || utterance.charAt(i - 1) == ' ';
       boolean boundaryAfter = !(i + 1 < utterance.length()) || utterance.charAt(i + 1) == ' ';
       boolean separate = false;
-      if (c == '.') // Break off period if already space around it (to preserve
-                    // numbers like 3.5)
-        separate = boundaryBefore || boundaryAfter;
-      else if (c == '=') // separate all >, =, < except >=, <=
-        separate = !(i - 1 >= 0) || ((utterance.charAt(i - 1) != '>' && utterance.charAt(i - 1) != '<'));
-      else if (c == '>' || c == '<')
-        separate = !(i + 1 < utterance.length())
-            || ((utterance.charAt(i + 1) != '=' && utterance.charAt(i + 1) != '='));
-      else
-        separate = (",?'\"[];{}+-".indexOf(c) != -1);
+      // if (c == '.') // Break off period if already space around it (to preserve
+      //               // numbers like 3.5)
+      //   separate = boundaryBefore || boundaryAfter;
+      // else if (c == '=') // separate all >, =, < except >=, <=
+      //   separate = !(i - 1 >= 0) || ((utterance.charAt(i - 1) != '>' && utterance.charAt(i - 1) != '<'));
+      // else if (c == '>' || c == '<')
+      //   separate = !(i + 1 < utterance.length())
+      //       || ((utterance.charAt(i + 1) != '=' && utterance.charAt(i + 1) != '='));
+      // else
+      separate = (",?'\"[];{}+()`".indexOf(c) != -1);
 
       if (separate)
         buf.append(' ');
@@ -67,14 +67,14 @@ public class DALAnalyzer extends LanguageAnalyzer {
         buf.append(boundaryBefore ? "``" : "''");
       else if (c == '\'')
         buf.append(boundaryBefore ? "`" : "'");
-      else if (c == '>' || c == '<') {
-        buf.append(' ');
-        buf.append(c);
-      } else if (c == '=') {
-        buf.append(c);
-        buf.append(' ');
-      } else
-        buf.append(c);
+      // else if (c == '>' || c == '<') {
+      //   buf.append(' ');
+      //   buf.append(c);
+      // } else if (c == '=') {
+      //   buf.append(c);
+      //   buf.append(' ');
+      // } else
+      else buf.append(c);
       if (separate)
         buf.append(' ');
     }

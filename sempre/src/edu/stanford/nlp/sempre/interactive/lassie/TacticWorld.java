@@ -33,25 +33,17 @@ public class TacticWorld extends World {
     	super();
     }
 
-    public String tacApply(String tactl, String tac) {
-	return (tactl + " " + tac);
-    }
-
-    public String tacThen(String tac1, String tac2) {
-	return (tac1 + " // " + tac2);
-    }
-
-    public String thmListCons(String tac, String tacs) {
-	return (tac + ", " + tacs);
-    }
-
-    public String mkThmList(String cst) {
-	return ("[" + cst + "]");
-    }
+    public String int2string(Integer n) { return n.toString(); }
+    public String fnApp(String fn, String arg) { return fn + " " + arg; }
+    public String tacThen(String tac1, String tac2) { return tac1 + " \\ " + tac2; }
+    public String tacThen1(String tac1, String tac2) { return tac1 + " >- " + tac2; }
+    public String seqCons(String hd, String tl) { return hd + ", " + tl; }
+    public String mkList(String seq) { return "[" + seq + "]"; }
+    public String quote(String exp) { return "`" + exp + "`"; }
+    public String parens(String exp) { return "(" + exp + ")"; }
+    public String infix(String op, String arg1, String arg2) { return arg1 + " " + op + " " + arg2; }
     
-    public void tacReturn(String str) {
-	this.returnString = str;
-    }
+    public void tacReturn(String str) { this.returnString = str; }
     
     @Override
     public Set<Item> has(String rel, Set<Object> values) {

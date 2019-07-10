@@ -1,4 +1,4 @@
-structure lassie : LASSIE =
+structure lassie =
 struct
 
 fun sleep t =
@@ -10,7 +10,8 @@ fun sleep t =
     end
 
 fun flush instream = case TextIO.canInput(instream, 5000) of
-			 SOME _ => (TextIO.input(instream); flush(instream))
+			 SOME n => if n = 0 then ()
+				   else (TextIO.input(instream); flush(instream))
 		       | NONE => ()
 
 (* run SEMPRE as a subprocess, through its run script returns outstream of its shell *)
@@ -24,26 +25,42 @@ fun launchSempre () =
 	val instream' = Unix.textInstreamOf(Unix.executeInEnv("interactive/run",["-n","@mode=lassie"],Posix.ProcEnv.environ()))
 	val execCommand = TextIO.input(instream')
 	val (cmd::args)	= String.tokens Char.isSpace execCommand
+	val (instr,outstr) = Unix.streamsOf(Unix.execute(cmd,args))
     in
-	Unix.textOutstreamOf(Unix.execute(cmd,args))
+	(ref instr, ref outstr)
     end
 
-val outStreamRef = ref (launchSempre())
-val SEMPRE_OUTPUT = ref Tactical.NO_TAC
-
-fun writeSempre (cmd : string) = TextIO.output(!outStreamRef, cmd ^ "\n")
-fun readSempre () =
+val (inStreamRef, outStreamRef) = launchSempre()
+val SEMPRE_OUTPUT = ref (SOME Tactical.NO_TAC)
+val socketPath = "interactive/sempre-out-socket.sml"
+val historyPath = "interactive/last-sempre-output.sml"
+			
+fun writeSempre (cmd : string) =
     let
-	val _ = use "interactive/sempre-out-socket.sml";
+	val _ = if OS.FileSys.access (socketPath, []) then OS.FileSys.remove socketPath else ()
     in
-	!SEMPRE_OUTPUT (* ideally, all parsed commands return unit *)
+	TextIO.output(!outStreamRef, (String.toString cmd) ^ "\n")
     end
 
+(* read SEMPRE's response from the "socket" file once there and remove it *)
+fun readSempre () =
+    if not (OS.FileSys.access ("interactive/sempre-out-socket.sml", [])) then readSempre()
+    else let
+	val _ = sleep 0.1 (* Mandatory delay, breaks otherwise *)
+	val _ = use socketPath
+	val _ = if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ()
+	val _ = OS.FileSys.rename {old = socketPath, new = historyPath}
+	(* val _ = OS.FileSys.remove "interactive/sempre-out-socket.sml" *)
+    in
+	case !SEMPRE_OUTPUT of
+	    NONE => raise Fail "SEMPRE could not produce a tactic"
+	  | SOME tac => tac
+    end
+	     
 (* send an utterance to SEMPRE and evaluate the response *)
-fun s cmd = ( writeSempre cmd;
-	      sleep 0.1;
-	      proofManagerLib.e (readSempre()) )
-
+fun e cmd = ( writeSempre cmd;
+	      proofManagerLib.e (readSempre())
+	    )
 
 (* run the content of a string as SML code *)
 fun runString string =
@@ -53,6 +70,8 @@ fun runString string =
     in
 	PolyML.compiler (getChar, []) ()
     end
+
+end
 
 
                       (* Manipulating a goalstack *)
