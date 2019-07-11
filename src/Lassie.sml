@@ -1,4 +1,4 @@
-structure lassie =
+structure Lassie =
 struct
 
 val map = List.map
