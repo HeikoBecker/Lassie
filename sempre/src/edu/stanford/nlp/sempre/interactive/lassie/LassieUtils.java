@@ -16,7 +16,7 @@ public class LassieUtils{
     
     public static void printToSocket(String string) {
 	try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
-	    writer.println("val _ = lassie.SEMPRE_OUTPUT := SOME (" + string + ")");
+	    writer.println("val _ = Lassie.SEMPRE_OUTPUT := SOME (" + string + ")");
 	    writer.close();
 	} catch (IOException ex) {
 	    System.err.println("Error writing to file interactive/sempre-out-socket.sml");
@@ -33,14 +33,11 @@ public class LassieUtils{
 	    string = string.replace("\"" + field + "\":", field + "= ");
 	}
 
-	// change reserved keywords in SML
-	string = string.replace("\"type\":", "cmd= ");
-
-	// force types of fields
-	string = string.replace("\"NaN\"", "~1.0");
-
-	// force-cast the result as a tactic
-	string = string.replaceAll("\"value\":\"(.*?)\"","value= $1");
+	string =
+	    string
+	    .replace("\"type\":", "cmd= ") // avoid reserved keywords of SML
+	    .replace("\"NaN\"", "~1.0") // force types of fields
+	    .replaceAll("\"value\":\"(.*?)\"","value= \"$1\",tactic= $1"); // cast the value as a tactic
 	
 	return string;
     }
