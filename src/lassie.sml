@@ -26,8 +26,9 @@ fun launchSempre () =
 	val _ = OS.FileSys.chDir (LASSIEDIR ^ "/sempre")
 	val instream' = Unix.textInstreamOf(Unix.executeInEnv("interactive/run",["-n","@mode=lassie"],Posix.ProcEnv.environ()))
 	val execCommand = TextIO.input(instream')
-	val (cmd::args)	= String.tokens Char.isSpace execCommand
-	val (instr,outstr) = Unix.streamsOf(Unix.execute(cmd,args))
+	val (instr,outstr) = case String.tokens Char.isSpace execCommand of
+				 [] => raise Fail "Run script returned no arguments"
+			       | cmd::args => Unix.streamsOf(Unix.execute(cmd,args))
     in
 	(ref instr, ref outstr)
     end
@@ -68,9 +69,9 @@ fun readSempre () =
 	  case !SEMPRE_OUTPUT of
 	      NONE => raise Fail ("SEMPRE returned an empty response to utterance `" ^ (!lastUtterance) ^ "`")
 	    | SOME response => case #candidates response of 
-				   [] => raise LassieException ("Lassie did not understand the utterance `"
+				   [] => raise LassieException ("Lassie did not understand the utterance "
 								^ (!lastUtterance)
-								^ "`; you may provide a definition using lassie.def")
+								^ ", you may provide a definition using lassie.def")
 					       
 				 | deriv::tail => deriv
 	 )
