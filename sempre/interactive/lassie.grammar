@@ -36,6 +36,6 @@
 (rule $Tactic (Induct_on $Term) (lambda t (call fnApp Induct_on (var t))) (anchored 1))
 (rule $Tactic (ntac $Number $Tactic) (lambda n (lambda t (call fnApp (call fnApp ntac (call int2string (var n))) (var t)))) (anchored 1))
 
-# Unrecognized tokens can be custom definitions
-(for @cat ($Tactic $Theorem $ListTactic $ThmTactic)
-     (rule @cat ($TOKEN) (IdentityFn) (anchored 1)))
+# Fallbacks
+#(for @cat ($Tactic $Theorem $ListTactic $ThmTactic)
+#     (rule @cat ($TOKEN) (IdentityFn) (anchored 1)))
