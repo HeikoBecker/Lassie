@@ -163,48 +163,6 @@ public class InteractiveServer {
       exchange.sendResponseHeaders(200, 0);
     }
 
-    Map<String, Object> makeJson(Master.Response response) {
-      Map<String, Object> json = new HashMap<String, Object>();
-      json.put("stats", response.stats);
-
-      if (response.lines != null) {
-        json.put("lines", response.lines);
-      }
-      if (response.getExample() != null) {
-        List<Object> items = new ArrayList<Object>();
-        json.put("candidates", items);
-        List<Derivation> allCandidates = response.getExample().getPredDerivations();
-        Derivation.sortByScore(allCandidates);
-        if (allCandidates != null) {
-          if (allCandidates.size() >= InteractiveServer.opts.maxCandidates) {
-            response.lines.add(String.format("Exceeded max options: (current: %d / max: %d) ", allCandidates.size(),
-                InteractiveServer.opts.maxCandidates));
-            allCandidates = allCandidates.subList(0, InteractiveServer.opts.maxCandidates);
-          }
-
-          for (Derivation deriv : allCandidates) {
-            Map<String, Object> item = new HashMap<String, Object>();
-            Value value = deriv.getValue();
-            if (value instanceof StringValue)
-              item.put("value", ((StringValue) value).value);
-            else if (value instanceof ErrorValue)
-              item.put("value", ((ErrorValue) value).sortString());
-            else if (value != null)
-              item.put("value", value.sortString());
-            else
-              item.put("value", "[[]]");
-            item.put("score", deriv.getScore());
-            item.put("prob", deriv.getProb());
-            item.put("anchored", deriv.allAnchored); // used only anchored rules
-            item.put("formula", deriv.formula.toLispTree().toString());
-            items.add(item);
-          }
-        }
-      }
-
-      return json;
-    }
-
     // This should be concurrent
     Master.Response processQuery(Session session, String query) {
       String message = null;
@@ -355,4 +313,45 @@ public class InteractiveServer {
       throw new RuntimeException(e);
     }
   }
+
+    public static Map<String, Object> makeJson(Master.Response response) {
+	Map<String, Object> json = new HashMap<String, Object>();
+	json.put("stats", response.stats);
+  
+	if (response.lines != null) {
+	    json.put("lines", response.lines);
+	}
+	if (response.getExample() != null) {
+	    List<Object> items = new ArrayList<Object>();
+	    json.put("candidates", items);
+	    List<Derivation> allCandidates = response.getExample().getPredDerivations();
+	    Derivation.sortByScore(allCandidates);
+	    if (allCandidates != null) {
+		if (allCandidates.size() >= InteractiveServer.opts.maxCandidates) {
+		    response.lines.add(String.format("Exceeded max options: (current: %d / max: %d) ", allCandidates.size(),
+						     InteractiveServer.opts.maxCandidates));
+		    allCandidates = allCandidates.subList(0, InteractiveServer.opts.maxCandidates);
+		}
+
+		for (Derivation deriv : allCandidates) {
+		    Map<String, Object> item = new HashMap<String, Object>();
+		    Value value = deriv.getValue();
+		    if (value instanceof StringValue)
+			item.put("value", ((StringValue) value).value);
+		    else if (value instanceof ErrorValue)
+			item.put("value", ((ErrorValue) value).sortString());
+		    else if (value != null)
+			item.put("value", value.sortString());
+		    else
+			item.put("value", "[[]]");
+		    item.put("score", deriv.getScore());
+		    item.put("prob", deriv.getProb());
+		    item.put("anchored", deriv.allAnchored); // used only anchored rules
+		    item.put("formula", deriv.formula.toLispTree().toString());
+		    items.add(item);
+		}
+	    }
+	}	
+	return json;
+    }
 }

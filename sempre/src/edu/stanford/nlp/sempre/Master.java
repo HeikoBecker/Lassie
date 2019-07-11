@@ -27,9 +27,6 @@ public class Master {
     @Option(gloss = "Write a log of this session to this path")
     public String logPath;
 
-    @Option(gloss = "Temporary flag signalling we are calling from Lassie")
-    public boolean lassieFlag = false;  
-      
     @Option(gloss = "Print help on startup")
     public boolean printHelp = true;
 
@@ -53,7 +50,7 @@ public class Master {
     public Example ex;
 
     // Which derivation we're selecting to show
-    int candidateIndex = -1;
+    public int candidateIndex = -1;
 
     // Detailed information
     public Map<String, Object> stats = new LinkedHashMap<>();
@@ -248,18 +245,11 @@ public class Master {
     if (ex.predDerivations.size() > 0) {
 	response.candidateIndex = 0;
 	printDerivation(response.getDerivation());
-    } else {
-	try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
-	    writer.println("val _ = lassie.SEMPRE_OUTPUT := NONE");
-	    writer.close();
-	} catch (IOException e) {
-	    System.err.println("Error writing to file interactive/sempre-out-socket.sml");
-	}
     }
     session.updateContext(ex, opts.contextMaxExchanges);
   }
 
-  private void printDerivation(Derivation deriv) {
+  public void printDerivation(Derivation deriv) {
     // Print features
     HashMap<String, Double> featureVector = new HashMap<>();
     deriv.incrementAllFeatureVector(1, featureVector);
@@ -275,14 +265,6 @@ public class Master {
     LogInfo.logs("%s", deriv.formula);
     LogInfo.end_track();
     if (deriv.value != null) {
-	if (opts.lassieFlag) { // If from Lassie, send ouput to file as with a socket
-	    try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
-		writer.println("val _ = lassie.SEMPRE_OUTPUT := SOME (" + deriv.value.pureString().replace("\\","\\\\") + ")");
-		writer.close();
-	    } catch (IOException ex) {
-		System.err.println("Error writing to file interactive/sempre-out-socket.sml");
-	    }
-	}
 	LogInfo.begin_track("Top value");
 	deriv.value.log();
 	LogInfo.end_track();

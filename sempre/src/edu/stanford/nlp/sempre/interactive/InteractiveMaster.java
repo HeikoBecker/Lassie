@@ -8,6 +8,8 @@ import java.util.stream.Collectors;
 
 import com.google.common.collect.Lists;
 
+import edu.stanford.nlp.sempre.interactive.lassie.LassieUtils;
+
 import edu.stanford.nlp.sempre.Builder;
 import edu.stanford.nlp.sempre.ContextValue;
 import edu.stanford.nlp.sempre.Derivation;
@@ -21,6 +23,7 @@ import edu.stanford.nlp.sempre.ParserState;
 import edu.stanford.nlp.sempre.Rule;
 import edu.stanford.nlp.sempre.RuleSource;
 import edu.stanford.nlp.sempre.Session;
+import edu.stanford.nlp.sempre.Json;
 import fig.basic.IOUtils;
 import fig.basic.LispTree;
 import fig.basic.LogInfo;
@@ -42,6 +45,9 @@ public class InteractiveMaster extends Master {
     @Option(gloss = "only allow interactive commands")
     public boolean onlyInteractive = false;
 
+    // @Option(gloss = "Temporary flag signalling we are calling from Lassie")
+    // public boolean lassieFlag = false;  
+      
     @Option(gloss = "try partial matches")
     public boolean useAligner = true;
 
@@ -88,7 +94,7 @@ public class InteractiveMaster extends Master {
     Response response = new Response();
     if (line.startsWith("(:"))
       handleCommand(session, line, response);
-    else if (line.startsWith("(") && opts.allowRegularCommands || session.id.equals("stdin"))
+    else if (line.startsWith("(") && opts.allowRegularCommands)
       super.processQuery(session, line);
     else
       handleCommand(session, String.format("(:q \"%s\")", line), response);
@@ -121,6 +127,15 @@ public class InteractiveMaster extends Master {
 
       LogInfo.logs("parse stats: %s", response.stats);
       response.ex = ex;
+
+      ex.logWithoutContext();
+      if (ex.predDerivations.size() > 0) {
+	  response.candidateIndex = 0;
+	  printDerivation(response.getDerivation());
+      }
+
+      LassieUtils.printToSocket(LassieUtils.json2sml(Json.writeValueAsStringHard(InteractiveServer.makeJson(response))));
+      
     } else if (command.equals(":qdbg")) {
       // Create example
       String utt = tree.children.get(1).value;
@@ -255,6 +270,7 @@ public class InteractiveMaster extends Master {
     } else {
       LogInfo.log("Invalid command: " + tree);
     }
+    LogInfo.log(Json.writeValueAsStringHard(InteractiveServer.makeJson(response)));
   }
 
   private static Example exampleFromUtterance(String utt, Session session) {
