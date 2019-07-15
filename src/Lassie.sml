@@ -70,7 +70,7 @@ fun readSempre utt =
 	  case !SEMPRE_OUTPUT of
 	      NONE => raise Fail ("SEMPRE returned an empty response to utterance `" ^ utt ^ "`")
 	    | SOME response => case #candidates response of 
-				   [] => raise LassieException ("Lassie did not understand the utterance "
+				   [] => raise LassieException ("Did not understand the utterance "
 								^ utt
 								^ ", you may provide a definition using lassie.def")
 					       
