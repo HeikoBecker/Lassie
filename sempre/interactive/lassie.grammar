@@ -3,15 +3,14 @@
      (rule @cat (\( @cat \)) (lambda t (call parens (var t))) (anchored 1)))
 
 # Lexicon Import
-(rule $Tactic	      ($TOKEN) (SimpleLexiconFn (type tactic))		       (anchored 1))
-(rule $Thm 	      ($TOKEN) (SimpleLexiconFn (type thm)) 	               (anchored 1))
-(rule $ThmTactic      ($TOKEN) (SimpleLexiconFn (type thm->tactic))            (anchored 1))
-(rule $ThmListTactic  ($TOKEN) (SimpleLexiconFn (type thmlist->tactic))        (anchored 1))
-(rule $TacticTactic   ($TOKEN) (SimpleLexiconFn (type tactic->tactic))         (anchored 1))
-(rule $ThmThm  	      ($TOKEN) (SimpleLexiconFn (type thm->thm))  	       (anchored 1))
-(rule $TermTactic     ($TOKEN) (SimpleLexiconFn (type termquotation->tactic))  (anchored 1))
-
-(rule $NumberTacticTactic ($TOKEN) (SimpleLexiconFn (type int->tactic->tactic)) (anchored 1))
+(rule $Tactic	          ($TOKEN) (SimpleLexiconFn (type tactic))		  (anchored 1))
+(rule $Thm 	          ($TOKEN) (SimpleLexiconFn (type thm)) 	          (anchored 1))
+(rule $ThmTactic          ($TOKEN) (SimpleLexiconFn (type thm->tactic))           (anchored 1))
+(rule $ThmListTactic      ($TOKEN) (SimpleLexiconFn (type thmlist->tactic))       (anchored 1))
+(rule $TacticTactic       ($TOKEN) (SimpleLexiconFn (type tactic->tactic))        (anchored 1))
+(rule $ThmThm  	          ($TOKEN) (SimpleLexiconFn (type thm->thm))  	          (anchored 1))
+(rule $TermTactic         ($TOKEN) (SimpleLexiconFn (type termquotation->tactic)) (anchored 1))
+(rule $NumberTacticTactic ($TOKEN) (SimpleLexiconFn (type int->tactic->tactic))   (anchored 1))
 
 # Applications
 (rule $Tactic (use $ThmTactic with $Thm)         (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
@@ -42,6 +41,7 @@
 (rule $Thms ($Thm , $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
 (rule $Thms ($Thm and $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
 (rule $ThmList ([ $Thms ]) (lambda thms (call list (var thms))) (anchored 1))
+(rule $ThmList ($Thms) (lambda thms (call list (var thms))) (anchored 1))
 (rule $ThmList ([ ]) (ConstantFn []) (anchored 1))
 (rule $ThmList (nothing) (ConstantFn []) (anchored 1))
 
@@ -49,6 +49,11 @@
 (rule $Term (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
 
-# Fallbacks (break learning)
+# Fallbacks
 #(for @cat ($Tactic $Thm $ThmListTactic $ThmTactic)
 #     (rule @cat ($TOKEN) (IdentityFn) (anchored 1)))
+
+(rule $NameFeature ($PHRASE) (SimpleLexiconFn (type feature.name)) (anchored 1))
+(rule $Set ($NameFeature) (lambda n (call filter (call refine feature.name (var n)) top)) (anchored 1))
+(rule $Set ($Set $Set) (lambda s1 (lambda s2 (call filter (var s1) (var s2)))) (anchored 1))
+(rule $Thm ($Set) (lambda s (call filter feature.type.thm (var s))))
