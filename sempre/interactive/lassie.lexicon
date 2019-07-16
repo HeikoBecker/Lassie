@@ -31,3 +31,32 @@
 {"lexeme": "GSYM", "formula": "GSYM", "type": "thm->thm"}
 {"lexeme": "Induct_on", "formula": "Induct_on", "type": "termquotation->tactic"}
 {"lexeme": "ntac", "formula": "ntac", "type": "int->tactic->tactic"}
+{"lexeme": "addition", "formula": "feature.name.add", "type": "feature.name"}
+{"lexeme": "associativity", "formula": "feature.name.assoc", "type": "feature.name"}
+{"lexeme": "cheat", "formula": "feature.name.cheat", "type": "feature.name"}
+{"lexeme": "division", "formula": "feature.name.div", "type": "feature.name"}
+{"lexeme": "double", "formula": "feature.name.double", "type": "feature.name"}
+{"lexeme": "full simplification", "formula": "feature.name.fs", "type": "feature.name"}
+{"lexeme": "general symmetry", "formula": "feature.name.gsym", "type": "feature.name"}
+{"lexeme": "half", "formula": "feature.name.half", "type": "feature.name"}
+{"lexeme": "induction", "formula": "feature.name.induct", "type": "feature.name"}
+{"lexeme": "implication rule", "formula": "feature.name.irule", "type": "feature.name"}
+{"lexeme": "left distribution", "formula": "feature.name.ldistrib", "type": "feature.name"}
+{"lexeme": "left identity", "formula": "feature.name.lid", "type": "feature.name"}
+{"lexeme": "left multiplication", "formula": "feature.name.lmul", "type": "feature.name"}
+{"lexeme": "left zero", "formula": "feature.name.lzero", "type": "feature.name"}
+{"lexeme": "multiplication", "formula": "feature.name.mul", "type": "feature.name"}
+{"lexeme": "negation", "formula": "feature.name.neg", "type": "feature.name"}
+{"lexeme": "repeat tactic", "formula": "feature.name.ntac", "type": "feature.name"}
+{"lexeme": "once", "formula": "feature.name.once", "type": "feature.name"}
+{"lexeme": "power", "formula": "feature.name.pow", "type": "feature.name"}
+{"lexeme": "right distributivity", "formula": "feature.name.rdistrib", "type": "feature.name"}
+{"lexeme": "reals", "formula": "feature.name.real", "type": "feature.name"}
+{"lexeme": "rewrite", "formula": "feature.name.rewrite", "type": "feature.name"}
+{"lexeme": "right identity", "formula": "feature.name.rid", "type": "feature.name"}
+{"lexeme": "right inverse", "formula": "feature.name.rinv", "type": "feature.name"}
+{"lexeme": "repeat", "formula": "feature.name.rpt", "type": "feature.name"}
+{"lexeme": "strip", "formula": "feature.name.strip", "type": "feature.name"}
+{"lexeme": "subtraction", "formula": "feature.name.sub", "type": "feature.name"}
+{"lexeme": "symmetry", "formula": "feature.name.sym", "type": "feature.name"}
+{"lexeme": "tactic", "formula": "feature.name.tac", "type": "feature.name"}
