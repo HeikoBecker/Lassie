@@ -232,6 +232,7 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
 
 #  o('InteractiveMaster.lassieFlag', true), # Makes sempre print resuling value to file-socket
   o('InteractiveMaster.allowRegularCommands', true),
+  o('TacticWorld.dbPath', 'interactive/lassie.db'),
   
   o('Params.initWeightsRandomly', false),
   o('Grammar.binarizeRules', false),
