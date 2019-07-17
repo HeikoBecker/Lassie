@@ -525,9 +525,9 @@ public final class SimpleWorld {
     if (obj instanceof Integer) return new NumberValue((Integer) obj, "count");
     if (obj instanceof Double) return new NumberValue((Double) obj);
     if (obj instanceof String) return new StringValue((String) obj);
-    if (obj instanceof List) {
+    if (obj instanceof List || obj instanceof Set) {
       List<Value> list = Lists.newArrayList();
-      for (Object elem : (List) obj)
+      for (Object elem : obj)
         list.add(toValue(elem));
       return new ListValue(list);
     }
