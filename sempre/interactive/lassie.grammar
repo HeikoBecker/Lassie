@@ -1,3 +1,24 @@
+########################################################################
+# GRAMMAR FOR NATURAL PROOF EXPRESSIONS
+#
+# Refer to SEMPRE's documentation for general indications on rule
+# construction.
+#
+# Currently, domain knowledge comes from two sources. The lassie.lexicon
+# file contains component names (e.g. fs) and with their types
+# (e.g. thmlist->tactic, used for sound applications). Features of those
+# components (e.g. their natural name, their class/type) are read from
+# lassie.db into the TacticWorld.
+#
+# TacticWorld.java holds the main semantics of Lassie's operations, as
+# we piggy back on the DALExecutor for handling the semantic part of
+# this grammar. DALExecutor interprets semantic expression as having
+# meaning in a "world" containing "items". We superifcially follow this
+# convention where HOL components can be considered the "items" of our
+# "tactic-world".
+
+(def @listValue edu.stanford.nlp.sempre.overnight.SimpleWorld.listValue)
+
 (rule $ROOT ($Tactic) (lambda t (: tacReturn (var t))) (anchored 1))
 (for @cat ($Tactic $ThmListTactic $ThmTactic)
      (rule @cat (\( @cat \)) (lambda t (call parens (var t))) (anchored 1)))
@@ -54,6 +75,7 @@
 #     (rule @cat ($TOKEN) (IdentityFn) (anchored 1)))
 
 (rule $NameFeature ($PHRASE) (SimpleLexiconFn (type feature.name)) (anchored 1))
-(rule $Set ($NameFeature) (lambda n (call filter (call refine feature.name (var n)) top)) (anchored 1))
-(rule $Set ($Set $Set) (lambda s1 (lambda s2 (call filter (var s1) (var s2)))) (anchored 1))
-(rule $Thm ($Set) (lambda s (call filter feature.type.thm (var s))))
+(rule $Set ($NameFeature) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
+(rule $ThmCandidates ($Set) (lambda s (call set2string (var s))) (anchored 1))
+(rule $Thm ($ThmCandidates) (IdentityFn) (anchored 1))
