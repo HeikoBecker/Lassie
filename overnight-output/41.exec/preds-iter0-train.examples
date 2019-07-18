@@ -1,3 +1,0 @@
-
-# SDF version 1.1
-# ((iter 0) (group train) (numExamples 1) (evaluation ((correct 0) (oracle 0) (partCorrect 0) (partOracle 0) (parsed 1) (numCandidates 1581) (parsedNumCandidates 1581) (numCorrect 0) (numPartialCorrect 0) (numIncorrect 0) (timeout 0) (numTokens 1) (parseTime 2024) (maxCellSize 3945) (fallOffBeam 0) (totalDerivs 0) (numOfFeaturizedDerivs 23601) (numCells 92))))
