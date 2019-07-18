@@ -55,7 +55,15 @@
 (rule $tactic (use $termquotation->tactic with $Term) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
 (rule $tactic->tactic
       (use $int->tactic->tactic with $Number) (lambda t1 (lambda n (call parens (call app (var t1) (var n ))))) (anchored 1))
-      
+
+(rule $tactic ($thm->tactic $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic ($thmlist->tactic $thmlist) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic ($tactic->tactic $tactic) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $thm ($thm->thm $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic ($termquotation->tactic $Term) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic->tactic
+      ($int->tactic->tactic $Number) (lambda t1 (lambda n (call parens (call app (var t1) (var n ))))) (anchored 1))
+
 # Tactic composition
 (rule $tactic ($tactic then $tactic) (lambda t1 (lambda t2 (call then (var t1) (var t2)))) (anchored 1))
 (rule $tactic ($tactic then $tactic on the first goal) (lambda t1 (lambda t2 (call then1 (var t1) (call parens (var t2))))) (anchored 1))
