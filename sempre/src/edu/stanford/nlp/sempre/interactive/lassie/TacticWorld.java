@@ -50,7 +50,7 @@ public class TacticWorld extends World {
     
     private void insert(String component, String attribute, Set<String> features) {
 	for (String feat : features) {
-	    LogInfo.logs("inserting: %s, %s, %s", component, attribute, feat);
+	    //LogInfo.logs("inserting: %s, %s, %s", component, attribute, feat);
 	    insert(component, attribute, feat);
 	}
     }
@@ -67,7 +67,7 @@ public class TacticWorld extends World {
 	this.features.putIfAbsent(feature, new HashSet<String>());
 	Set<String> components = this.features.get(feature);
 	components.add(component);
-	LogInfo.logs("  adding: %s :: %s", feature, component);
+	//LogInfo.logs("  adding: %s :: %s", feature, component);
 	this.features.put(feature, components);
     }
     
@@ -75,7 +75,7 @@ public class TacticWorld extends World {
 	LogInfo.begin_track("TacticWorld.readEntities: %s", opts.dbPath);
 	// Load up from database
 	for (String line : IOUtils.readLinesHard(opts.dbPath)) {
-	    LogInfo.logs("Processing line: %s", line);
+	    //LogInfo.logs("Processing line: %s", line);
 	    if (line.startsWith("#")) continue; // Skip comment lines
 	    String[] tokens = line.split("\\s+");
 	    // We expect triplets, e.g. "POW_2 feature.name feature.name.power"
@@ -98,27 +98,35 @@ public class TacticWorld extends World {
 	return n.toString();
     }
     public String app(String fn, String arg) {
+	if (fn.equals("") || arg.equals("")) return "";
 	return fn + " " + arg;
     }
     public String then(String tac1, String tac2) {
+	if (tac1.equals("") || tac2.equals("")) return "";
 	return tac1 + " \\ " + tac2;
     }
     public String then1(String tac1, String tac2) {
+	if (tac1.equals("") || tac2.equals("")) return "";
 	return tac1 + " >- " + tac2;
     }
     public String cons(String hd, String tl) {
+	if (hd.equals("") || tl.equals("")) return "";
 	return hd + "," + tl;
     }
     public String list(String seq) {
+	if (seq.equals("")) return "";
 	return "[" + seq + "]";
     }
     public String quote(String exp) {
+	if (exp.equals("")) return "";
 	return "`" + exp + "`";
     }
     public String parens(String exp) {
+	if (exp.equals("")) return "";
 	return "(" + exp + ")";
     }
     public String op(String operator, String arg1, String arg2) {
+	if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
 	return arg1 + " " + operator + " " + arg2;
     }
 
@@ -161,7 +169,10 @@ public class TacticWorld extends World {
     }
 	
     // Result
-    public void tacReturn(String str) { this.constructedTactic = str; }
+    public void tacReturn(String str) {
+	if (str.equals("")) this.constructedTactic = "NO_TAC";	
+	else this.constructedTactic = str;
+    }
 
     // Called from DALExecutor after evaluation; is the return value of executor
     public String toJSON() {
