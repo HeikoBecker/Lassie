@@ -140,5 +140,19 @@ fun def ndum niens : unit =
     in
 	writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
     end
-	
+
+fun addRule lhs rhs sem =
+    let 
+	fun paren str =
+	    let
+		val clist = String.explode str
+	    in
+		if (hd clist = #"(" andalso last clist = #")") then str
+		else "(" ^ str ^ ")"
+	    end
+    in
+	writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")")
+    end
+
 end
+    
