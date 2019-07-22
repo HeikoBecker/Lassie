@@ -34,7 +34,7 @@ public class TacticWorld extends World {
     }
     public static Options opts = new Options();
     
-    public String constructedTactic;
+    public String string;
     public Map<String,Map<String,Set<String>>> entities; // component (its name) -> attribute -> feature
     public Map<String,Set<String>> features; // feature -> components (its name)
     
@@ -178,13 +178,17 @@ public class TacticWorld extends World {
      */
     // Result
     public void tacReturn(String str) {
-	if (str.equals("")) this.constructedTactic = "NO_TAC";	
-	else this.constructedTactic = str;
+	if (str.equals("")) this.string = "NO_TAC";	
+	else this.string = str;
+    }
+
+    public void strReturn(String str) {
+	this.string = str;
     }
 
     // Called from DALExecutor after evaluation; is the return value of executor
     public String toJSON() {
-	return this.constructedTactic;
+	return this.string;
     }
 
     ///////////////////////////////

@@ -38,38 +38,44 @@
 (rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
 
 # Casting sets to individual types
-(rule $tactic ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.tactic))) (anchored 1)))
-(rule $thm ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.thm))) (anchored 1)))
-(rule $thm->tactic ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.thm->tactic))) (anchored 1)))
-(rule $thmlist->tactic ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.thmlist->tactic)))) (anchored 1))
-(rule $tactic->tactic ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.tactic->tactic)))) (anchored 1))
-(rule $thm->thm ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.thm->thm)))) (anchored 1))
-(rule $termquotation->tactic ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.termquotation->tactic)))) (anchored 1))
-(rule $int->tactic->tactic ($Set) (lambda s (call set2string (call intersect (var s) (call fromFeature feature.type.int->tactic->tactic)))) (anchored 1))
+(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic))))) (anchored 1))
+(rule $tactic ($tactic') (ChoiceFn) (anchored 1))
+
+(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm))))) (anchored 1))
+(rule $thm ($thm') (ChoiceFn) (anchored 1))
+
+(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->tactic))))) (anchored 1))
+(rule $thm->tactic ($thm->tactic') (ChoiceFn) (anchored 1))
+
+(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thmlist->tactic))))) (anchored 1))
+(rule $thmlist->tactic ($thmlist->tactic') (ChoiceFn) (anchored 1))
+
+(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic->tactic))))) (anchored 1))
+(rule $tactic->tactic ($tactic->tactic') (ChoiceFn) (anchored 1))
+
+(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->thm))))) (anchored 1))
+(rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
+
+(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.termquotation->tactic))))) (anchored 1))
+(rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
+
+(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.int->tactic->tactic))))) (anchored 1))
+(rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
 
 # Applications
-(rule $tactic (use $thm->tactic with $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
-(rule $tactic (use $thmlist->tactic with $thmlist) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
-(rule $tactic (use $tactic->tactic with $tactic) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
-(rule $thm (use $thm->thm with $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
-(rule $tactic (use $termquotation->tactic with $Term) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
-(rule $tactic->tactic
-      (use $int->tactic->tactic with $Number) (lambda t1 (lambda n (call parens (call app (var t1) (var n ))))) (anchored 1))
-
 (rule $tactic ($thm->tactic $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
 (rule $tactic ($thmlist->tactic $thmlist) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
 (rule $tactic ($tactic->tactic $tactic) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
 (rule $thm ($thm->thm $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
 (rule $tactic ($termquotation->tactic $Term) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
-(rule $tactic->tactic
-      ($int->tactic->tactic $Number) (lambda t1 (lambda n (call parens (call app (var t1) (var n ))))) (anchored 1))
+(rule $tactic->tactic ($int->tactic->tactic $Number) (lambda t1 (lambda n (call parens (call app (var t1) (var n ))))) (anchored 1))
 
 # Tactic composition
-(rule $tactic ($tactic then $tactic) (lambda t1 (lambda t2 (call then (var t1) (var t2)))) (anchored 1))
-(rule $tactic ($tactic then $tactic on the first goal) (lambda t1 (lambda t2 (call then1 (var t1) (call parens (var t2))))) (anchored 1))
+(rule $tactic ($tactic THEN $tactic) (lambda t1 (lambda t2 (call then (var t1) (var t2)))) (anchored 1))
+(rule $tactic ($tactic THEN1 $tactic) (lambda t1 (lambda t2 (call then1 (var t1) (call parens (var t2))))) (anchored 1))
 
 # Assumptions
-(rule $tactic (assume $Term by $tactic) (lambda q (lambda t (call op by (var q) (call parens (var t))))) (anchored 1))
+(rule $tactic ($Term by $tactic) (lambda q (lambda t (call op by (var q) (call parens (var t))))) (anchored 1))
 
 # Theorem Lists
 (rule $Thms ($thm) (IdentityFn) (anchored 1))
@@ -84,7 +90,4 @@
 (rule $Term (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
 
-# Fallbacks
-#(for @cat ($tactic $Thm $ThmListTactic $ThmTactic)
-#     (rule @cat ($TOKEN) (IdentityFn) (anchored 1)))
 

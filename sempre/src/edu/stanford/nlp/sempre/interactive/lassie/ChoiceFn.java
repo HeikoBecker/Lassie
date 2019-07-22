@@ -52,7 +52,7 @@ public class ChoiceFn extends SemanticFn {
 	    public int currIndex = 0;
 	    @Override
 	    public Derivation createDerivation() {
-		if (currIndex >= elements.length) return null;
+		if (currIndex >= elements.length || elements[0].equals("")) return null;
 		else {
 		    Derivation res = new Derivation.Builder()
 			.withCallable(c)
