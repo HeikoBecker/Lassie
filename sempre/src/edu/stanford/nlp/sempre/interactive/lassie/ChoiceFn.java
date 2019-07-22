@@ -1,6 +1,7 @@
 package edu.stanford.nlp.sempre;
 
 import edu.stanford.nlp.sempre.*;
+import edu.stanford.nlp.sempre.interactive.DALExecutor;
 
 import fig.basic.LispTree;
 import fig.basic.LogInfo;
@@ -11,9 +12,17 @@ import java.util.LinkedList;
 import java.util.Arrays;
 
 /**
- * Given a set, returns an element of that set. Currently only defined for singleton sets.
- * Intends to ensure determinism of grammar in cases of ambiguity.
+ * Given a set, returns an element of that set. Kills derivations which
+ * execute to empty sets. Branch a derivation to every possible pick in
+ * case it executes to something bigger than a singleton. The grammar
+ * rule using this SemanticFn might look like
+ *
+ * (rule $MyType ($MyTypeCandidates) (ChoiceFn))
+ *
+ * where $MyTypeCandidates is an executable formula (i.e. ActionFormula
+ * if using DALExecutor).
  */
+
 public class ChoiceFn extends SemanticFn {
     public static class Options {
 	@Option(gloss = "Verbose") public int verbose = 0;
@@ -35,8 +44,9 @@ public class ChoiceFn extends SemanticFn {
     // }
 
     public DerivationStream call(final Example ex, final Callable c) {
-	String phrase = c.childStringValue(0);
-	elements = phrase.split(",");
+	DALExecutor executor = new DALExecutor();
+	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
+	elements = candidates.split(","); // current representation of sets is as a string (CSVs)
 	return new SingleDerivationStream() {
 	    @Override
 	    public Derivation createDerivation() {
