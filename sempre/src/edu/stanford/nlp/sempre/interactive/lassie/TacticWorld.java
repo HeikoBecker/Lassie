@@ -93,7 +93,7 @@ public class TacticWorld extends World {
 	LogInfo.end_track();
     }
     
-    // String constructions
+    // String constructions, basically tactic language
     public String int2string(Integer n) {
 	return n.toString();
     }
@@ -167,7 +167,15 @@ public class TacticWorld extends World {
     public String set2string(Set<String> s) {
 	return String.join(",", s);
     }
-	
+
+    /*
+     * DALExecutor always expects an ActionFormula, and only executes
+     * other Formulas (e.g. CallFormulas) as sub-formulas of the main
+     * one. Action formulas appear in the grammar as (: myAction arg1
+     * arg2 ...), the result is not observed and the value is extracted
+     * from the toJSON() method.
+     * 
+     */
     // Result
     public void tacReturn(String str) {
 	if (str.equals("")) this.constructedTactic = "NO_TAC";	

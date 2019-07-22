@@ -20,7 +20,8 @@ import java.util.Arrays;
  * (rule $MyType ($MyTypeCandidates) (ChoiceFn))
  *
  * where $MyTypeCandidates is an executable formula (i.e. ActionFormula
- * if using DALExecutor).
+ * if using DALExecutor) returning a StringValue. $MyType will be a
+ * StringValue as well.
  */
 
 public class ChoiceFn extends SemanticFn {
@@ -47,18 +48,19 @@ public class ChoiceFn extends SemanticFn {
 	DALExecutor executor = new DALExecutor();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
 	elements = candidates.split(","); // current representation of sets is as a string (CSVs)
-	return new SingleDerivationStream() {
+	return new MultipleDerivationStream() {
+	    public int currIndex = 0;
 	    @Override
 	    public Derivation createDerivation() {
-		if (elements.length != 1) return null;
+		if (currIndex >= elements.length) return null;
 		else {
 		    Derivation res = new Derivation.Builder()
 			.withCallable(c)
-			.withStringFormulaFrom(elements[0])
+			.withStringFormulaFrom(elements[currIndex++])
 			.createDerivation();
 		    return res;
 		}
 	    }
 	};
-    }
+    }   
 }
