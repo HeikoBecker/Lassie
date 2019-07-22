@@ -35,15 +35,6 @@ public class ChoiceFn extends SemanticFn {
     
     public ChoiceFn() { }
 
-    // public ChoiceFn(List<String> l) {
-    //     init(LispTree.proto.newList("ChoiceFn", l));
-    // }
-
-    // public void init(LispTree tree) {
-    // 	super.init(tree);
-    // 	this.l = (new ListValue(tree.child(1))).values;
-    // }
-
     public DerivationStream call(final Example ex, final Callable c) {
 	DALExecutor executor = new DALExecutor();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();

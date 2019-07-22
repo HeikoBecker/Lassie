@@ -150,20 +150,7 @@ public class TacticWorld extends World {
     public Set<String> intersect(Set<String> s1, Set<String> s2) {
 	return s1.stream().filter(i -> s2.contains(i)).collect(Collectors.toSet());
     }
-    // public Set<String> filter(Set<String> s1, String s2) {
-    // 	if (s2.equals("top")) return s1;
-    // 	else if (s2.equals("bot")) return new HashSet<String>();
-    // 	else return s1.stream().filter(i -> features.get(s2).contains(i)).collect(Collectors.toSet());
-    // }
-    // public Set<String> filter(String s1, Set<String> s2) {
-    // 	return filter(s2,s1);
-    // }
-    // public Set<String> filter(String s1, String s2) {
-    // 	if (s1.equals("bot") || s2.equals("bot")) return new HashSet<String>();
-    // 	else if (s1.equals("top")) return fromFeature(s2);
-    // 	else if (s2.equals("top")) return fromFeature(s1);
-    // 	else return filter(fromFeature(s1),fromFeature(s2));
-    // }
+
     public String set2string(Set<String> s) {
 	return String.join(",", s);
     }
