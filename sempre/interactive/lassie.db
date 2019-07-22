@@ -1,66 +1,69 @@
-GSYM 		    feature.type   feature.type.thm->thm
-Induct_on 	    feature.type   feature.type.termquotation->tactic
-POW_2 		    feature.type   feature.type.thm
-REAL 		    feature.type   feature.type.thm
-REAL_ADD 	    feature.type   feature.type.thm
-REAL_ADD_ASSOC 	    feature.type   feature.type.thm
-REAL_ADD_LDISTRIB   feature.type   feature.type.thm
-REAL_ADD_RDISTRIB   feature.type   feature.type.thm
-REAL_ADD_SYM 	    feature.type   feature.type.thm
-REAL_DIV_LZERO 	    feature.type   feature.type.thm
-REAL_DOUBLE 	    feature.type   feature.type.thm
-REAL_HALF_DOUBLE    feature.type   feature.type.thm
-REAL_LDISTRIB 	    feature.type   feature.type.thm
-REAL_MUL 	    feature.type   feature.type.thm
-REAL_MUL_LID 	    feature.type   feature.type.thm
-REAL_MUL_RID 	    feature.type   feature.type.thm
-REAL_MUL_RINV 	    feature.type   feature.type.thm
-REAL_MUL_SYM 	    feature.type   feature.type.thm
-REAL_NEG_ADD 	    feature.type   feature.type.thm
-REAL_NEG_LMUL 	    feature.type   feature.type.thm
-REAL_RDISTRIB 	    feature.type   feature.type.thm
-REAL_SUB_LDISTRIB   feature.type   feature.type.thm
-REAL_SUB_RDISTRIB   feature.type   feature.type.thm
-cheat 		    feature.type   feature.type.thmlist->tactic
-fs 		    feature.type   feature.type.thmlist->tactic
-irule 		    feature.type   feature.type.thm->tactic
-ntac 		    feature.type   feature.type.int->tactic->tactic
-once_rewrite_tac    feature.type   feature.type.thmlist->tactic
-real_div 	    feature.type   feature.type.thm
-real_sub 	    feature.type   feature.type.thm
-rewrite_tac 	    feature.type   feature.type.thmlist->tactic
-rpt 		    feature.type   feature.type.tactic->tactic
-strip_tac 	    feature.type   feature.type.tactic
-GSYM		    feature.name   feature.name.gsym feature.name.sym
-Induct_on	    feature.name   feature.name.induct
-POW_2               feature.name   feature.name.pow
-REAL		    feature.name   feature.name.real
-REAL_ADD	    feature.name   feature.name.real feature.name.add
-REAL_ADD_ASSOC	    feature.name   feature.name.real feature.name.add feature.name.assoc
-REAL_ADD_LDISTRIB   feature.name   feature.name.real feature.name.add feature.name.l feature.name.distrib
-REAL_ADD_RDISTRIB   feature.name   feature.name.real feature.name.add feature.name.r feature.name.distrib
-REAL_ADD_SYM	    feature.name   feature.name.real feature.name.add feature.name.sym
-REAL_DIV_LZERO	    feature.name   feature.name.real feature.name.div feature.name.l feature.name.zero
-REAL_DOUBLE	    feature.name   feature.name.real feature.name.double
-REAL_HALF_DOUBLE    feature.name   feature.name.real feature.name.half feature.name.double
-REAL_LDISTRIB	    feature.name   feature.name.real feature.name.l feature.name.distrib
-REAL_MUL	    feature.name   feature.name.real feature.name.mul
-REAL_MUL_LID	    feature.name   feature.name.real feature.name.mul feature.name.l feature.name.id
-REAL_MUL_RID	    feature.name   feature.name.real feature.name.mul feature.name.r feature.name.id
-REAL_MUL_RINV	    feature.name   feature.name.real feature.name.mul feature.name.r feature.name.inv
-REAL_MUL_SYM	    feature.name   feature.name.real feature.name.mul feature.name.sym
-REAL_NEG_ADD	    feature.name   feature.name.real feature.name.neg feature.name.add
-REAL_NEG_LMUL	    feature.name   feature.name.real feature.name.neg feature.name.l feature.name.mul
-REAL_RDISTRIB	    feature.name   feature.name.real feature.name.r feature.name.distrib
-REAL_SUB_LDISTRIB   feature.name   feature.name.real feature.name.sub feature.name.l feature.name.distrib
-REAL_SUB_RDISTRIB   feature.name   feature.name.real feature.name.sub feature.name.r feature.name.distrib
-cheat		    feature.name   feature.name.cheat
-fs		    feature.name   feature.name.fs feature.name.simp 
-irule		    feature.name   feature.name.irule
-ntac		    feature.name   feature.name.ntac feature.name.rpt
-once_rewrite_tac    feature.name   feature.name.once feature.name.rewrite feature.name.tac
-real_div	    feature.name   feature.name.real feature.name.div
-real_sub	    feature.name   feature.name.real feature.name.sub
-rewrite_tac	    feature.name   feature.name.rewrite feature.name.tac
-rpt		    feature.name   feature.name.rpt
-strip_tac	    feature.name   feature.name.strip feature.name.tac			
+# TYPES
+GSYM 		   type  thm -> thm
+Induct_on 	   type  term quotation -> tactic
+POW_2 		   type  thm
+REAL 		   type  thm
+REAL_ADD 	   type  thm
+REAL_ADD_ASSOC 	   type  thm
+REAL_ADD_LDISTRIB  type  thm
+REAL_ADD_RDISTRIB  type  thm
+REAL_ADD_SYM 	   type  thm
+REAL_DIV_LZERO 	   type  thm
+REAL_DOUBLE 	   type  thm
+REAL_HALF_DOUBLE   type  thm
+REAL_LDISTRIB 	   type  thm
+REAL_MUL 	   type  thm
+REAL_MUL_LID 	   type  thm
+REAL_MUL_RID 	   type  thm
+REAL_MUL_RINV 	   type  thm
+REAL_MUL_SYM 	   type  thm
+REAL_NEG_ADD 	   type  thm
+REAL_NEG_LMUL 	   type  thm
+REAL_RDISTRIB 	   type  thm
+REAL_SUB_LDISTRIB  type  thm
+REAL_SUB_RDISTRIB  type  thm
+cheat 		   type  tactic
+fs 		   type  thmlist -> tactic
+irule 		   type  thm -> tactic
+ntac 		   type  int -> tactic -> tactic
+once_rewrite_tac   type  thmlist -> tactic
+real_div 	   type  thm
+real_sub 	   type  thm
+rewrite_tac 	   type  thmlist -> tactic
+rpt 		   type  tactic -> tactic
+strip_tac 	   type  tactic
+
+# NAME FEATURES
+GSYM		   name  gsym, sym
+Induct_on	   name  induct
+POW_2              name  pow
+REAL		   name  real
+REAL_ADD	   name  real, addition
+REAL_ADD_ASSOC	   name  real, addition, associativity
+REAL_ADD_LDISTRIB  name  real, addition, left, distributivity
+REAL_ADD_RDISTRIB  name  real, addition, right, distributivity
+REAL_ADD_SYM	   name  real, addition, symmetry
+REAL_DIV_LZERO	   name  real, division, left, zero
+REAL_DOUBLE	   name  real, double
+REAL_HALF_DOUBLE   name  real, half, double
+REAL_LDISTRIB	   name  real, left, distributivity
+REAL_MUL	   name  real, multiplication
+REAL_MUL_LID	   name  real, multiplication, left, identity
+REAL_MUL_RID	   name  real, multiplication, right, identity
+REAL_MUL_RINV	   name  real, multiplication, right, inverse
+REAL_MUL_SYM	   name  real, multiplication, symmetry
+REAL_NEG_ADD	   name  real, negation, addition
+REAL_NEG_LMUL	   name  real, negation, left, multiplication
+REAL_RDISTRIB	   name  real, right, distributivity
+REAL_SUB_LDISTRIB  name  real, subtraction, left, distributivity
+REAL_SUB_RDISTRIB  name  real, subtraction, right, distributivity
+cheat		   name  cheat
+fs		   name  full simplification, simplification
+irule		   name  irule, implication, modus ponens
+ntac		   name  ntac, repeat
+once_rewrite_tac   name  once, rewrite, tactic
+real_div	   name  real, division
+real_sub	   name  real, subtraction
+rewrite_tac	   name  rewrite, tactic
+rpt		   name  repeat
+strip_tac	   name  strip, tactic

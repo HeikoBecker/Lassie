@@ -34,8 +34,8 @@ public class TacticWorld extends World {
     }
     public static Options opts = new Options();
     
-    public String string;
-    public Map<String,Map<String,Set<String>>> entities; // component (its name) -> attribute -> feature
+    public String string; // string in construction
+    public Map<String,Set<String>> entities; // component (its name) -> feature
     public Map<String,Set<String>> features; // feature -> components (its name)
     
     @SuppressWarnings("unchecked")
@@ -43,26 +43,23 @@ public class TacticWorld extends World {
 	this.allItems = new HashSet<>();
 	this.selected = new HashSet<>();
 	this.previous = new HashSet<>();
-	this.entities = new HashMap< String, Map<String,Set<String>> >();
+	this.entities = new HashMap<String,Set<String>>();
 	this.features = new HashMap<String,Set<String>>();
 	readDB();
     }
     
-    private void insert(String component, String attribute, Set<String> features) {
+    private void insert(String component, Set<String> features) {
 	for (String feat : features) {
 	    //LogInfo.logs("inserting: %s, %s, %s", component, attribute, feat);
-	    insert(component, attribute, feat);
+	    insert(component, feat);
 	}
     }
-    private void insert(String component, String attribute, String feature) {
+    private void insert(String component, String feature) {
 	// From components to their features
-	this.entities.putIfAbsent(component, new HashMap<String,Set<String>>());
-	Map<String,Set<String>> attributes = entities.get(component);
-	attributes.putIfAbsent(attribute, new HashSet<String>());
-	Set<String> features = attributes.get(attribute);
-	features.add(feature);
-	attributes.put(attribute, features);
-	entities.put(component, attributes);
+	this.entities.putIfAbsent(component, new HashSet<String>());
+	Set<String> componentFeatures = this.entities.get(component);
+	componentFeatures.add(feature);
+	this.entities.put(component, componentFeatures);
 	// From features to components which possess them
 	this.features.putIfAbsent(feature, new HashSet<String>());
 	Set<String> components = this.features.get(feature);
@@ -77,18 +74,33 @@ public class TacticWorld extends World {
 	for (String line : IOUtils.readLinesHard(opts.dbPath)) {
 	    //LogInfo.logs("Processing line: %s", line);
 	    if (line.startsWith("#")) continue; // Skip comment lines
-	    String[] tokens = line.split("\\s+");
+	    String[] statements = line.split(",\\s*");
+	    String[] tokens = statements[0].split("\\s+");
+	    //	    if (tokens.lenght == 0 || tokens[0].equals("")) continue; // Skip empty lines
 	    // We expect triplets, e.g. "POW_2 feature.name feature.name.power"
 	    if (tokens.length >= 3) {  
 		String component = tokens[0];
 		String attribute = tokens[1];
-		Set<String> features = new HashSet();
+		String feature = attribute + "." + tokens[2];
 		for (int i = 2; i < tokens.length; i++)
-		    features.add(tokens[i]);
-		insert(component, attribute, features);
+		    feature = feature + " " + tokens[i];
+		Set<String> moreFeatures = new HashSet();
+		moreFeatures.add(feature);
+		for (int i = 1; i < statements.length; i++)
+		    moreFeatures.add(attribute + " " + statements[i].replaceAll("\\s+", " "));
+		insert(component, moreFeatures);
 	    } else {
 		throw new RuntimeException("Unhandled: " + line);
 	    }
+	}
+	// Add litteral names to name features
+	for (String component : entities.keySet()) {
+	    Set<String> componentFeatures = entities.get(component);
+	    componentFeatures.add("name." + component);
+	    entities.put(component, componentFeatures);
+	    Set<String> singleton = new HashSet<String>();
+	    singleton.add(component);
+	    features.put("name." + component, singleton);
 	}
 	LogInfo.end_track();
     }
