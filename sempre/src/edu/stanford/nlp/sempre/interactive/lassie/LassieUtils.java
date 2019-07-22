@@ -28,6 +28,7 @@ public class LassieUtils{
 	// dependent on knowing the fields in advance
 	String[] fields = {"candidates", "score", "prob", "anchored", "formula",
 			   "stats", "size", "status", "lines"};
+	String orig = string;
 	// unquote fields; subsitute `:` for `=`
 	for (String field : fields) {
 	    string = string.replace("\"" + field + "\":", field + "= ");
@@ -46,10 +47,10 @@ public class LassieUtils{
 	string = substrings[0];
 	for (int i = 1; i < substrings.length; i++) {
 	    if (i % 2 == 1) // every second substring is data of type string
-		substrings[i] = substrings[i].replace("\\","\\\\");
+		substrings[i] = substrings[i].replace("\\\\","\\\\\\\\");
 	    string = string + "\"" + substrings[i];
 	}
 		    
-	return string;
+	return string + "\n(*" + orig + "*)\n";
     }
 }
