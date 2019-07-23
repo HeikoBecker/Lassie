@@ -1,3 +1,18 @@
+#######################################################################
+# Domain knowledge is written here in a mix of whitespace- or
+# comma-separated values. For each line, the first token is a HOL
+# component and the second is the attribute we want to specify. What
+# follows is a comma-separated list of values which characterize this
+# attribute of that component. In the list (and nowhere else) can tokens
+# contain whitespaces. This allows SML types and expressions of more
+# than one word to be represented naturally.
+#
+# The `type` attribute is the only one required for each component
+# (required for forcing well-typed terms in the grammar). All attributes
+# give rise to a syntactic category of the same name (e.g. `name` gives
+# rise to the `$name` cat) which hold values of that attribute during
+# derivation.
+
 # TYPES
 GSYM 		   type  thm -> thm
 Induct_on 	   type  term quotation -> tactic
@@ -34,9 +49,9 @@ rpt 		   type  tactic -> tactic
 strip_tac 	   type  tactic
 
 # NAME FEATURES
-GSYM		   name  gsym, sym
-Induct_on	   name  induct
-POW_2              name  pow
+GSYM		   name  gsym, symmetry, reverse
+Induct_on	   name  induction
+POW_2              name  power, square, two
 REAL		   name  real
 REAL_ADD	   name  real, addition
 REAL_ADD_ASSOC	   name  real, addition, associativity

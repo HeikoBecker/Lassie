@@ -230,9 +230,9 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('DALExecutor.worldType', 'TacticWorld'),
   o('Grammar.inPaths', "./#{$path}/lassie.grammar"),
 
-#  o('InteractiveMaster.lassieFlag', true), # Makes sempre print resuling value to file-socket
   o('InteractiveMaster.allowRegularCommands', true),
-  o('TacticWorld.dbPath', 'interactive/lassie.db'),
+  o('TacticWorld.dbPath', "./#{$path}/lassie.db"),
+  o('TacticWorld.lexPath', "./#{$path}/lassie.lexicon"),
   
   o('Params.initWeightsRandomly', false),
   o('Grammar.binarizeRules', false),

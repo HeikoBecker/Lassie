@@ -1,12 +1,16 @@
 package edu.stanford.nlp.sempre.interactive.lassie;
 
-import java.util.List;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.HashMap;
+import java.io.IOException;
+import java.io.PrintWriter;
+
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -20,8 +24,8 @@ import edu.stanford.nlp.sempre.interactive.Item;
 import edu.stanford.nlp.sempre.interactive.World;
 
 import fig.basic.IOUtils;
-import fig.basic.Option;
 import fig.basic.LogInfo;
+import fig.basic.Option;
 
 import edu.stanford.nlp.sempre.interactive.lassie.Component;
 
@@ -31,12 +35,14 @@ public class TacticWorld extends World {
     public static class Options {
 	@Option(gloss = "Path to database file, contains components and their features")
 	public String dbPath = null;
+	@Option(gloss = "Path to lexicon file, temporary interface to inform SimpleLexiconFn of db")
+	public String lexPath = null;
     }
     public static Options opts = new Options();
     
     public String string; // string in construction
-    public Map<String,Set<String>> entities; // component (its name) -> feature
-    public Map<String,Set<String>> features; // feature -> components (its name)
+    public Map<String,Set<String>> entities; // component -> features
+    public Map<String,Set<String>> features; // feature -> components
     
     @SuppressWarnings("unchecked")
     public TacticWorld() {
@@ -46,6 +52,19 @@ public class TacticWorld extends World {
 	this.entities = new HashMap<String,Set<String>>();
 	this.features = new HashMap<String,Set<String>>();
 	readDB();
+	writeLexicon();
+    }
+
+    private void logLine(String path, String line) {
+	PrintWriter out;
+	try {
+	    out = IOUtils.openOutAppend(path);
+	    out.println(line);
+	    out.close();
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
     }
     
     private void insert(String component, Set<String> features) {
@@ -76,18 +95,18 @@ public class TacticWorld extends World {
 	    if (line.startsWith("#")) continue; // Skip comment lines
 	    String[] statements = line.split(",\\s*");
 	    String[] tokens = statements[0].split("\\s+");
-	    //	    if (tokens.lenght == 0 || tokens[0].equals("")) continue; // Skip empty lines
+	    if (tokens.length == 0 || tokens[0].equals("")) continue; // Skip empty lines
 	    // We expect triplets, e.g. "POW_2 feature.name feature.name.power"
 	    if (tokens.length >= 3) {  
 		String component = tokens[0];
 		String attribute = tokens[1];
 		String feature = attribute + "." + tokens[2];
-		for (int i = 2; i < tokens.length; i++)
+		for (int i = 3; i < tokens.length; i++)
 		    feature = feature + " " + tokens[i];
 		Set<String> moreFeatures = new HashSet();
 		moreFeatures.add(feature);
 		for (int i = 1; i < statements.length; i++)
-		    moreFeatures.add(attribute + " " + statements[i].replaceAll("\\s+", " "));
+		    moreFeatures.add(attribute + "." + statements[i].replaceAll("\\s+", " "));
 		insert(component, moreFeatures);
 	    } else {
 		throw new RuntimeException("Unhandled: " + line);
@@ -103,6 +122,53 @@ public class TacticWorld extends World {
 	    features.put("name." + component, singleton);
 	}
 	LogInfo.end_track();
+    }
+
+    private String typeOf(String c) {
+	for (String f : entities.get(c))
+	    if (f.startsWith("type.")) return f;
+	throw new RuntimeException("Cannot find type: " + c);
+    }
+    
+    private String suffix(String f) {
+	try {
+	    return f.substring(f.lastIndexOf('.') + 1, f.length());
+	} catch (Exception e) {
+	    throw new RuntimeException("Bad string: " + f);
+	}
+    }
+    
+    private String prefix(String f) {
+	try {
+	    return f.substring(0, f.lastIndexOf('.'));
+	} catch (Exception e) {
+	    throw new RuntimeException("Bad string: " + f);
+	} 
+    }
+    
+    private void writeLexicon() {
+	try {
+	    PrintWriter writer = new PrintWriter(opts.lexPath, "UTF-8");
+	    // Components (literal)
+	    for (String c : this.entities.keySet()) {
+		Map<String, Object> jsonMap = new LinkedHashMap<>();
+		jsonMap.put("lexeme", c);
+		jsonMap.put("formula", c);
+		jsonMap.put("type", suffix(typeOf(c)));
+		writer.println(Json.writeValueAsStringHard(jsonMap));
+	    }
+	    // Features
+	    for (String f : this.features.keySet()) {
+		Map<String, Object> jsonMap = new LinkedHashMap<>();
+		jsonMap.put("lexeme", suffix(f));
+		jsonMap.put("formula", f);
+		jsonMap.put("type", prefix(f));
+		writer.println(Json.writeValueAsStringHard(jsonMap));
+	    }
+	    writer.close();
+	} catch (IOException e) {
+	    throw new RuntimeException("Error writing to file " + opts.lexPath);
+	}
     }
     
     // String constructions, basically tactic language
@@ -145,11 +211,6 @@ public class TacticWorld extends World {
     // Feature manipulations
     public static String refine(String s1, String s2) {
 	return s1 + "." + s2;
-    }
-    // this does e.g. feature.name.fs -> feature.name
-    public static String typeOf(String s1) { 
-	String[] addr = s1.split("\\.");
-	return String.join(".",Arrays.copyOfRange(addr, 0, addr.length - 2));
     }
     public Set<String> fromFeature(String f) {
 	if (f.equals("top")) return entities.keySet();
