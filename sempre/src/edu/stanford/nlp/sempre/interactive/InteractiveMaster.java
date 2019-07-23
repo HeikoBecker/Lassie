@@ -45,9 +45,6 @@ public class InteractiveMaster extends Master {
     @Option(gloss = "only allow interactive commands")
     public boolean onlyInteractive = false;
 
-    // @Option(gloss = "Temporary flag signalling we are calling from Lassie")
-    // public boolean lassieFlag = false;  
-      
     @Option(gloss = "try partial matches")
     public boolean useAligner = true;
 
