@@ -16,7 +16,7 @@
 # containing "items". We superifcially follow this convention where HOL
 # components can be considered the "items" of our "tactic-world".
 
-(def @listValue edu.stanford.nlp.sempre.overnight.SimpleWorld.listValue)
+(include lassie.generated.grammar)
 
 (rule $ROOT ($tactic) (lambda t (: tacReturn (var t))) (anchored 1))
 (for @cat ($tactic $ThmListTactic $ThmTactic)
@@ -25,12 +25,12 @@
 # Litteral Components Import
 (rule $tactic ($TOKEN) (SimpleLexiconFn (type tactic)) (anchored 1))
 (rule $thm ($TOKEN) (SimpleLexiconFn (type thm)) (anchored 1))
-(rule $thm->tactic ($TOKEN) (SimpleLexiconFn (type thm->tactic)) (anchored 1))
-(rule $thmlist->tactic ($TOKEN) (SimpleLexiconFn (type thmlist->tactic)) (anchored 1))
-(rule $tactic->tactic ($TOKEN) (SimpleLexiconFn (type tactic->tactic)) (anchored 1))
-(rule $thm->thm ($TOKEN) (SimpleLexiconFn (type thm->thm)) (anchored 1))
-(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type termquotation->tactic)) (anchored 1))
-(rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type int->tactic->tactic)) (anchored 1))
+(rule $thm->tactic ($TOKEN) (SimpleLexiconFn (type "thm -> tactic")) (anchored 1))
+(rule $thmlist->tactic ($TOKEN) (SimpleLexiconFn (type "thmlist -> tactic")) (anchored 1))
+(rule $tactic->tactic ($TOKEN) (SimpleLexiconFn (type "tactic -> tactic")) (anchored 1))
+(rule $thm->thm ($TOKEN) (SimpleLexiconFn (type "thm -> thm")) (anchored 1))
+(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type "term quotation -> tactic")) (anchored 1))
+(rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type "int -> tactic -> tactic")) (anchored 1))
 
 # Features
 (rule $Feature ($PHRASE) (SimpleLexiconFn (type feature)) (anchored 1))
@@ -38,28 +38,28 @@
 (rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
 
 # Casting sets to individual types
-(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic))))) (anchored 1))
+(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic"))))) (anchored 1))
 (rule $tactic ($tactic') (ChoiceFn) (anchored 1))
 
-(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm))))) (anchored 1))
+(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
 (rule $thm ($thm') (ChoiceFn) (anchored 1))
 
-(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->tactic))))) (anchored 1))
+(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> tactic"))))) (anchored 1))
 (rule $thm->tactic ($thm->tactic') (ChoiceFn) (anchored 1))
 
-(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thmlist->tactic))))) (anchored 1))
+(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thmlist -> tactic"))))) (anchored 1))
 (rule $thmlist->tactic ($thmlist->tactic') (ChoiceFn) (anchored 1))
 
-(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic->tactic))))) (anchored 1))
+(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic -> tactic"))))) (anchored 1))
 (rule $tactic->tactic ($tactic->tactic') (ChoiceFn) (anchored 1))
 
-(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->thm))))) (anchored 1))
+(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> thm"))))) (anchored 1))
 (rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
 
-(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.termquotation->tactic))))) (anchored 1))
+(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.termquotation -> tactic"))))) (anchored 1))
 (rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
 
-(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.int->tactic->tactic))))) (anchored 1))
+(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.int -> tactic -> tactic"))))) (anchored 1))
 (rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
 
 # Applications
