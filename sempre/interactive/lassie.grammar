@@ -1,41 +1,93 @@
-(rule $ROOT ($Tactic) (lambda t (: tacReturn (var t))) (anchored 1))
-(for @cat ($Tactic $ListTactic $ThmTactic)
+########################################################################
+# GRAMMAR FOR NATURAL PROOF EXPRESSIONS
+#
+# Refer to SEMPRE's documentation for general indications on rule
+# construction.
+#
+# Currently, domain knowledge comes from two sources. The lassie.lexicon
+# file contains component names (e.g. fs) and with their types
+# (e.g. thmlist->tactic, used for sound applications). Features of those
+# components (e.g. their natural name, their class/type) are read from
+# lassie.db into the TacticWorld.
+#
+# TacticWorld.java holds the main semantics of Lassie's operations, as
+# we piggy back on the DALExecutor for handling the semantic part of
+# this grammar. DALExecutor interprets semantic expression in a "world"
+# containing "items". We superifcially follow this convention where HOL
+# components can be considered the "items" of our "tactic-world".
+
+(def @listValue edu.stanford.nlp.sempre.overnight.SimpleWorld.listValue)
+
+(rule $ROOT ($tactic) (lambda t (: tacReturn (var t))) (anchored 1))
+(for @cat ($tactic $ThmListTactic $ThmTactic)
      (rule @cat (\( @cat \)) (lambda t (call parens (var t))) (anchored 1)))
 
-# Tactics
-(for @then (THEN \\\\)
-     (rule $Tactic ($Tactic @then $Tactic) (lambda t1 (lambda t2 (call tacThen (var t1) (var t2)))) (anchored 1)))
+# Litteral Components Import
+(rule $tactic ($TOKEN) (SimpleLexiconFn (type tactic)) (anchored 1))
+(rule $thm ($TOKEN) (SimpleLexiconFn (type thm)) (anchored 1))
+(rule $thm->tactic ($TOKEN) (SimpleLexiconFn (type thm->tactic)) (anchored 1))
+(rule $thmlist->tactic ($TOKEN) (SimpleLexiconFn (type thmlist->tactic)) (anchored 1))
+(rule $tactic->tactic ($TOKEN) (SimpleLexiconFn (type tactic->tactic)) (anchored 1))
+(rule $thm->thm ($TOKEN) (SimpleLexiconFn (type thm->thm)) (anchored 1))
+(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type termquotation->tactic)) (anchored 1))
+(rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type int->tactic->tactic)) (anchored 1))
 
-(for @then (THEN1 >-)
-     (rule $Tactic ($Tactic @then $Tactic) (lambda t1 (lambda t2 (call tacThen1 (var t1) (var t2)))) (anchored 1)))
+# Features
+(rule $Feature ($PHRASE) (SimpleLexiconFn (type feature)) (anchored 1))
+(rule $Set ($Feature) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
 
-(rule $Tactic ($TOKEN) (SimpleLexiconFn (type en.tactic)) (anchored 1))
-(rule $Tactic ($ThmTactic $Theorem) (lambda t1 (lambda t2 (call fnApp (var t1) (var t2)))) (anchored 1))
-(rule $Tactic ($ListTactic $ThmList) (lambda t1 (lambda t2 (call fnApp (var t1) (var t2)))) (anchored 1))
-(rule $Tactic ($Term by $Tactic) (lambda q (lambda t (call infix by (var q) (var t)))) (anchored 1))
+# Casting sets to individual types
+(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic))))) (anchored 1))
+(rule $tactic ($tactic') (ChoiceFn) (anchored 1))
 
-# Tacticals
-(rule $ListTactic ($TOKEN) (SimpleLexiconFn (type en.listtactic)) (anchored 1))
-(rule $ThmTactic ($TOKEN) (SimpleLexiconFn (type en.thmtactic)) (anchored 1))
+(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm))))) (anchored 1))
+(rule $thm ($thm') (ChoiceFn) (anchored 1))
 
-# Theorems
-(rule $Theorem ($TOKEN) (SimpleLexiconFn (type en.theorem)) (anchored 1))
-(rule $Theorems ($Theorem) (IdentityFn) (anchored 1))
-(rule $Theorems ($Theorem , $Theorems) (lambda t1 (lambda t2 (call seqCons (var t1) (var t2)))) (anchored 1))
+(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->tactic))))) (anchored 1))
+(rule $thm->tactic ($thm->tactic') (ChoiceFn) (anchored 1))
 
-(rule $ThmList ([ $Theorems ]) (lambda thms (call mkList (var thms))) (anchored 1))
-(rule $ThmList ([ ]) (ConstantFn []) (anchored 1))
+(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thmlist->tactic))))) (anchored 1))
+(rule $thmlist->tactic ($thmlist->tactic') (ChoiceFn) (anchored 1))
+
+(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic->tactic))))) (anchored 1))
+(rule $tactic->tactic ($tactic->tactic') (ChoiceFn) (anchored 1))
+
+(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->thm))))) (anchored 1))
+(rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
+
+(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.termquotation->tactic))))) (anchored 1))
+(rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
+
+(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.int->tactic->tactic))))) (anchored 1))
+(rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
+
+# Applications
+(rule $tactic ($thm->tactic $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic ($thmlist->tactic $thmlist) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic ($tactic->tactic $tactic) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $thm ($thm->thm $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic ($termquotation->tactic $Term) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
+(rule $tactic->tactic ($int->tactic->tactic $Number) (lambda t1 (lambda n (call parens (call app (var t1) (var n ))))) (anchored 1))
+
+# Tactic composition
+(rule $tactic ($tactic THEN $tactic) (lambda t1 (lambda t2 (call then (var t1) (var t2)))) (anchored 1))
+(rule $tactic ($tactic THEN1 $tactic) (lambda t1 (lambda t2 (call then1 (var t1) (call parens (var t2))))) (anchored 1))
+
+# Assumptions
+(rule $tactic ($Term by $tactic) (lambda q (lambda t (call op by (var q) (call parens (var t))))) (anchored 1))
+
+# Theorem Lists
+(rule $Thms ($thm) (IdentityFn) (anchored 1))
+(rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
+(rule $Thms ($thm and $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
+(rule $thmlist ([ $Thms ]) (lambda thms (call list (var thms))) (anchored 1))
+(rule $thmlist ($Thms) (lambda thms (call list (var thms))) (anchored 1))
+(rule $thmlist ([ ]) (ConstantFn []) (anchored 1))
+(rule $thmlist (nothing) (ConstantFn []) (anchored 1))
 
 # Other
 (rule $Term (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
 
-# Modifiers/special cases
-(rule $Tactic (rpt $Tactic) (lambda t (call fnApp rpt (var t))) (anchored 1))
-(rule $Theorem (GSYM $Theorem) (lambda t (call fnApp GSYM (var t))) (anchored 1))
-(rule $Tactic (Induct_on $Term) (lambda t (call fnApp Induct_on (var t))) (anchored 1))
-(rule $Tactic (ntac $Number $Tactic) (lambda n (lambda t (call fnApp (call fnApp ntac (call int2string (var n))) (var t)))) (anchored 1))
 
-# Fallbacks
-#(for @cat ($Tactic $Theorem $ListTactic $ThmTactic)
-#     (rule @cat ($TOKEN) (IdentityFn) (anchored 1)))

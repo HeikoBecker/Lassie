@@ -38,7 +38,8 @@ val SEMPRE_OUTPUT = ref (SOME {candidates= [{score= 0.0,
 					     prob= ~1.0,
 					     anchored= true,
 					     formula= "",
-					     value= NO_TAC}],
+					     value= "NO_TAC",
+					     tactic= NO_TAC}],
 			       stats= {cmd= "q",
 				       size= 2,
 				       status= "Core"},
@@ -60,43 +61,78 @@ exception LassieException of string
 				 
 (* read SEMPRE's response from the "socket" file once there and remove it *)
 (* returns a derivation (i.e. the first candidate) *)
-fun readSempre () =
-    if not (OS.FileSys.access ("interactive/sempre-out-socket.sml", [])) then readSempre()
+fun readSempre utt =
+    if not (OS.FileSys.access ("interactive/sempre-out-socket.sml", [])) then readSempre utt
     else (sleep 0.1; (* Allow SEMPRE to finish writing *)
 	  use socketPath;
 	  if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ();
 	  OS.FileSys.rename {old = socketPath, new = historyPath};
 	  case !SEMPRE_OUTPUT of
-	      NONE => raise Fail ("SEMPRE returned an empty response to utterance `" ^ (!lastUtterance) ^ "`")
+	      NONE => raise Fail ("SEMPRE returned an empty response to utterance `" ^ utt ^ "`")
 	    | SOME response => case #candidates response of 
-				   [] => raise LassieException ("Lassie did not understand the utterance "
-								^ (!lastUtterance)
+				   [] => raise LassieException ("Did not understand the utterance "
+								^ utt
 								^ ", you may provide a definition using lassie.def")
 					       
-				 | deriv::tail => deriv
+				 | deriv::tail => (deriv, tail) (* ensures at least one derivation *)
 	 )
 	     
-(* naturalize-an-utterance tactic *)
-fun semtac utt : tactic = ( writeSempre utt; #value (readSempre()) )
+(* send a NL query to sempre and return at least a derivation *)
+fun sempre utt = (writeSempre utt; readSempre utt)
+		     
+(* parse and return most likely tactic *)
+fun nltac utt : tactic = utt |> sempre |> fst |> #tactic
+fun nltacl uttl : tactic = case uttl of
+			       [] => ALL_TAC
+			     | utt::tail => (nltac utt) THEN (nltacl tail)
 
-(* same but on lists *)
-fun las uttl : tactic = case uttl of
-			    [] => ALL_TAC
-			  | utt::tail => (semtac utt) THEN (las tail)
-
+(* tell sempre you accepted a derivation; affects future weights *)
+fun accept (utt, formula) : unit =
+    let
+	fun quot s = "\"" ^ s ^ "\""
+    in
+	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")")
+    end
+								
+(* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
+fun lassie utt =
+    let
+	val _ = print ("Trying to parse " ^ utt ^ "\n")
+	val derivations = utt |> sempre |> (fn (hd,tl) => hd::tl)
+	fun dprinter derivs idx =
+	    case derivs of
+		[] => ()
+	      | d::ds => (print ("\nDerivation [" ^ Int.toString idx ^ "]:\n"
+				     ^ "\tFormula: " ^ (#formula d) ^ "\n"
+				     ^ "\tValue: " ^ (#value d) ^ "\n\n");
+			      dprinter ds (idx + 1))
+    in
+	dprinter derivations 1; (* if no index is given, just print the derivations *)
+	fn idx => if (idx > length derivations) then
+		      raise LassieException ("Lassie only generated "
+					     ^ Int.toString (length derivations)
+					     ^ " derivations: try again with a smaller index.")
+		  else
+		      let
+			  val d = List.nth (derivations, (idx - 1))
+		      in
+			  accept (utt, #formula d);
+			  print ("Accepted derivation [" ^ Int.toString idx ^ "]\n");
+			  proofManagerLib.e (#tactic d)
+		      end
+    end			      
+	
 (* define an utterance in terms of a list of utterances*)
-fun def ndum niens =
+fun def ndum niens : unit =
     let
 	(* for each utterance of the definition, get its logical form *)
-	val getFormula = fn u => let
-			      val _ = writeSempre u
-			      val deriv = readSempre()
-			  in
-			      [u, #formula deriv]
-			  end
-	val quot = fn s => "\"" ^ s ^ "\""
-	val quot' = fn s => "\\\"" ^ s ^ "\\\""
-	val list2string = fn l => "[" ^ (String.concatWith "," l) ^ "]"
+	fun getFormula u = [u, (u |> sempre |> fst |> #formula)]
+			       
+	(* formatting *)
+	fun quot s = "\"" ^ s ^ "\""
+	fun quot' s = "\\\"" ^ s ^ "\\\""
+	fun list2string l = "[" ^ (String.concatWith "," l) ^ "]"
+								  
 	val definiens = niens |> (map getFormula)
 			      |> (map (map quot'))
 			      |> (map list2string)
@@ -104,14 +140,19 @@ fun def ndum niens =
     in
 	writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
     end
-	
-(* run the content of a string as SML code *)
-fun runString string =
-    let
-	val instream' = Unix.textInstreamOf(Unix.execute("/bin/echo",[string]))
-	val getChar = fn () => TextIO.input1 instream'
+
+fun addRule lhs rhs sem =
+    let 
+	fun paren str =
+	    let
+		val clist = String.explode str
+	    in
+		if (hd clist = #"(" andalso last clist = #")") then str
+		else "(" ^ str ^ ")"
+	    end
     in
-	PolyML.compiler (getChar, []) ()
+	writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")")
     end
 
 end
+    
