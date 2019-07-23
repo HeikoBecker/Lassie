@@ -11,7 +11,15 @@
 # (required for forcing well-typed terms in the grammar). All attributes
 # give rise to a syntactic category of the same name (e.g. `name` gives
 # rise to the `$name` cat) which hold values of that attribute during
-# derivation.
+# derivation. The final ontology covers every "relation" expressed in
+# this file, plus a reflexive name for each component, i.e.
+#
+#                        REAL_ADD name REAL_ADD
+#
+# Allowing users to specify components by their literal name if they
+# know it.
+
+
 
 # TYPES
 GSYM 		   type  thm -> thm
@@ -38,10 +46,10 @@ REAL_RDISTRIB 	   type  thm
 REAL_SUB_LDISTRIB  type  thm
 REAL_SUB_RDISTRIB  type  thm
 cheat 		   type  tactic
-fs 		   type  thmlist -> tactic
+fs 		   type  thm list -> tactic
 irule 		   type  thm -> tactic
 ntac 		   type  int -> tactic -> tactic
-once_rewrite_tac   type  thmlist -> tactic
+once_rewrite_tac   type  thm list -> tactic
 real_div 	   type  thm
 real_sub 	   type  thm
 rewrite_tac 	   type  thmlist -> tactic
@@ -52,7 +60,7 @@ strip_tac 	   type  tactic
 GSYM		   name  gsym, symmetry, reverse
 Induct_on	   name  induction
 POW_2              name  power, square, two
-REAL		   name  real
+REAL		   name  real, definition, successor
 REAL_ADD	   name  real, addition
 REAL_ADD_ASSOC	   name  real, addition, associativity
 REAL_ADD_LDISTRIB  name  real, addition, left, distributivity
