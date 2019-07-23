@@ -37,6 +37,10 @@ public class TacticWorld extends World {
 	public String dbPath = null;
 	@Option(gloss = "Path to lexicon file, temporary interface to inform SimpleLexiconFn of db")
 	public String lexPath = null;
+	// @Option(gloss = "Path to seed grammar, to be instantiated to all types")
+	// public String seedGrammarPath = null;
+	// @Option(gloss = "Path to generated grammar, result of generation from seed")
+	// public String genGrammarPath = null;
     }
     public static Options opts = new Options();
     
@@ -55,6 +59,7 @@ public class TacticWorld extends World {
 	writeLexicon();
     }
 
+    
     private void logLine(String path, String line) {
 	PrintWriter out;
 	try {
@@ -126,7 +131,7 @@ public class TacticWorld extends World {
 
     private String typeOf(String c) {
 	for (String f : entities.get(c))
-	    if (f.startsWith("type.")) return f;
+	    if (f.startsWith("type.")) return f.replace(" ","");
 	throw new RuntimeException("Cannot find type: " + c);
     }
     
@@ -170,6 +175,16 @@ public class TacticWorld extends World {
 	    throw new RuntimeException("Error writing to file " + opts.lexPath);
 	}
     }
+
+    // private void generateGrammar() {
+    // 	Set<String> types = new HashSet<String>();
+    // 	for (String f : this.features)
+    // 	    if (f.startsWith("type."))
+    // 		types.add(f);
+    // 	String monotypeRules = 
+    // 	for (String t : types) {
+    // 	}	    
+    // }
     
     // String constructions, basically tactic language
     public String int2string(Integer n) {
