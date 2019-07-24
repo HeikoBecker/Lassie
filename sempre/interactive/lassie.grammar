@@ -31,21 +31,28 @@
 (rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type int->tactic->tactic)) (anchored 1))
 
 # Casting sets to individual types
-(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.tactic))))) (anchored 1))
+(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic"))))) (anchored 1))
 (rule $tactic ($tactic') (ChoiceFn) (anchored 1))
-(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.thm))))) (anchored 1))
+
+(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
 (rule $thm ($thm') (ChoiceFn) (anchored 1))
-(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.thm->tactic))))) (anchored 1))
+
+(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> tactic"))))) (anchored 1))
 (rule $thm->tactic ($thm->tactic') (ChoiceFn) (anchored 1))
-(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.thmlist->tactic))))) (anchored 1))
+
+(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm list -> tactic"))))) (anchored 1))
 (rule $thmlist->tactic ($thmlist->tactic') (ChoiceFn) (anchored 1))
-(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.tactic->tactic))))) (anchored 1))
+
+(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic -> tactic"))))) (anchored 1))
 (rule $tactic->tactic ($tactic->tactic') (ChoiceFn) (anchored 1))
-(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.thm->thm))))) (anchored 1))
+
+(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> thm"))))) (anchored 1))
 (rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
-(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.termquotation->tactic))))) (anchored 1))
+
+(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.termquotation -> tactic"))))) (anchored 1))
 (rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
-(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature type.int->tactic->tactic))))) (anchored 1))
+
+(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.int -> tactic -> tactic"))))) (anchored 1))
 (rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
 
 # Applications
@@ -67,8 +74,10 @@
 (rule $int->tactic->tactic (\( $PHRASE : int -> tactic -> tactic \)) (IdentityFn) (anchored 1))
 
 # Features
-(rule $Feature ($PHRASE) (SimpleLexiconFn (type feature)) (anchored 1))
-(rule $Set ($Feature) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
+(rule $type ($PHRASE) (SimpleLexiconFn (type type)) (anchored 1))
+(rule $Set ($name) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $Set ($type) (lambda n (call fromFeature (var n))) (anchored 1))
 (rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
 
 # Tactic composition
@@ -81,14 +90,10 @@
 # Theorem Lists
 (rule $Thms ($thm) (IdentityFn) (anchored 1))
 (rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
-(rule $Thms ($thm and $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
 (rule $thmlist ([ $Thms ]) (lambda thms (call list (var thms))) (anchored 1))
 (rule $thmlist ($Thms) (lambda thms (call list (var thms))) (anchored 1))
 (rule $thmlist ([ ]) (ConstantFn []) (anchored 1))
-(rule $thmlist (nothing) (ConstantFn []) (anchored 1))
 
 # Other
 (rule $Term (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
-
-
