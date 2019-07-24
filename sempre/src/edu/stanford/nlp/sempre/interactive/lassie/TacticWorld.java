@@ -101,7 +101,7 @@ public class TacticWorld extends World {
 	    String[] statements = line.split(",\\s*");
 	    String[] tokens = statements[0].split("\\s+");
 	    if (tokens.length == 0 || tokens[0].equals("")) continue; // Skip empty lines
-	    // We expect triplets, e.g. "POW_2 feature.name feature.name.power"
+	    // We expect triplets (at least), e.g. "POW_2 feature.name feature.name.power"
 	    if (tokens.length >= 3) {  
 		String component = tokens[0];
 		String attribute = tokens[1];
@@ -117,15 +117,6 @@ public class TacticWorld extends World {
 		throw new RuntimeException("Unhandled: " + line);
 	    }
 	}
-	// Add litteral names to name features
-	// for (String component : entities.keySet()) {
-	//     Set<String> componentFeatures = entities.get(component);
-	//     componentFeatures.add("name." + component);
-	//     entities.put(component, componentFeatures);
-	//     Set<String> singleton = new HashSet<String>();
-	//     singleton.add(component);
-	//     features.put("name." + component, singleton);
-	// }
 	LogInfo.end_track();
     }
 
@@ -247,10 +238,10 @@ public class TacticWorld extends World {
      * DALExecutor always expects an ActionFormula, and only executes
      * other Formulas (e.g. CallFormulas) as sub-formulas of the main
      * one. Action formulas appear in the grammar as (: myAction arg1
-     * arg2 ...), the result is not observed and the value is extracted
+     * arg2 ...), the return value is not observed and instead taken
      * from the toJSON() method.
-     * 
      */
+    
     // Result
     public void tacReturn(String str) {
 	if (str.equals("")) this.string = "NO_TAC";	
