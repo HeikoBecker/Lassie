@@ -137,6 +137,7 @@
 
 ########## REFACTORING ##########
 
+# App
 (for @a (use apply)
      (rule $Apply (@a) (ConstantFn null) (anchored 1)))
 
@@ -155,3 +156,4 @@
 (rule $thm ($Prep $thm) (SelectFn 1) (anchored 1))
 (rule $thmlist ($Prep $thmlist) (SelectFn 1) (anchored 1))
 (rule $termquotation ($Prep $termquotation) (SelectFn 1) (anchored 1))
+
