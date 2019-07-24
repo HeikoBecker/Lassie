@@ -1,8 +1,8 @@
-structure Lassie =
+structure Lassie =   
 struct
-
 val map = List.map
-
+exception LassieException of string
+			    
 fun sleep t =
     let
 	val wakeUp = Time.+ (Time.now(), Time.fromReal(t))
@@ -16,6 +16,16 @@ fun flush instream = case TextIO.canInput(instream, 5000) of
 				   else (TextIO.input(instream); flush(instream))
 		       | NONE => ()
 
+(* wait for the SEMPRE prompt; signifies end of execution *)
+fun waitSempre instream =
+    let
+	val s = TextIO.input(instream);
+    in
+	if String.isSuffix "\n> " s orelse s = "> " then ()
+	(* else if s = "" then raise LassieException "Reached EOS? Empty string was read."  *)
+	else waitSempre instream
+    end	
+				     
 (* run SEMPRE as a subprocess, through its run script returns outstream of its shell *)
 fun launchSempre () = 
     let
@@ -29,11 +39,12 @@ fun launchSempre () =
 	val (instr,outstr) = case String.tokens Char.isSpace execCommand of
 				 [] => raise Fail "Run script returned no arguments"
 			       | cmd::args => Unix.streamsOf(Unix.execute(cmd,args))
+	val _ = waitSempre(instr);
     in
 	(ref instr, ref outstr)
     end
 
-val (inStreamRef, outStreamRef) = launchSempre()
+val (instream, outstream) = launchSempre()
 val SEMPRE_OUTPUT = ref (SOME {candidates= [{score= 0.0,
 					     prob= ~1.0,
 					     anchored= true,
@@ -47,39 +58,41 @@ val SEMPRE_OUTPUT = ref (SOME {candidates= [{score= 0.0,
 val lastUtterance = ref ""
 val socketPath = "interactive/sempre-out-socket.sml"
 val historyPath = "interactive/last-sempre-output.sml"
-		      
+
 (* send a string to sempre *)
 fun writeSempre (cmd : string) =
     let
 	val _ = if OS.FileSys.access (socketPath, []) then OS.FileSys.remove socketPath else ()
 	val _ = lastUtterance := cmd
     in
-	TextIO.output(!outStreamRef, cmd ^ "\n")
+	TextIO.output(!outstream, cmd ^ "\n")
     end
-
-exception LassieException of string
+		
 				 
 (* read SEMPRE's response from the "socket" file once there and remove it *)
 (* returns a derivation (i.e. the first candidate) *)
 fun readSempre utt =
-    if not (OS.FileSys.access ("interactive/sempre-out-socket.sml", [])) then readSempre utt
-    else (sleep 0.1; (* Allow SEMPRE to finish writing *)
-	  use socketPath;
-	  if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ();
-	  OS.FileSys.rename {old = socketPath, new = historyPath};
-	  case !SEMPRE_OUTPUT of
-	      NONE => raise Fail ("SEMPRE returned an empty response to utterance `" ^ utt ^ "`")
-	    | SOME response => case #candidates response of 
-				   [] => raise LassieException ("Did not understand the utterance "
-								^ utt
-								^ ", you may provide a definition using lassie.def")
-					       
-				 | deriv::tail => (deriv, tail) (* ensures at least one derivation *)
-	 )
-	     
+    let
+	val _ = sleep 0.1; (* socket file seems to appear a bit after end of execution *)	 
+	val _ = if not (OS.FileSys.access (socketPath, []))
+		then raise LassieException ("Socket file missing after call to SEMPRE: " ^ socketPath)
+		else ()
+    in
+	use socketPath;
+	if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ();
+	OS.FileSys.rename {old = socketPath, new = historyPath};
+	case !SEMPRE_OUTPUT of
+	    NONE => raise Fail ("SEMPRE returned an empty response to utterance `" ^ utt ^ "`")
+	  | SOME response => case #candidates response of 
+				 [] => raise LassieException ("Did not understand the utterance "
+							      ^ utt
+							      ^ ", you may provide a definition using lassie.def")  
+			       | deriv::tail => (deriv, tail) (* ensures at least one derivation *)
+    end
+
 (* send a NL query to sempre and return at least a derivation *)
-fun sempre utt = (writeSempre utt; readSempre utt)
-		     
+fun sempre utt = (writeSempre utt; waitSempre(!instream); readSempre utt)
+
 (* parse and return most likely tactic *)
 fun nltac utt : tactic = utt |> sempre |> fst |> #tactic
 fun nltacl uttl : tactic = case uttl of
@@ -91,7 +104,8 @@ fun accept (utt, formula) : unit =
     let
 	fun quot s = "\"" ^ s ^ "\""
     in
-	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")")
+	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")");
+	waitSempre(!instream)
     end
 								
 (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
@@ -108,10 +122,8 @@ fun lassie utt =
 			      dprinter ds (idx + 1))
     in
 	dprinter derivations 1; (* if no index is given, just print the derivations *)
-	fn idx => if (idx > length derivations) then
-		      raise LassieException ("Lassie only generated "
-					     ^ Int.toString (length derivations)
-					     ^ " derivations: try again with a smaller index.")
+	fn idx => if idx > length derivations orelse idx < 1 then
+		      raise LassieException "Derivation index out of bounds"
 		  else
 		      let
 			  val d = List.nth (derivations, (idx - 1))
@@ -138,10 +150,11 @@ fun def ndum niens : unit =
 			      |> (map list2string)
 			      |> list2string
     in
-	writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
+	writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")");
+	waitSempre(!instream)
     end
 
-fun addRule lhs rhs sem =
+fun addRule lhs rhs sem : unit =
     let 
 	fun paren str =
 	    let
@@ -151,7 +164,8 @@ fun addRule lhs rhs sem =
 		else "(" ^ str ^ ")"
 	    end
     in
-	writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")")
+	writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")");
+	waitSempre(!instream)
     end
 
 end
