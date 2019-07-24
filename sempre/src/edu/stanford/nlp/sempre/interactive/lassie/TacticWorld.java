@@ -118,14 +118,14 @@ public class TacticWorld extends World {
 	    }
 	}
 	// Add litteral names to name features
-	for (String component : entities.keySet()) {
-	    Set<String> componentFeatures = entities.get(component);
-	    componentFeatures.add("name." + component);
-	    entities.put(component, componentFeatures);
-	    Set<String> singleton = new HashSet<String>();
-	    singleton.add(component);
-	    features.put("name." + component, singleton);
-	}
+	// for (String component : entities.keySet()) {
+	//     Set<String> componentFeatures = entities.get(component);
+	//     componentFeatures.add("name." + component);
+	//     entities.put(component, componentFeatures);
+	//     Set<String> singleton = new HashSet<String>();
+	//     singleton.add(component);
+	//     features.put("name." + component, singleton);
+	// }
 	LogInfo.end_track();
     }
 
@@ -200,7 +200,7 @@ public class TacticWorld extends World {
     }
     public String then1(String tac1, String tac2) {
 	if (tac1.equals("") || tac2.equals("")) return "";
-	return tac1 + " >- " + tac2;
+	return tac1 + " >- " + parens(tac2);
     }
     public String cons(String hd, String tl) {
 	if (hd.equals("") || tl.equals("")) return "";
