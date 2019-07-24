@@ -15,7 +15,7 @@
 # this grammar. DALExecutor interprets semantic expression in a "world"
 # containing "items". We superifcially follow this convention where HOL
 # components can be considered the "items" of our "tactic-world".
-
+#
 # Generally, lowercased categories (e.g. $thm, $name) correspond to
 # types as found in the lexicon/database. Categories which are
 # capitalized are intermediates between lowercased categories and the
@@ -109,7 +109,7 @@
 (rule $Set ($type) (lambda n (call fromFeature (var n))) (anchored 1))
 (rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
 
-# Casting sets to individual types
+# Collapsing sets to single components
 (rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic"))))) (anchored 1))
 (rule $tactic ($tactic') (ChoiceFn) (anchored 1))
 
@@ -134,6 +134,8 @@
 (rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.int -> tactic -> tactic"))))) (anchored 1))
 (rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
 
+# Casting sets as lists
+(rule $thmlist ($Set) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
 
 ########## REFACTORING ##########
 
