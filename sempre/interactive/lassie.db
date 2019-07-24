@@ -52,7 +52,7 @@ ntac 		   type  int -> tactic -> tactic
 once_rewrite_tac   type  thm list -> tactic
 real_div 	   type  thm
 real_sub 	   type  thm
-rewrite_tac 	   type  thmlist -> tactic
+rewrite_tac 	   type  thm list -> tactic
 rpt 		   type  tactic -> tactic
 strip_tac 	   type  tactic
 
