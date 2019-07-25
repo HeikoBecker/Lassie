@@ -92,7 +92,13 @@ public class InteractiveMaster extends Master {
     if (line.startsWith("(:"))
       handleCommand(session, line, response);
     else if (line.startsWith("(") && opts.allowRegularCommands)
-      super.processQuery(session, line);
+	try {
+	    // might be a command
+	    super.processQuery(session, line);
+	} catch (Throwable t) {
+	    // might just be an utterance starting with (
+	    handleCommand(session, String.format("(:q \"%s\")", line), response);
+	}
     else
       handleCommand(session, String.format("(:q \"%s\")", line), response);
     LogInfo.end_track();
@@ -131,6 +137,7 @@ public class InteractiveMaster extends Master {
 	  printDerivation(response.getDerivation());
       }
 
+      LogInfo.logs("Printing response to socket");
       LassieUtils.printToSocket(LassieUtils.json2sml(Json.writeValueAsStringHard(InteractiveServer.makeJson(response))));
       
     } else if (command.equals(":qdbg")) {
