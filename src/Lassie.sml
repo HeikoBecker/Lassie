@@ -64,10 +64,11 @@ fun writeSempre (cmd : string) =
     let
 	val _ = if OS.FileSys.access (socketPath, []) then OS.FileSys.remove socketPath else ()
 	val _ = lastUtterance := cmd
+	val _ = TextIO.output(!outstream, cmd ^ "\n")
     in
-	TextIO.output(!outstream, cmd ^ "\n")
+	waitSempre(!instream)
     end
-		
+	
 				 
 (* read SEMPRE's response from the "socket" file once there and remove it *)
 (* returns a derivation (i.e. the first candidate) *)
@@ -91,7 +92,7 @@ fun readSempre utt =
     end
 
 (* send a NL query to sempre and return at least a derivation *)
-fun sempre utt = (writeSempre utt; waitSempre(!instream); readSempre utt)
+fun sempre utt = (writeSempre utt; readSempre utt)
 
 (* parse and return most likely tactic *)
 fun nltac utt : tactic = utt |> sempre |> fst |> #tactic
@@ -104,8 +105,7 @@ fun accept (utt, formula) : unit =
     let
 	fun quot s = "\"" ^ s ^ "\""
     in
-	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")");
-	waitSempre(!instream)
+	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")")
     end
 								
 (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
@@ -150,8 +150,7 @@ fun def ndum niens : unit =
 			      |> (map list2string)
 			      |> list2string
     in
-	writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")");
-	waitSempre(!instream)
+	writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
     end
 
 fun addRule lhs rhs sem : unit =
@@ -164,8 +163,7 @@ fun addRule lhs rhs sem : unit =
 		else "(" ^ str ^ ")"
 	    end
     in
-	writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")");
-	waitSempre(!instream)
+	writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")")
     end
 
 end
