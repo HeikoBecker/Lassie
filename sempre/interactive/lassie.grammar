@@ -130,7 +130,7 @@
 (rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> thm"))))) (anchored 1))
 (rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
 
-(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.termquotation -> tactic"))))) (anchored 1))
+(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.term quotation -> tactic"))))) (anchored 1))
 (rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
 
 (rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.int -> tactic -> tactic"))))) (anchored 1))
