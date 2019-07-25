@@ -136,6 +136,9 @@
 
 # Casting sets as lists
 (rule $thmlist ($Set) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+(rule $thmlist (all $Set theorems) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+(rule $thmlist ($Set theorems) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+(rule $thmlist (all $Set) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
 
 ########## REFACTORING ##########
 
