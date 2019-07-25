@@ -105,8 +105,10 @@
 # Sets and their intersections
 (rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
 (rule $type ($PHRASE) (SimpleLexiconFn (type type)) (anchored 1))
+(rule $effect ($PHRASE) (SimpleLexiconFn (type effect)) (anchored 1))
 (rule $Set ($name) (lambda n (call fromFeature (var n))) (anchored 1))
 (rule $Set ($type) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $Set ($effect) (lambda n (call fromFeature (var n))) (anchored 1))
 (rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
 
 # Collapsing sets to single components
