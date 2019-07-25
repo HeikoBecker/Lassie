@@ -86,7 +86,7 @@ irule		   name  irule, implication, modus ponens
 ntac		   name  ntac, repeat
 once_rewrite_tac   name  once, rewrite, tactic
 real_div	   name  real, division
-real_sub	   name  real, subtraction
+real_sub	   name  real, subtraction, additive inverse
 rewrite_tac	   name  rewrite, tactic
 rpt		   name  repeat
 strip_tac	   name  strip, tactic

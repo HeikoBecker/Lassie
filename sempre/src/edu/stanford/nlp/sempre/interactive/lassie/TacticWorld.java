@@ -141,6 +141,8 @@ public class TacticWorld extends World {
 	    throw new RuntimeException("Bad string: " + f);
 	} 
     }
+
+    private String quot(String s) { return "\"" + s + "\""; }
     
     private void writeLexicon() {
 	try {
@@ -149,7 +151,7 @@ public class TacticWorld extends World {
 	    for (String c : this.entities.keySet()) {
 		Map<String, Object> jsonMap = new LinkedHashMap<>();
 		jsonMap.put("lexeme", c);
-		jsonMap.put("formula", c);
+		jsonMap.put("formula", quot(c)); // force Formula to StringFormula in the Lisp interpreter
 		jsonMap.put("type", suffix(typeOf(c)));
 		writer.println(Json.writeValueAsStringHard(jsonMap));
 	    }
@@ -157,7 +159,7 @@ public class TacticWorld extends World {
 	    for (String f : this.features.keySet()) {
 		Map<String, Object> jsonMap = new LinkedHashMap<>();
 		jsonMap.put("lexeme", suffix(f));
-		jsonMap.put("formula", f);
+		jsonMap.put("formula", quot(f)); // may contain spaces, force Formula to StringFormula
 		jsonMap.put("type", prefix(f));
 		writer.println(Json.writeValueAsStringHard(jsonMap));
 	    }
