@@ -15,7 +15,7 @@ import java.io.*;
 public class LassieUtils{
     
     public static void printToSocket(String string) {
-	try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
+	try (PrintWriter writer = new PrintWriter(new FileOutputStream (new File("interactive/sempre-out-socket.sml"), true))) {
 	    writer.println("val _ = " + string + "\n");
 	    writer.close();
 	} catch (IOException ex) {
@@ -51,6 +51,6 @@ public class LassieUtils{
 	    string = string + "\"" + substrings[i];
 	}
 		    
-	return string + "\n\n(*" + orig + "*)\n";
+	return string + "\n\n(* " + orig + " *)";
     }
 }

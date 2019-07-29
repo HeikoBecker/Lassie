@@ -76,6 +76,27 @@ fun writeSempre (cmd : string) =
 	waitSempre(!instream)
     end
 
+fun showList lst : string =
+    let
+	fun helper l s = case l of
+			     [] => "[" ^ s ^ "]"
+			   | hd::tl => helper tl (s ^ "," ^ hd)
+    in
+	case lst of
+	    [] => "[]"
+	  | hd::tl => helper (rev tl) hd
+    end
+	
+fun printAmbiguities () =
+    case !AMBIGUITY_WARNING of
+	NONE => ()
+      | SOME warning => print ("Warning-\n   Lassie could not disambiguate the expression at ("
+			       ^ Int.toString(fst (#span warning))
+			       ^ ","
+			       ^ Int.toString(snd (#span warning))
+			       ^ ") of the utterance.\n   Possible interpretations include:\n\t"
+			       ^ showList (#set warning)
+			       ^ ".\n   Lassie might be able to parse the utterance if you are more specific.\n\n")
 
 (* read SEMPRE's response from the "socket" file once there and remove it *)
 (* returns a derivation (i.e. the first candidate) *)
@@ -92,10 +113,14 @@ fun readSempre utt =
 	case !SEMPRE_RESPONSE of
 	    NONE => raise LassieException ("Problem reading SEMPRE's response (empty response record)")
 	  | SOME response => case #candidates response of
-				 [] => raise LassieException ("Did not understand the utterance "
-							      ^ utt
-							      ^ ", you may provide a definition using lassie.def")
-			       | deriv::tail => (deriv, tail) (* ensures at least one derivation *)
+				 [] => let
+				  val _ = printAmbiguities()
+			      in
+				  raise LassieException ("Did not understand the utterance `"
+							 ^ utt
+							 ^ "`, you can provide a definition using lassie.def")
+			      end
+				| deriv::tail => (deriv, tail) (* ensures at least one derivation *)
     end
 
 (* send a NL query to sempre and return at least a derivation *)
@@ -118,7 +143,7 @@ fun accept (utt, formula) : unit =
 (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
 fun lassie utt =
     let
-	val _ = print ("Trying to parse " ^ utt ^ "\n")
+	val _ = print ("Trying to parse `" ^ utt ^ "`...\n\n")
 	val derivations = utt |> sempre |> (fn (hd,tl) => hd::tl)
 	fun dprinter derivs idx =
 	    case derivs of
