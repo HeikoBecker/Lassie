@@ -15,10 +15,27 @@
 # this grammar. DALExecutor interprets semantic expression in a "world"
 # containing "items". We superifcially follow this convention where HOL
 # components can be considered the "items" of our "tactic-world".
-
-(def @listValue edu.stanford.nlp.sempre.overnight.SimpleWorld.listValue)
+#
+# Generally, lowercased categories (e.g. $thm, $name) correspond to
+# types as found in the lexicon/database. Categories which are
+# capitalized are intermediates between lowercased categories and the
+# $tactic category.
 
 (rule $ROOT ($tactic) (lambda t (: tacReturn (var t))) (anchored 1))
+
+# Incorporated types: #
+# $tactic
+# $thm
+# ($thmlist)
+# $thm->tactic
+# $thmlist->tactic
+# $tactic->tactic
+# $thm->thm
+# $termquotation->tactic
+# $int->tactic->tactic
+
+########## GRAMMAR SUPPORTING LITERAL HOL4 ##########
+
 (for @cat ($tactic $ThmListTactic $ThmTactic)
      (rule @cat (\( @cat \)) (lambda t (call parens (var t))) (anchored 1)))
 
@@ -29,38 +46,8 @@
 (rule $thmlist->tactic ($TOKEN) (SimpleLexiconFn (type thmlist->tactic)) (anchored 1))
 (rule $tactic->tactic ($TOKEN) (SimpleLexiconFn (type tactic->tactic)) (anchored 1))
 (rule $thm->thm ($TOKEN) (SimpleLexiconFn (type thm->thm)) (anchored 1))
-(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type termquotation->tactic)) (anchored 1))
+(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type term quotation->tactic)) (anchored 1))
 (rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type int->tactic->tactic)) (anchored 1))
-
-# Features
-(rule $Feature ($PHRASE) (SimpleLexiconFn (type feature)) (anchored 1))
-(rule $Set ($Feature) (lambda n (call fromFeature (var n))) (anchored 1))
-(rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
-
-# Casting sets to individual types
-(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic))))) (anchored 1))
-(rule $tactic ($tactic') (ChoiceFn) (anchored 1))
-
-(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm))))) (anchored 1))
-(rule $thm ($thm') (ChoiceFn) (anchored 1))
-
-(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->tactic))))) (anchored 1))
-(rule $thm->tactic ($thm->tactic') (ChoiceFn) (anchored 1))
-
-(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thmlist->tactic))))) (anchored 1))
-(rule $thmlist->tactic ($thmlist->tactic') (ChoiceFn) (anchored 1))
-
-(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.tactic->tactic))))) (anchored 1))
-(rule $tactic->tactic ($tactic->tactic') (ChoiceFn) (anchored 1))
-
-(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.thm->thm))))) (anchored 1))
-(rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
-
-(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.termquotation->tactic))))) (anchored 1))
-(rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
-
-(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature feature.type.int->tactic->tactic))))) (anchored 1))
-(rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
 
 # Applications
 (rule $tactic ($thm->tactic $thm) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
@@ -70,9 +57,21 @@
 (rule $tactic ($termquotation->tactic $Term) (lambda t1 (lambda t2 (call parens (call app (var t1) (var t2))))) (anchored 1))
 (rule $tactic->tactic ($int->tactic->tactic $Number) (lambda t1 (lambda n (call parens (call app (var t1) (var n ))))) (anchored 1))
 
+# Typed wildcards
+(rule $tactic (\( $PHRASE : tactic \)) (IdentityFn) (anchored 1))
+(rule $thm (\( $PHRASE : thm \)) (IdentityFn) (anchored 1))
+(rule $thm->tactic (\( $PHRASE : thm -> tactic \)) (IdentityFn) (anchored 1))
+(rule $thmlist->tactic (\( $PHRASE : thm list -> tactic \)) (IdentityFn) (anchored 1))
+(rule $tactic->tactic (\( $PHRASE : tactic -> tactic \)) (IdentityFn) (anchored 1))
+(rule $thm->thm (\( $PHRASE : thm -> thm \)) (IdentityFn) (anchored 1))
+(rule $termquotation->tactic (\( $PHRASE : term quotation -> tactic \)) (IdentityFn) (anchored 1))
+(rule $int->tactic->tactic (\( $PHRASE : int -> tactic -> tactic \)) (IdentityFn) (anchored 1))
+
 # Tactic composition
 (rule $tactic ($tactic THEN $tactic) (lambda t1 (lambda t2 (call then (var t1) (var t2)))) (anchored 1))
-(rule $tactic ($tactic THEN1 $tactic) (lambda t1 (lambda t2 (call then1 (var t1) (call parens (var t2))))) (anchored 1))
+(rule $tactic ($tactic THEN1 $tactic) (lambda t1 (lambda t2 (call then1 (var t1) (var t2)))) (anchored 1))
+(rule $tactic ($tactic \\ $tactic) (lambda t1 (lambda t2 (call then (var t1) (var t2)))) (anchored 1))
+(rule $tactic ($tactic >- $tactic) (lambda t1 (lambda t2 (call then1 (var t1) (var t2)))) (anchored 1))
 
 # Assumptions
 (rule $tactic ($Term by $tactic) (lambda q (lambda t (call op by (var q) (call parens (var t))))) (anchored 1))
@@ -80,14 +79,86 @@
 # Theorem Lists
 (rule $Thms ($thm) (IdentityFn) (anchored 1))
 (rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
-(rule $Thms ($thm and $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
 (rule $thmlist ([ $Thms ]) (lambda thms (call list (var thms))) (anchored 1))
 (rule $thmlist ($Thms) (lambda thms (call list (var thms))) (anchored 1))
 (rule $thmlist ([ ]) (ConstantFn []) (anchored 1))
-(rule $thmlist (nothing) (ConstantFn []) (anchored 1))
 
 # Other
 (rule $Term (` $PHRASE `) (lambda e (call quote (var e))) (anchored 1))
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
 
+
+########## NATURAL LANGUAGE SYNONYMS ##########
+
+# Theorem Lists
+(rule $Thms ($thm and $Thms) (lambda t1 (lambda t2 (call cons (var t1) (var t2)))) (anchored 1))
+(rule $thmlist (nothing) (ConstantFn []) (anchored 1))
+(rule $thmlist (empty list) (ConstantFn []) (anchored 1))
+
+# Tactic composition
+(rule $tactic ($tactic then $tactic) (lambda t1 (lambda t2 (call then (var t1) (var t2)))) (anchored 1))
+(rule $tactic ($tactic then $tactic on the first goal) (lambda t1 (lambda t2 (call then1 (var t1) (var t2)))) (anchored 1))
+
+
+########## GRAMMAR SUPPORTING ABSTRACT DESCRIPTIONS OF HOL4 COMPONENTS ##########
+
+# Sets and their intersections
+(rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
+(rule $type ($PHRASE) (SimpleLexiconFn (type type)) (anchored 1))
+(rule $Set ($name) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $Set ($type) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
+
+# Collapsing sets to single components
+(rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic"))))) (anchored 1))
+(rule $tactic ($tactic') (ChoiceFn) (anchored 1))
+
+(rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+(rule $thm ($thm') (ChoiceFn) (anchored 1))
+
+(rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> tactic"))))) (anchored 1))
+(rule $thm->tactic ($thm->tactic') (ChoiceFn) (anchored 1))
+
+(rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm list -> tactic"))))) (anchored 1))
+(rule $thmlist->tactic ($thmlist->tactic') (ChoiceFn) (anchored 1))
+
+(rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic -> tactic"))))) (anchored 1))
+(rule $tactic->tactic ($tactic->tactic') (ChoiceFn) (anchored 1))
+
+(rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> thm"))))) (anchored 1))
+(rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
+
+(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.termquotation -> tactic"))))) (anchored 1))
+(rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
+
+(rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.int -> tactic -> tactic"))))) (anchored 1))
+(rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
+
+# Casting sets as lists
+(rule $thmlist ($Set) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+(rule $thmlist (all $Set theorems) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+(rule $thmlist ($Set theorems) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+(rule $thmlist (all $Set) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
+
+########## REFACTORING ##########
+
+# App
+(for @a (use apply)
+     (rule $Apply (@a) (ConstantFn null) (anchored 1)))
+
+(rule $thm->tactic ($Apply $thm->tactic) (SelectFn 1) (anchored 1))
+(rule $thmlist->tactic ($Apply $thmlist->tactic) (SelectFn 1) (anchored 1))
+(rule $tactic->tactic ($Apply $tactic->tactic) (SelectFn 1) (anchored 1))
+(rule $thm->thm ($Apply $thm->thm) (SelectFn 1) (anchored 1))
+(rule $termquotation->tactic ($Apply $termquotation->tactic) (SelectFn 1) (anchored 1))
+(rule $int->tactic->tactic ($Apply $int->tactic->tactic) (SelectFn 1) (anchored 1))
+
+# Args
+(for @p (on with)
+     (rule $Prep (@p) (ConstantFn null) (anchored 1)))
+
+(rule $tactic ($Prep $tactic) (SelectFn 1) (anchored 1))
+(rule $thm ($Prep $thm) (SelectFn 1) (anchored 1))
+(rule $thmlist ($Prep $thmlist) (SelectFn 1) (anchored 1))
+(rule $termquotation ($Prep $termquotation) (SelectFn 1) (anchored 1))
 

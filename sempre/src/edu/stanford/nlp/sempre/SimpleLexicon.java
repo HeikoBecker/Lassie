@@ -6,6 +6,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
+import edu.stanford.nlp.sempre.interactive.lassie.TacticWorld;
+
 /**
  * A Lexicon maps phrases (e.g., born) to lexical entries, which contain a
  * formula (e.g., fb:people.person.place_of_birth) and a type.
@@ -57,6 +59,7 @@ public final class SimpleLexicon {
 
   private SimpleLexicon() {
     if (opts.inPaths == null) return;
+    new TacticWorld(); // get lassie to write lexicon
     for (String path : opts.inPaths) read(path);
   }
 

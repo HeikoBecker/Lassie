@@ -16,7 +16,7 @@ public class LassieUtils{
     
     public static void printToSocket(String string) {
 	try (PrintWriter writer = new PrintWriter("interactive/sempre-out-socket.sml", "UTF-8")) {
-	    writer.println("val _ = Lassie.SEMPRE_OUTPUT := SOME (" + string + ")");
+	    writer.println("val _ = Lassie.SEMPRE_OUTPUT := SOME " + string);
 	    writer.close();
 	} catch (IOException ex) {
 	    System.err.println("Error writing to file interactive/sempre-out-socket.sml");
@@ -51,6 +51,6 @@ public class LassieUtils{
 	    string = string + "\"" + substrings[i];
 	}
 		    
-	return string + "\n(*" + orig + "*)\n";
+	return string + "\n\n(*" + orig + "*)\n";
     }
 }

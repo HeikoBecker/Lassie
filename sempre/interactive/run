@@ -230,9 +230,11 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('DALExecutor.worldType', 'TacticWorld'),
   o('Grammar.inPaths', "./#{$path}/lassie.grammar"),
 
-#  o('InteractiveMaster.lassieFlag', true), # Makes sempre print resuling value to file-socket
   o('InteractiveMaster.allowRegularCommands', true),
-  o('TacticWorld.dbPath', 'interactive/lassie.db'),
+  o('TacticWorld.dbPath', "./#{$path}/lassie.db"),
+  o('TacticWorld.lexPath', "./#{$path}/lassie.lexicon"),
+  # o('TacticWorld.seedGrammarPath', "./#{$path}/lassie.seed.grammar"),
+  # o('TacticWorld.genGrammarPath', "./#{$path}/lassie.generated.grammar"),
   
   o('Params.initWeightsRandomly', false),
   o('Grammar.binarizeRules', false),
@@ -246,7 +248,7 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('Parser.callSetEvaluation', false),
   o('Parser.coarsePrune', true),
 
-  o('Parser.beamSize', 50),
+  o('Parser.beamSize', 100),
   o('InteractiveBeamParser.maxNewTreesPerSpan', 5001),
   o('ParserState.customExpectedCounts', 'None'),
 
@@ -285,7 +287,7 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('Derivation.anchoredBonus', 1.0),
 
   o('NumberFn.allowedRange', 0, 100),
-  o('SimpleLexicon.inPaths', "./#{$path}/lassie.lexicon"),
+  o('SimpleLexicon.inPaths', "./#{$path}/lassie.lexicon", "./#{$path}/lassie.synonyms"),
 
   lambda { |e| system 'mkdir -p ./int-output/'; nil},
   lambda { |e| system 'mkdir -p ./int-output/log/'; nil},
