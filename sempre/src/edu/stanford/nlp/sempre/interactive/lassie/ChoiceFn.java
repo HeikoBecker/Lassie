@@ -1,4 +1,4 @@
-package edu.stanford.nlp.sempre;
+package edu.stanford.nlp.sempre.interactive.lassie;
 
 import edu.stanford.nlp.sempre.*;
 import edu.stanford.nlp.sempre.interactive.DALExecutor;
@@ -41,6 +41,7 @@ public class ChoiceFn extends SemanticFn {
 
     public DerivationStream call(final Example ex, final Callable c) {
 	DALExecutor executor = new DALExecutor();
+	c.child(0).printDerivationRecursively();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
 	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
 	if (elements.length > 1) {
