@@ -30,7 +30,7 @@ import fig.basic.Option;
 import edu.stanford.nlp.sempre.interactive.lassie.Component;
 
 // the world of tactics
-public class TacticWorld extends World {
+public class TacticWorld {
 
     public static class Options {
 	@Option(gloss = "Path to database file, contains components and their features")
@@ -44,22 +44,17 @@ public class TacticWorld extends World {
     }
     public static Options opts = new Options();
     
-    public String string; // string in construction
     public Map<String,Set<String>> entities; // component -> features
     public Map<String,Set<String>> features; // feature -> components
     
     @SuppressWarnings("unchecked")
     public TacticWorld() {
-	this.allItems = new HashSet<>();
-	this.selected = new HashSet<>();
-	this.previous = new HashSet<>();
 	this.entities = new HashMap<String,Set<String>>();
 	this.features = new HashMap<String,Set<String>>();
 	readDB();
 	writeLexicon();
     }
 
-    
     private void logLine(String path, String line) {
 	PrintWriter out;
 	try {
@@ -78,6 +73,7 @@ public class TacticWorld extends World {
 	    insert(component, feat);
 	}
     }
+    
     private void insert(String component, String feature) {
 	// From components to their features
 	this.entities.putIfAbsent(component, new HashSet<String>());
@@ -239,44 +235,4 @@ public class TacticWorld extends World {
     public static String set2string(Set<String> s) {
 	return String.join(",", s);
     }
-
-    /*
-     * DALExecutor always expects an ActionFormula, and only executes
-     * other Formulas (e.g. CallFormulas) as sub-formulas of the main
-     * one. Action formulas appear in the grammar as (: myAction arg1
-     * arg2 ...), the return value is not observed and instead taken
-     * from the toJSON() method.
-     */
-    
-    // Result
-    public void tacReturn(String str) {
-	if (str.equals("")) this.string = "NO_TAC";	
-	else this.string = str;
-    }
-
-    public void strReturn(String str) {
-	this.string = str;
-    }
-
-    // Called from DALExecutor after evaluation; is the return value of executor
-    public String toJSON() {
-	return this.string;
-    }
-
-    ///////////////////////////////
-    // UNUSED, required by interface
-    @Override
-    public Set<Item> has(String rel, Set<Object> values) {
-	// LogInfo.log(values);
-	return this.allItems.stream().filter(i -> values.contains(i.get(rel))).collect(Collectors.toSet());
-    }
-    @Override
-    public Set<Object> get(String rel, Set<Item> subset) {
-	return subset.stream().map(i -> i.get(rel)).collect(Collectors.toSet());
-    }
-    @Override
-    public void update(String rel, Object value, Set<Item> selected) {}
-    @Override
-    public void merge() {}
-    ///////////////////////////////
 }
