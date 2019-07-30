@@ -1,8 +1,8 @@
-structure Lassie =   
+structure Lassie =
 struct
 val map = List.map
 exception LassieException of string
-			    
+
 fun sleep t =
     let
 	val wakeUp = Time.+ (Time.now(), Time.fromReal(t))
@@ -24,10 +24,10 @@ fun waitSempre instream =
 	if String.isSuffix "\n> " s orelse s = "> " then ()
 	(* else if s = "" then raise LassieException "Reached EOS? Empty string was read."  *)
 	else waitSempre instream
-    end	
-				     
+    end
+
 (* run SEMPRE as a subprocess, through its run script returns outstream of its shell *)
-fun launchSempre () = 
+fun launchSempre () =
     let
 	val LASSIEDIR = case OS.Process.getEnv "LASSIEDIR" of
 			    SOME s => s
@@ -45,17 +45,24 @@ fun launchSempre () =
     end
 
 val (instream, outstream) = launchSempre()
-val SEMPRE_OUTPUT = ref (SOME {candidates= [{score= 0.0,
-					     prob= ~1.0,
-					     anchored= true,
-					     formula= "",
-					     value= "NO_TAC",
-					     tactic= NO_TAC}],
-			       stats= {cmd= "q",
-				       size= 2,
-				       status= "Core"},
-			       lines= [""]})
+
+val SEMPRE_RESPONSE = ref (SOME {candidates= [{score= 0.0,
+					       prob= ~1.0,
+					       anchored= true,
+					       formula= "",
+					       value= "NO_TAC",
+					       tactic= NO_TAC}],
+				 stats= {cmd= "q",
+					 size= 2,
+					 status= "Core"},
+				 lines= [""]})
+val _ = SEMPRE_RESPONSE := NONE
+			       
+val AMBIGUITY_WARNING = ref (SOME {set= [""],  span= (0,0)})
+val _ = AMBIGUITY_WARNING := NONE
+
 val lastUtterance = ref ""
+			
 val socketPath = "interactive/sempre-out-socket.sml"
 val historyPath = "interactive/last-sempre-output.sml"
 
@@ -68,13 +75,34 @@ fun writeSempre (cmd : string) =
     in
 	waitSempre(!instream)
     end
+
+fun showList lst : string =
+    let
+	fun helper l s = case l of
+			     [] => "[" ^ s ^ "]"
+			   | hd::tl => helper tl (s ^ "," ^ hd)
+    in
+	case lst of
+	    [] => "[]"
+	  | hd::tl => helper (rev tl) hd
+    end
 	
-				 
+fun printAmbiguities () =
+    case !AMBIGUITY_WARNING of
+	NONE => ()
+      | SOME warning => print ("Warning-\n   Lassie could not disambiguate the expression at ("
+			       ^ Int.toString(fst (#span warning))
+			       ^ ","
+			       ^ Int.toString(snd (#span warning))
+			       ^ ") of the utterance.\n   Possible interpretations include:\n\t"
+			       ^ showList (#set warning)
+			       ^ ".\n   Lassie might be able to parse the utterance if you are more specific.\n\n")
+
 (* read SEMPRE's response from the "socket" file once there and remove it *)
 (* returns a derivation (i.e. the first candidate) *)
 fun readSempre utt =
     let
-	val _ = sleep 0.1; (* socket file seems to appear a bit after end of execution *)	 
+	val _ = sleep 0.1; (* socket file seems to appear a bit after end of execution *)
 	val _ = if not (OS.FileSys.access (socketPath, []))
 		then raise LassieException ("Socket file missing after call to SEMPRE: " ^ socketPath)
 		else ()
@@ -82,13 +110,17 @@ fun readSempre utt =
 	use socketPath;
 	if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ();
 	OS.FileSys.rename {old = socketPath, new = historyPath};
-	case !SEMPRE_OUTPUT of
-	    NONE => raise Fail ("SEMPRE returned an empty response to utterance `" ^ utt ^ "`")
-	  | SOME response => case #candidates response of 
-				 [] => raise LassieException ("Did not understand the utterance "
-							      ^ utt
-							      ^ ", you may provide a definition using lassie.def")  
-			       | deriv::tail => (deriv, tail) (* ensures at least one derivation *)
+	case !SEMPRE_RESPONSE of
+	    NONE => raise LassieException ("Problem reading SEMPRE's response (empty response record)")
+	  | SOME response => case #candidates response of
+				 [] => let
+				  val _ = printAmbiguities()
+			      in
+				  raise LassieException ("Did not understand the utterance `"
+							 ^ utt
+							 ^ "`, you can provide a definition using lassie.def")
+			      end
+				| deriv::tail => (deriv, tail) (* ensures at least one derivation *)
     end
 
 (* send a NL query to sempre and return at least a derivation *)
@@ -107,11 +139,11 @@ fun accept (utt, formula) : unit =
     in
 	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")")
     end
-								
+
 (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
 fun lassie utt =
     let
-	val _ = print ("Trying to parse " ^ utt ^ "\n")
+	val _ = print ("Trying to parse `" ^ utt ^ "`...\n\n")
 	val derivations = utt |> sempre |> (fn (hd,tl) => hd::tl)
 	fun dprinter derivs idx =
 	    case derivs of
@@ -132,19 +164,19 @@ fun lassie utt =
 			  print ("Accepted derivation [" ^ Int.toString idx ^ "]\n");
 			  proofManagerLib.e (#tactic d)
 		      end
-    end			      
-	
+    end
+
 (* define an utterance in terms of a list of utterances*)
 fun def ndum niens : unit =
     let
 	(* for each utterance of the definition, get its logical form *)
 	fun getFormula u = [u, (u |> sempre |> fst |> #formula)]
-			       
+
 	(* formatting *)
 	fun quot s = "\"" ^ s ^ "\""
 	fun quot' s = "\\\"" ^ s ^ "\\\""
 	fun list2string l = "[" ^ (String.concatWith "," l) ^ "]"
-								  
+
 	val definiens = niens |> (map getFormula)
 			      |> (map (map quot'))
 			      |> (map list2string)
@@ -154,7 +186,7 @@ fun def ndum niens : unit =
     end
 
 fun addRule lhs rhs sem : unit =
-    let 
+    let
 	fun paren str =
 	    let
 		val clist = String.explode str
@@ -165,6 +197,4 @@ fun addRule lhs rhs sem : unit =
     in
 	writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")")
     end
-
 end
-    

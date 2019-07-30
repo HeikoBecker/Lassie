@@ -114,7 +114,7 @@ public class TacticWorld extends World {
 		    moreFeatures.add(attribute + "." + statements[i].replaceAll("\\s+", " "));
 		insert(component, moreFeatures);
 	    } else {
-		throw new RuntimeException("Unhandled: " + line);
+		continue; // Skip lines with missing information
 	    }
 	}
 	LogInfo.end_track();

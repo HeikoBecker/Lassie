@@ -1,7 +1,8 @@
-package edu.stanford.nlp.sempre;
+package edu.stanford.nlp.sempre.interactive.lassie;
 
 import edu.stanford.nlp.sempre.*;
 import edu.stanford.nlp.sempre.interactive.DALExecutor;
+import edu.stanford.nlp.sempre.interactive.lassie.LassieUtils;
 
 import fig.basic.LispTree;
 import fig.basic.LogInfo;
@@ -13,9 +14,12 @@ import java.util.Arrays;
 
 /**
  * Given a set, returns an element of that set. Kills derivations which
- * execute to empty sets. Branch a derivation to every possible pick in
- * case it executes to something bigger than a singleton. The grammar
- * rule using this SemanticFn might look like
+ * execute to empty sets. Sets which execute to something bigger than a
+ * singleton trigger a warning, written to the socket file, which
+ * locates and describes the ambiguity. In the case that SEMPRE returns
+ * no derivations, Lassie can use this information to describe the cause
+ * of missing derivations. The grammar rule using this SemanticFn might
+ * look like
  *
  * (rule $MyType ($MyTypeCandidates) (ChoiceFn))
  *
@@ -37,8 +41,16 @@ public class ChoiceFn extends SemanticFn {
 
     public DerivationStream call(final Example ex, final Callable c) {
 	DALExecutor executor = new DALExecutor();
+	c.child(0).printDerivationRecursively();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
-	elements = candidates.split(","); // current representation of sets is as a string (CSVs)
+	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
+	if (elements.length > 1) {
+	    LassieUtils.printToSocket("Lassie.AMBIGUITY_WARNING := SOME {set= "
+				      + "[\"" + candidates.replace(",","\",\"") + "\"], "
+				      + "span= "
+				      + "(" + c.child(0).getStart() + "," + c.child(0).getEnd() + ")}");
+	    elements = new String[0];
+	}
 	return new MultipleDerivationStream() {
 	    public int currIndex = 0;
 	    @Override

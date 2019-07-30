@@ -105,37 +105,38 @@
 # Sets and their intersections
 (rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
 (rule $type ($PHRASE) (SimpleLexiconFn (type type)) (anchored 1))
+(rule $effect ($PHRASE) (SimpleLexiconFn (type effect)) (anchored 1))
 (rule $Set ($name) (lambda n (call fromFeature (var n))) (anchored 1))
 (rule $Set ($type) (lambda n (call fromFeature (var n))) (anchored 1))
+(rule $Set ($effect) (lambda n (call fromFeature (var n))) (anchored 1))
 (rule $Set ($Set $Set) (lambda s1 (lambda s2 (call intersect (var s1) (var s2)))) (anchored 1))
 
 # Collapsing sets to single components
 (rule $tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic"))))) (anchored 1))
-(rule $tactic ($tactic') (ChoiceFn) (anchored 1))
+(rule $tactic ($tactic') (interactive.lassie.ChoiceFn) (anchored 1))
 
 (rule $thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
-(rule $thm ($thm') (ChoiceFn) (anchored 1))
+(rule $thm ($thm') (interactive.lassie.ChoiceFn) (anchored 1))
 
 (rule $thm->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> tactic"))))) (anchored 1))
-(rule $thm->tactic ($thm->tactic') (ChoiceFn) (anchored 1))
+(rule $thm->tactic ($thm->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
 
 (rule $thmlist->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm list -> tactic"))))) (anchored 1))
-(rule $thmlist->tactic ($thmlist->tactic') (ChoiceFn) (anchored 1))
+(rule $thmlist->tactic ($thmlist->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
 
 (rule $tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.tactic -> tactic"))))) (anchored 1))
-(rule $tactic->tactic ($tactic->tactic') (ChoiceFn) (anchored 1))
+(rule $tactic->tactic ($tactic->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
 
 (rule $thm->thm' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.thm -> thm"))))) (anchored 1))
-(rule $thm->thm ($thm->thm') (ChoiceFn) (anchored 1))
+(rule $thm->thm ($thm->thm') (interactive.lassie.ChoiceFn) (anchored 1))
 
-(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.termquotation -> tactic"))))) (anchored 1))
-(rule $termquotation->tactic ($termquotation->tactic') (ChoiceFn) (anchored 1))
+(rule $termquotation->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.term quotation -> tactic"))))) (anchored 1))
+(rule $termquotation->tactic ($termquotation->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
 
 (rule $int->tactic->tactic' ($Set) (lambda s (: strReturn (call set2string (call intersect (var s) (call fromFeature "type.int -> tactic -> tactic"))))) (anchored 1))
-(rule $int->tactic->tactic ($int->tactic->tactic') (ChoiceFn) (anchored 1))
+(rule $int->tactic->tactic ($int->tactic->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
 
 # Casting sets as lists
-(rule $thmlist ($Set) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
 (rule $thmlist (all $Set theorems) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
 (rule $thmlist ($Set theorems) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
 (rule $thmlist (all $Set) (lambda s (call list (call set2string (call intersect (var s) (call fromFeature "type.thm"))))) (anchored 1))
