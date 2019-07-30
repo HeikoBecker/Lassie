@@ -180,38 +180,38 @@ public class TacticWorld extends World {
     // }
     
     // String constructions, basically tactic language
-    public String int2string(Integer n) {
+    public static String int2string(Integer n) {
 	return n.toString();
     }
-    public String app(String fn, String arg) {
+    public static String app(String fn, String arg) {
 	if (fn.equals("") || arg.equals("")) return "";
 	return fn + " " + arg;
     }
-    public String then(String tac1, String tac2) {
+    public static String then(String tac1, String tac2) {
 	if (tac1.equals("") || tac2.equals("")) return "";
 	return tac1 + " \\ " + tac2;
     }
-    public String then1(String tac1, String tac2) {
+    public static String then1(String tac1, String tac2) {
 	if (tac1.equals("") || tac2.equals("")) return "";
 	return tac1 + " >- " + parens(tac2);
     }
-    public String cons(String hd, String tl) {
+    public static String cons(String hd, String tl) {
 	if (hd.equals("") || tl.equals("")) return "";
 	return hd + "," + tl;
     }
-    public String list(String seq) {
+    public static String list(String seq) {
 	if (seq.equals("")) return "";
 	return "[" + seq + "]";
     }
-    public String quote(String exp) {
+    public static String quote(String exp) {
 	if (exp.equals("")) return "";
 	return "`" + exp + "`";
     }
-    public String parens(String exp) {
+    public static String parens(String exp) {
 	if (exp.equals("")) return "";
 	return "(" + exp + ")";
     }
-    public String op(String operator, String arg1, String arg2) {
+    public static String op(String operator, String arg1, String arg2) {
 	if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
 	return arg1 + " " + operator + " " + arg2;
     }
@@ -220,19 +220,23 @@ public class TacticWorld extends World {
     public static String refine(String s1, String s2) {
 	return s1 + "." + s2;
     }
-    public Set<String> fromFeature(String f) {
-	if (f.equals("top")) return entities.keySet();
+    public static Set<String> fromFeature(String f) {
+	// needs to stay static for the JavaExecutor;
+	// current fix to keep this method static: create new world at each call;
+	// very inefficient
+	TacticWorld world = new TacticWorld(); 
+	if (f.equals("top")) return world.entities.keySet();
 	else if (f.equals("bot")) return new HashSet<String>();
-        else if (features.containsKey(f)) return features.get(f);
+        else if (world.features.containsKey(f)) return world.features.get(f);
 	else throw new RuntimeException("Feature not recognized: " + f);
     }
     
     // Set operations
-    public Set<String> intersect(Set<String> s1, Set<String> s2) {
+    public static Set<String> intersect(Set<String> s1, Set<String> s2) {
 	return s1.stream().filter(i -> s2.contains(i)).collect(Collectors.toSet());
     }
 
-    public String set2string(Set<String> s) {
+    public static String set2string(Set<String> s) {
 	return String.join(",", s);
     }
 

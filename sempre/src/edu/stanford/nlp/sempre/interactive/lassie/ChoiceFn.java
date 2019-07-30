@@ -40,7 +40,7 @@ public class ChoiceFn extends SemanticFn {
     public ChoiceFn() { }
 
     public DerivationStream call(final Example ex, final Callable c) {
-	DALExecutor executor = new DALExecutor();
+	Executor executor = new JavaExecutor();
 	//c.child(0).printDerivationRecursively();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
 	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
