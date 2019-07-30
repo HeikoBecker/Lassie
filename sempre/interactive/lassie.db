@@ -36,24 +36,24 @@ fs                          type    thm list -> tactic
 rfs                         type    thm list -> tactic
 
 # thm tactics
-imp_res_tac                 type    thm -> tactic
-assume_tac                  type    thm -> tactic
-irule 		                  type    thm -> tactic
-drule                       type    thm -> tactic
-match_mp_tac                type    thm -> tactic
+imp_res_tac                 type    thm_tactic
+assume_tac                  type    thm_tactic
+irule 		                  type    thm_tactic
+drule                       type    thm_tactic
+match_mp_tac                type    thm_tactic
 
 # automation tactics
 res_tac                     type    tactic
-metis_tac                   type    thm -> tactic
-meson_tac                   type    thm -> tactic
+metis_tac                   type    thm_tactic
+meson_tac                   type    thm_tactic
 
 # pattern based tactics
-qpat_x_assum                type    term quotation -> (thm -> tactic) -> tactic
-qpat_assum                  type    term quotation -> (thm -> tactic) -> tactic
+qpat_x_assum                type    term quotation -> thm_tactic -> tactic
+qpat_assum                  type    term quotation -> thm_tactic -> tactic
 
 # tacticals
-first_x_assum               type    (thm -> tactic) -> tactic
-last_x_assum                type    (thm -> tactic) -> tactic
+first_x_assum               type    thm_tactic -> tactic
+last_x_assum                type    thm_tactic -> tactic
 ntac 		                    type    int -> tactic -> tactic
 rpt 		                    type    tactic -> tactic
 
@@ -68,8 +68,8 @@ strip_tac                   type    tactic
 Induct_on 	                type    term quotation -> tactic
 rename                      type    term quotation list -> tactic
 qexists_tac                 type    term quotation -> tactic
-qspec_then                  type    term quotation -> (thm -> tactic) -> thm -> tactic
-qspecl_then                 type    term quotation list -> (thm -> tactic) -> thm -> tactic
+qspec_then                  type    term quotation -> thm_tactic -> thm_tactic
+qspecl_then                 type    term quotation list -> thm_tactic -> thm_tactic
 
 ########################
 # HOL4 - Rules : Types #

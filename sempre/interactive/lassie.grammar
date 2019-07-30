@@ -27,7 +27,7 @@
 # $tactic
 # $thm
 # ($thmlist)
-# $thm->tactic
+# $thm_tactic
 # $thmlist->tactic
 # $tactic->tactic
 # $thm->thm
@@ -74,7 +74,7 @@
 # Typed wildcards
 (rule $tactic (\( $PHRASE : tactic \)) (IdentityFn) (anchored 1))
 (rule $thm (\( $PHRASE : thm \)) (IdentityFn) (anchored 1))
-(rule $thm->tactic (\( $PHRASE : thm -> tactic \)) (IdentityFn) (anchored 1))
+(rule $thm_tactic (\( $PHRASE : thm_tactic \)) (IdentityFn) (anchored 1))
 (rule $thmlist->tactic (\( $PHRASE : thm list -> tactic \)) (IdentityFn) (anchored 1))
 (rule $tactic->tactic (\( $PHRASE : tactic -> tactic \)) (IdentityFn) (anchored 1))
 (rule $thm->thm (\( $PHRASE : thm -> thm \)) (IdentityFn) (anchored 1))
@@ -161,7 +161,7 @@
 (for @a (use apply)
      (rule $Apply (@a) (ConstantFn null) (anchored 1)))
 
-(rule $thm->tactic ($Apply $thm->tactic) (SelectFn 1) (anchored 1))
+(rule $thm_tactic ($Apply $thm_tactic) (SelectFn 1) (anchored 1))
 (rule $thmlist->tactic ($Apply $thmlist->tactic) (SelectFn 1) (anchored 1))
 (rule $tactic->tactic ($Apply $tactic->tactic) (SelectFn 1) (anchored 1))
 (rule $thm->thm ($Apply $thm->thm) (SelectFn 1) (anchored 1))
@@ -176,4 +176,3 @@
 (rule $thm ($Prep $thm) (SelectFn 1) (anchored 1))
 (rule $thmlist ($Prep $thmlist) (SelectFn 1) (anchored 1))
 (rule $termquotation ($Prep $termquotation) (SelectFn 1) (anchored 1))
-
