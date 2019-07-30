@@ -45,11 +45,10 @@ public class ChoiceFn extends SemanticFn {
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
 	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
 	if (elements.length > 1) {
-	    LassieUtils.printToSocket("Lassie.AMBIGUITY_WARNING := SOME {set= "
-				      + "[\""
-				      + candidates.replace(",","\",\"")
-				      + "\"]"
-				      + ", span= (0,0)}"); // TODO: Find span in derivation and put here
+	    LassieUtils.printToSocket("Lassie.AMBIUITY_WARNING := SOME {set= "
+				      + "[\"" + candidates.replace(",","\",\"") + "\"], "
+				      + "span= "
+				      + "(" + c.child(0).getStart() + "," + c.child(0).getEnd() + ")}");
 	    elements = new String[0];
 	}
 	return new MultipleDerivationStream() {
