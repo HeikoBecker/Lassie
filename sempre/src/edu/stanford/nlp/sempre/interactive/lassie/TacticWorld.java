@@ -148,7 +148,7 @@ public class TacticWorld {
 		Map<String, Object> jsonMap = new LinkedHashMap<>();
 		jsonMap.put("lexeme", c);
 		jsonMap.put("formula", quot(c)); // force Formula to StringFormula in the Lisp interpreter
-		jsonMap.put("type", suffix(typeOf(c)));
+		jsonMap.put("type", quot(suffix(typeOf(c))));
 		writer.println(Json.writeValueAsStringHard(jsonMap));
 	    }
 	    // Features
@@ -156,7 +156,7 @@ public class TacticWorld {
 		Map<String, Object> jsonMap = new LinkedHashMap<>();
 		jsonMap.put("lexeme", suffix(f));
 		jsonMap.put("formula", quot(f)); // may contain spaces, force Formula to StringFormula
-		jsonMap.put("type", prefix(f));
+		jsonMap.put("type", quot(prefix(f)));
 		writer.println(Json.writeValueAsStringHard(jsonMap));
 	    }
 	    writer.close();

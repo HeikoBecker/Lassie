@@ -54,14 +54,14 @@
      (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
 
 # Litteral Components Import
-(rule $tactic ($TOKEN) (SimpleLexiconFn (type tactic)) (anchored 1))
-(rule $thm ($TOKEN) (SimpleLexiconFn (type thm)) (anchored 1))
-(rule $thm->tactic ($TOKEN) (SimpleLexiconFn (type thm->tactic)) (anchored 1))
-(rule $thmlist->tactic ($TOKEN) (SimpleLexiconFn (type thmlist->tactic)) (anchored 1))
-(rule $tactic->tactic ($TOKEN) (SimpleLexiconFn (type tactic->tactic)) (anchored 1))
-(rule $thm->thm ($TOKEN) (SimpleLexiconFn (type thm->thm)) (anchored 1))
-(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type term quotation->tactic)) (anchored 1))
-(rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type int->tactic->tactic)) (anchored 1))
+(rule $tactic ($TOKEN) (SimpleLexiconFn (type "tactic")) (anchored 1))
+(rule $thm ($TOKEN) (SimpleLexiconFn (type "thm")) (anchored 1))
+(rule $thm->tactic ($TOKEN) (SimpleLexiconFn (type "thm->tactic")) (anchored 1))
+(rule $thmlist->tactic ($TOKEN) (SimpleLexiconFn (type "thmlist->tactic")) (anchored 1))
+(rule $tactic->tactic ($TOKEN) (SimpleLexiconFn (type "tactic->tactic")) (anchored 1))
+(rule $thm->thm ($TOKEN) (SimpleLexiconFn (type "thm->thm")) (anchored 1))
+(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type term "quotation->tactic")) (anchored 1))
+(rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
 
 # Applications
 (rule $tactic ($thm->tactic $thm) (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))) (anchored 1))
