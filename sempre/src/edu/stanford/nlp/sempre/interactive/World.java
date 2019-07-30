@@ -25,8 +25,6 @@ public abstract class World {
   public static World fromContext(String worldname, ContextValue context) {
     if (worldname.equals("VoxelWorld"))
       return VoxelWorld.fromContext(context);
-    if (worldname.equals("TacticWorld"))
-	return new TacticWorld();
     throw new RuntimeException("World does not exist: " + worldname);
   }
 
