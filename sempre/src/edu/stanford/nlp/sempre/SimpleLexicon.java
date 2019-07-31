@@ -6,7 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.*;
 
-import edu.stanford.nlp.sempre.interactive.lassie.TacticWorld;
+import edu.stanford.nlp.sempre.interactive.lassie.HOLOntology;
 
 /**
  * A Lexicon maps phrases (e.g., born) to lexical entries, which contain a
@@ -59,7 +59,7 @@ public final class SimpleLexicon {
 
   private SimpleLexicon() {
     if (opts.inPaths == null) return;
-    new TacticWorld(); // get lassie to write lexicon
+    HOLOntology.getTheOntology(); // make sure ontology (thus lexicon) was created
     for (String path : opts.inPaths) read(path);
   }
 

@@ -231,10 +231,10 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('Grammar.inPaths', "./#{$path}/lassie.grammar"),
 
   o('InteractiveMaster.allowRegularCommands', true),
-  o('TacticWorld.dbPath', "./#{$path}/lassie.db"),
-  o('TacticWorld.lexPath', "./#{$path}/lassie.lexicon"),
-  # o('TacticWorld.seedGrammarPath', "./#{$path}/lassie.seed.grammar"),
-  # o('TacticWorld.genGrammarPath', "./#{$path}/lassie.generated.grammar"),
+  o('HOLOntology.dbPath', "./#{$path}/lassie.db"),
+  o('HOLOntology.lexPath', "./#{$path}/lassie.lexicon"),
+  # o('HOLOntology.seedGrammarPath', "./#{$path}/lassie.seed.grammar"),
+  # o('HOLOntology.genGrammarPath', "./#{$path}/lassie.generated.grammar"),
   
   o('Params.initWeightsRandomly', false),
   o('Grammar.binarizeRules', false),
