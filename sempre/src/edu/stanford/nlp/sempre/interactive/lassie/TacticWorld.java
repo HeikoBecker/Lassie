@@ -74,9 +74,6 @@ public class TacticWorld {
 	return s1 + "." + s2;
     }
     public static Set<String> fromFeature(String f) {
-	// needs to stay static for the JavaExecutor;
-	// current fix to keep this method static: create new world at each call;
-	// very inefficient
 	HOLOntology ontology = HOLOntology.getTheOntology(); 
 	if (f.equals("top")) return ontology.entities.keySet();
 	else if (f.equals("bot")) return new HashSet<String>();
