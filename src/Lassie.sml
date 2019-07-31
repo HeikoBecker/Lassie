@@ -90,7 +90,7 @@ val SEMPRE_RESPONSE = ref (SOME {candidates= [{score= 0.0,
 				 lines= [""]})
 val _ = SEMPRE_RESPONSE := NONE
 			       
-val AMBIGUITY_WARNING = ref (SOME {set= [""],  span= (0,0)})
+val AMBIGUITY_WARNING = ref (SOME {set= [""],  span= ""})
 val _ = AMBIGUITY_WARNING := NONE
 
 val lastUtterance = ref ""
@@ -122,11 +122,9 @@ fun showList lst : string =
 fun printAmbiguities () =
     case !AMBIGUITY_WARNING of
 	NONE => ()
-      | SOME warning => print ("Warning-\n   Lassie could not disambiguate the expression at ("
-			       ^ Int.toString(fst (#span warning))
-			       ^ ","
-			       ^ Int.toString(snd (#span warning))
-			       ^ ") of the utterance.\n   Possible interpretations include:\n\t"
+      | SOME warning => print ("Warning (ambiguity)-\n   Lassie could not disambiguate the expression\n      `"
+			       ^ (#span warning)
+			       ^ "`\n   in the utterance. Possible interpretations include:\n      "
 			       ^ showList (#set warning)
 			       ^ ".\n   Lassie might be able to parse the utterance if you are more specific.\n\n")
 
@@ -148,9 +146,9 @@ fun readSempre utt =
 				 [] => let
 				  val _ = printAmbiguities()
 			      in
-				  raise LassieException ("Did not understand the utterance `"
+				  raise LassieException ("Could not parse the utterance `"
 							 ^ utt
-							 ^ "`, you can provide a definition using lassie.def")
+							 ^ "`, you can provide a definition using Lassie.def")
 			      end
 				| deriv::tail => (deriv, tail) (* ensures at least one derivation *)
     end
