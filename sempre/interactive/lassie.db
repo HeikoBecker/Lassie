@@ -54,8 +54,8 @@ qpat_assum                  type    term quotation -> thm_tactic -> tactic
 # tacticals
 first_x_assum               type    thm_tactic -> tactic
 last_x_assum                type    thm_tactic -> tactic
-ntac 		                    type    int -> tactic -> tactic
-rpt 		                    type    tactic -> tactic
+ntac 		            type    int -> tactic -> tactic
+rpt 		            type    tactic -> tactic
 
 # other
 subgoal                     type    term quotation -> tactic
@@ -63,9 +63,9 @@ by                          type    term quotation * tactic -> tactic
 suffices_by                 type    term quotation * tactic -> tactic
 Cases                       type    tactic
 Induct                      type    tactic
-cheat 		                  type    tactic
+cheat 		            type    tactic
 strip_tac                   type    tactic
-Induct_on 	                type    term quotation -> tactic
+Induct_on 	            type    term quotation -> tactic
 rename                      type    term quotation list -> tactic
 qexists_tac                 type    term quotation -> tactic
 qspec_then                  type    term quotation -> thm_tactic -> thm_tactic
@@ -120,9 +120,9 @@ by                          name    by
 suffices_by                 name    suffices to show
 Cases                       name    Case analysis, case analysis
 Induct                      name    Induction, induction
-cheat 		                  name    cheat
+cheat 		            name    cheat
 strip_tac                   name    strip, remove quantifier
-Induct_on 	                name    Induction on, Induct on, induction on, induct on
+Induct_on 	            name    Induction on, Induct on, induction on, induct on
 rename                      name    rename into
 qexists_tac                 name    exists, exists_tac, qexists_tac
 qspec_then                  name    specialize for, qspec_then
@@ -586,7 +586,7 @@ ABS_0                       type    thm
 #######################################
 # HOL4 - Real number theorems : Names #
 #######################################
-#REAL_DIV                    name    real, division
+#REAL_DIV                   name    real, division
 REAL_SUB	                  name    real, subtraction, additive inverse
 POW_2                       name    power, square, two
 REAL		                    name    real, definition, successor

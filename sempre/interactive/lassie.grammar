@@ -53,7 +53,7 @@
 (for @cat ($tactic $ThmListTactic $ThmTactic)
      (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
 
-# Litteral Components Import
+# Literal Components Import
 (rule $tactic ($TOKEN) (SimpleLexiconFn (type "tactic")) (anchored 1))
 (rule $thm ($TOKEN) (SimpleLexiconFn (type "thm")) (anchored 1))
 (rule $thm->tactic ($TOKEN) (SimpleLexiconFn (type "thm->tactic")) (anchored 1))
@@ -64,12 +64,13 @@
 (rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
 
 # Applications
-(rule $tactic ($thm->tactic $thm) (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))) (anchored 1))
-(rule $tactic ($thmlist->tactic $thmlist) (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))) (anchored 1))
-(rule $tactic ($tactic->tactic $tactic) (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))) (anchored 1))
-(rule $thm ($thm->thm $thm) (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))) (anchored 1))
-(rule $tactic ($termquotation->tactic $Term) (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))) (anchored 1))
-(rule $tactic->tactic ($int->tactic->tactic $Number) (lambda t1 (lambda n (call @parens (call @app (var t1) (var n ))))) (anchored 1))
+(def @appT1T2 (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))))
+(rule $tactic ($thm->tactic $thm) @appT1T2 (anchored 1))
+(rule $tactic ($thmlist->tactic $thmlist) @appT1T2 (anchored 1))
+(rule $tactic ($tactic->tactic $tactic) @appT1T2 (anchored 1))
+(rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
+(rule $tactic ($termquotation->tactic $Term) @appT1T2 (anchored 1))
+(rule $tactic->tactic ($int->tactic->tactic $Number) @appT1T2 (anchored 1))
 
 # Typed wildcards
 (rule $tactic (\( $PHRASE : tactic \)) (IdentityFn) (anchored 1))
@@ -105,7 +106,7 @@
 ########## NATURAL LANGUAGE SYNONYMS ##########
 
 # Theorem Lists
-(rule $Thms ($thm and $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
+(rule $Thms ($Thms and $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
 (rule $thmlist (nothing) (ConstantFn []) (anchored 1))
 (rule $thmlist (empty list) (ConstantFn []) (anchored 1))
 
@@ -151,9 +152,15 @@
 (rule $int->tactic->tactic ($int->tactic->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
 
 # Casting sets as lists
-(rule $thmlist (all $Set theorems) (lambda s (call @list (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))) (anchored 1))
-(rule $thmlist ($Set theorems) (lambda s (call @list (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))) (anchored 1))
-(rule $thmlist (all $Set) (lambda s (call @list (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))) (anchored 1))
+(rule $Thms (all $Set theorems)
+      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
+      (anchored 1))
+(rule $Thms ($Set theorems)
+      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
+      (anchored 1))
+(rule $Thms (all $Set)
+      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
+      (anchored 1))
 
 ########## REFACTORING ##########
 
@@ -161,18 +168,12 @@
 (for @a (use apply)
      (rule $Apply (@a) (ConstantFn null) (anchored 1)))
 
-(rule $thm_tactic ($Apply $thm_tactic) (SelectFn 1) (anchored 1))
-(rule $thmlist->tactic ($Apply $thmlist->tactic) (SelectFn 1) (anchored 1))
-(rule $tactic->tactic ($Apply $tactic->tactic) (SelectFn 1) (anchored 1))
-(rule $thm->thm ($Apply $thm->thm) (SelectFn 1) (anchored 1))
-(rule $termquotation->tactic ($Apply $termquotation->tactic) (SelectFn 1) (anchored 1))
-(rule $int->tactic->tactic ($Apply $int->tactic->tactic) (SelectFn 1) (anchored 1))
+(for @cat ($thm->tactic $thmlist->tactic $tactic->tactic $thm->thm $termquotation->tactic $int->tactic->tactic)
+     (rule @cat ($Apply @cat) (SelectFn 1) (anchored 1)))
 
 # Args
-(for @p (on with)
+(for @p (on with the)
      (rule $Prep (@p) (ConstantFn null) (anchored 1)))
 
-(rule $tactic ($Prep $tactic) (SelectFn 1) (anchored 1))
-(rule $thm ($Prep $thm) (SelectFn 1) (anchored 1))
-(rule $thmlist ($Prep $thmlist) (SelectFn 1) (anchored 1))
-(rule $termquotation ($Prep $termquotation) (SelectFn 1) (anchored 1))
+(for @cat ($tactic $thm $thmlist $termquotation)
+     (rule @cat ($Prep @cat) (SelectFn 1) (anchored 1)))
