@@ -118,7 +118,8 @@ public class TacticWorld {
 
     private String typeOf(String c) {
 	for (String f : entities.get(c))
-	    if (f.startsWith("type.")) return f.replace(" ","");
+	    if (f.startsWith("type."))
+		return f.replace(" ","").replace("(","[").replace(")","]");
 	throw new RuntimeException("Cannot find type: " + c);
     }
     
