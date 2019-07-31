@@ -30,7 +30,7 @@ import fig.basic.Option;
 import edu.stanford.nlp.sempre.interactive.lassie.Component;
 
 // the world of tactics
-public class TacticWorld extends World {
+public class TacticWorld {
 
     public static class Options {
 	@Option(gloss = "Path to database file, contains components and their features")
@@ -44,22 +44,17 @@ public class TacticWorld extends World {
     }
     public static Options opts = new Options();
     
-    public String string; // string in construction
     public Map<String,Set<String>> entities; // component -> features
     public Map<String,Set<String>> features; // feature -> components
     
     @SuppressWarnings("unchecked")
     public TacticWorld() {
-	this.allItems = new HashSet<>();
-	this.selected = new HashSet<>();
-	this.previous = new HashSet<>();
 	this.entities = new HashMap<String,Set<String>>();
 	this.features = new HashMap<String,Set<String>>();
 	readDB();
 	writeLexicon();
     }
 
-    
     private void logLine(String path, String line) {
 	PrintWriter out;
 	try {
@@ -78,6 +73,7 @@ public class TacticWorld extends World {
 	    insert(component, feat);
 	}
     }
+    
     private void insert(String component, String feature) {
 	// From components to their features
 	this.entities.putIfAbsent(component, new HashSet<String>());
@@ -152,7 +148,7 @@ public class TacticWorld extends World {
 		Map<String, Object> jsonMap = new LinkedHashMap<>();
 		jsonMap.put("lexeme", c);
 		jsonMap.put("formula", quot(c)); // force Formula to StringFormula in the Lisp interpreter
-		jsonMap.put("type", suffix(typeOf(c)));
+		jsonMap.put("type", quot(suffix(typeOf(c))));
 		writer.println(Json.writeValueAsStringHard(jsonMap));
 	    }
 	    // Features
@@ -160,7 +156,7 @@ public class TacticWorld extends World {
 		Map<String, Object> jsonMap = new LinkedHashMap<>();
 		jsonMap.put("lexeme", suffix(f));
 		jsonMap.put("formula", quot(f)); // may contain spaces, force Formula to StringFormula
-		jsonMap.put("type", prefix(f));
+		jsonMap.put("type", quot(prefix(f)));
 		writer.println(Json.writeValueAsStringHard(jsonMap));
 	    }
 	    writer.close();
@@ -180,38 +176,38 @@ public class TacticWorld extends World {
     // }
     
     // String constructions, basically tactic language
-    public String int2string(Integer n) {
+    public static String int2string(Integer n) {
 	return n.toString();
     }
-    public String app(String fn, String arg) {
+    public static String app(String fn, String arg) {
 	if (fn.equals("") || arg.equals("")) return "";
 	return fn + " " + arg;
     }
-    public String then(String tac1, String tac2) {
+    public static String then(String tac1, String tac2) {
 	if (tac1.equals("") || tac2.equals("")) return "";
 	return tac1 + " \\ " + tac2;
     }
-    public String then1(String tac1, String tac2) {
+    public static String then1(String tac1, String tac2) {
 	if (tac1.equals("") || tac2.equals("")) return "";
 	return tac1 + " >- " + parens(tac2);
     }
-    public String cons(String hd, String tl) {
+    public static String cons(String hd, String tl) {
 	if (hd.equals("") || tl.equals("")) return "";
 	return hd + "," + tl;
     }
-    public String list(String seq) {
+    public static String list(String seq) {
 	if (seq.equals("")) return "";
 	return "[" + seq + "]";
     }
-    public String quote(String exp) {
+    public static String quote(String exp) {
 	if (exp.equals("")) return "";
 	return "`" + exp + "`";
     }
-    public String parens(String exp) {
+    public static String parens(String exp) {
 	if (exp.equals("")) return "";
 	return "(" + exp + ")";
     }
-    public String op(String operator, String arg1, String arg2) {
+    public static String op(String operator, String arg1, String arg2) {
 	if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
 	return arg1 + " " + operator + " " + arg2;
     }
@@ -220,59 +216,23 @@ public class TacticWorld extends World {
     public static String refine(String s1, String s2) {
 	return s1 + "." + s2;
     }
-    public Set<String> fromFeature(String f) {
-	if (f.equals("top")) return entities.keySet();
+    public static Set<String> fromFeature(String f) {
+	// needs to stay static for the JavaExecutor;
+	// current fix to keep this method static: create new world at each call;
+	// very inefficient
+	TacticWorld world = new TacticWorld(); 
+	if (f.equals("top")) return world.entities.keySet();
 	else if (f.equals("bot")) return new HashSet<String>();
-        else if (features.containsKey(f)) return features.get(f);
+        else if (world.features.containsKey(f)) return world.features.get(f);
 	else throw new RuntimeException("Feature not recognized: " + f);
     }
     
     // Set operations
-    public Set<String> intersect(Set<String> s1, Set<String> s2) {
+    public static Set<String> intersect(Set<String> s1, Set<String> s2) {
 	return s1.stream().filter(i -> s2.contains(i)).collect(Collectors.toSet());
     }
 
-    public String set2string(Set<String> s) {
+    public static String set2string(Set<String> s) {
 	return String.join(",", s);
     }
-
-    /*
-     * DALExecutor always expects an ActionFormula, and only executes
-     * other Formulas (e.g. CallFormulas) as sub-formulas of the main
-     * one. Action formulas appear in the grammar as (: myAction arg1
-     * arg2 ...), the return value is not observed and instead taken
-     * from the toJSON() method.
-     */
-    
-    // Result
-    public void tacReturn(String str) {
-	if (str.equals("")) this.string = "NO_TAC";	
-	else this.string = str;
-    }
-
-    public void strReturn(String str) {
-	this.string = str;
-    }
-
-    // Called from DALExecutor after evaluation; is the return value of executor
-    public String toJSON() {
-	return this.string;
-    }
-
-    ///////////////////////////////
-    // UNUSED, required by interface
-    @Override
-    public Set<Item> has(String rel, Set<Object> values) {
-	// LogInfo.log(values);
-	return this.allItems.stream().filter(i -> values.contains(i.get(rel))).collect(Collectors.toSet());
-    }
-    @Override
-    public Set<Object> get(String rel, Set<Item> subset) {
-	return subset.stream().map(i -> i.get(rel)).collect(Collectors.toSet());
-    }
-    @Override
-    public void update(String rel, Object value, Set<Item> selected) {}
-    @Override
-    public void merge() {}
-    ///////////////////////////////
 }

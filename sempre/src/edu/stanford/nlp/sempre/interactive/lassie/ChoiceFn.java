@@ -32,7 +32,7 @@ public class ChoiceFn extends SemanticFn {
     public static class Options {
 	@Option(gloss = "Verbose") public int verbose = 0;
     }
-
+    
     public static Options opts = new Options();
 
     public String[] elements;
@@ -40,8 +40,8 @@ public class ChoiceFn extends SemanticFn {
     public ChoiceFn() { }
 
     public DerivationStream call(final Example ex, final Callable c) {
-	DALExecutor executor = new DALExecutor();
-	c.child(0).printDerivationRecursively();
+	Executor executor = new JavaExecutor();
+	//c.child(0).printDerivationRecursively();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
 	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
 	if (elements.length > 1) {
@@ -52,15 +52,16 @@ public class ChoiceFn extends SemanticFn {
 	    elements = new String[0];
 	}
 	return new MultipleDerivationStream() {
-	    public int currIndex = 0;
+	    private boolean chosen = false;
 	    @Override
 	    public Derivation createDerivation() {
-		if (currIndex >= elements.length || elements[0].equals("")) return null;
+		if (elements.length == 0 || elements[0].equals("") || chosen) return null;
 		else {
 		    Derivation res = new Derivation.Builder()
 			.withCallable(c)
-			.withStringFormulaFrom(elements[currIndex++])
+			.withFormulaFrom(c.child(0))
 			.createDerivation();
+		    chosen = true;
 		    return res;
 		}
 	    }

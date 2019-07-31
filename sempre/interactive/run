@@ -223,11 +223,11 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   #figOpts,
   o('interactive'),
   o('masterType', 'edu.stanford.nlp.sempre.interactive.InteractiveMaster'),
-  o('Executor', 'interactive.DALExecutor'), # Change executor for different semantics
+
+  o('Executor', 'JavaExecutor'), # Change executor for different semantics
+  o('JavaExecutor.convertNameValues', true),
+
   o('LanguageAnalyzer', 'interactive.DALAnalyzer'),
-  o('DALExecutor.convertNumberValues', true),
-  o('DALExecutor.printStackTrace', true),
-  o('DALExecutor.worldType', 'TacticWorld'),
   o('Grammar.inPaths', "./#{$path}/lassie.grammar"),
 
   o('InteractiveMaster.allowRegularCommands', true),

@@ -30,6 +30,8 @@ public class JavaExecutor extends Executor {
     public String contextPrefix = "context:";
     @Option(gloss = "Reduce verbosity by automatically appending, for example, edu.stanford.nlp.sempre to java calls")
     public String classPathPrefix = ""; // e.g. "edu.stanford.nlp.sempre";
+    @Option(gloss = "Whether to convert name values to string literal")
+    public boolean convertNameValues = false;
   }
   public static Options opts = new Options();
 
@@ -209,8 +211,9 @@ public class JavaExecutor extends Executor {
       }
 
       if (!(func instanceof NameValue))
-        throw new RuntimeException("Invalid func: " + call.func + " => " + func);
-
+	  //throw new RuntimeException("Invalid func: " + call.func + " => " + func);
+	  func = new NameValue((String) func);
+      
       String id = ((NameValue) func).id;
       if (id.indexOf(opts.contextPrefix) != -1) {
         args.add(context);
@@ -257,8 +260,12 @@ public class JavaExecutor extends Executor {
       // Unfortunately, NumberValues don't make a distinction between ints and
       // doubles, so this is a hack.
       double x = ((NumberValue) value).value;
-      if (x == (int) x) return new Integer((int) x);
+      if (x == (int) x)
+	  return new Integer((int) x);
       return new Double(x);
+    } else if (value instanceof NameValue && opts.convertNameValues) {
+      String id = ((NameValue) value).id;
+      return id;
     } else if (value instanceof BooleanValue) {
       return ((BooleanValue) value).value;
     } else if (value instanceof StringValue) {
