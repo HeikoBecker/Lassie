@@ -1,6 +1,9 @@
 structure Lassie =
 struct
+
 val map = List.map
+fun mem x l = List.exists (fn x' => x = x') l
+			  
 exception LassieException of string
 
 fun sleep t =
@@ -15,6 +18,35 @@ fun flush instream = case TextIO.canInput(instream, 5000) of
 			 SOME n => if n = 0 then ()
 				   else (TextIO.input(instream); flush(instream))
 		       | NONE => ()
+
+(* some string editing to remove long package names esp. in call formulas *)
+fun simplifyAbsoluteNames str =
+    let
+	fun isSep s =  mem s [#" ", #"(", #")", #"\""]
+	fun append s l = case l of
+			     [] => [s]
+			   | hd::tl => (s ^ hd)::tl
+	val tokens = List.foldl (fn (c,l) => if isSep c then ""::(String.str c)::l else append (String.str c) l)
+				[]
+				(List.rev (String.explode str))
+	fun isNotEmpty s = not (s = "")
+	fun getLocalName s = List.hd (List.rev (String.tokens (fn c => c = #".") s))
+    in
+	String.concat (map getLocalName (List.filter isNotEmpty tokens))
+    end
+
+(* escape quotes and backslashes before writing to a string *)
+fun escape str =
+    let
+	val escEsc = map (fn c => if c = "\\" then "\\\\" else c)
+	val escQuotes = map (fn c => if c = "\"" then "\\\"" else c)
+    in
+	str |> String.explode
+	    |> map String.str
+	    |> escEsc
+	    |> escQuotes
+	    |> String.concat
+    end
 
 (* wait for the SEMPRE prompt; signifies end of execution *)
 fun waitSempre instream =
@@ -137,11 +169,11 @@ fun accept (utt, formula) : unit =
     let
 	fun quot s = "\"" ^ s ^ "\""
     in
-	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")")
+	writeSempre ("(:accept " ^ (quot (escape utt)) ^ " " ^ (quot (escape formula)) ^ ")")
     end
-
+	
 (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
-fun lassie utt =
+fun lassie utt : int -> proof =
     let
 	val _ = print ("Trying to parse `" ^ utt ^ "`...\n\n")
 	val derivations = utt |> sempre |> (fn (hd,tl) => hd::tl)
@@ -149,12 +181,12 @@ fun lassie utt =
 	    case derivs of
 		[] => ()
 	      | d::ds => (print ("\nDerivation [" ^ Int.toString idx ^ "]:\n"
-				     ^ "\tFormula: " ^ (#formula d) ^ "\n"
+				     ^ "\tFormula: " ^ simplifyAbsoluteNames (#formula d) ^ "\n"
 				     ^ "\tValue: " ^ (#value d) ^ "\n\n");
 			      dprinter ds (idx + 1))
     in
 	dprinter derivations 1; (* if no index is given, just print the derivations *)
-	fn idx => if idx > length derivations orelse idx < 1 then
+	fn (idx : int) => if idx > length derivations orelse idx < 1 then
 		      raise LassieException "Derivation index out of bounds"
 		  else
 		      let
