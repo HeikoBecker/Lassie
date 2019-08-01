@@ -95,9 +95,9 @@ rfs                         name    reverse full simplify
 # thm tactics
 imp_res_tac                 name    resolve implication
 assume_tac                  name    assume, have
-irule 		            name    match with, irule, imp
-drule                       name    resolve with, drule
-match_mp_tac                name    modus ponens, match_mp_tac
+irule 		            name    match with, imp
+drule                       name    resolve with
+match_mp_tac                name    modus ponens
 
 # automation tactics
 res_tac                     name    resolve all
@@ -111,8 +111,8 @@ qpat_assum                  name    find with pattern
 # tacticals
 first_x_assum               name    first matching assumption
 last_x_assum                name    last matching assumption
-ntac 		                    name    repeat exactly
-rpt 		                    name    repeat infinitely, repeat
+ntac 	                    name    repeat exactly
+rpt 	                    name    repeat infinitely, repeat
 
 # other
 subgoal                     name    show
@@ -124,16 +124,16 @@ cheat 		            name    cheat
 strip_tac                   name    strip, remove quantifier
 Induct_on 	            name    Induction on, Induct on, induction on, induct on
 rename                      name    rename into
-qexists_tac                 name    exists, exists_tac, qexists_tac
-qspec_then                  name    specialize for, qspec_then
-qspecl_then                 name    specialize for all, qspecl_then
+qexists_tac                 name    exists, exists_tac
+qspec_then                  name    specialize for
+qspecl_then                 name    specialize for all
 
 ########################
 # HOL4 - Rules : Types #
 ########################
-GSYM                        name    symmetry, GSYM, gsym
-EVAL_RULE                   name    EVAL_RULE, eval_rule, evaluate
-Once                        name    only once, Once, once
+GSYM                        name    symmetry, gsym
+EVAL_RULE                   name    eval_rule, evaluate
+Once                        name    only once, once
 
 #######################################
 # HOL4 - Real number theorems : Types #
