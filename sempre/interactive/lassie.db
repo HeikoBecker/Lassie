@@ -36,24 +36,24 @@ fs                          type    thm list -> tactic
 rfs                         type    thm list -> tactic
 
 # thm tactics
-imp_res_tac                 type    thm_tactic
-assume_tac                  type    thm_tactic
-irule 		                  type    thm_tactic
-drule                       type    thm_tactic
-match_mp_tac                type    thm_tactic
+imp_res_tac                 type    thm -> tactic
+assume_tac                  type    thm -> tactic
+irule 		            type    thm -> tactic
+drule                       type    thm -> tactic
+match_mp_tac                type    thm -> tactic
 
 # automation tactics
 res_tac                     type    tactic
-metis_tac                   type    thm_tactic
-meson_tac                   type    thm_tactic
+metis_tac                   type    thm -> tactic
+meson_tac                   type    thm -> tactic
 
 # pattern based tactics
-qpat_x_assum                type    term quotation -> thm_tactic -> tactic
-qpat_assum                  type    term quotation -> thm_tactic -> tactic
+qpat_x_assum                type    term quotation -> (thm -> tactic) -> tactic
+qpat_assum                  type    term quotation -> (thm -> tactic) -> tactic
 
 # tacticals
-first_x_assum               type    thm_tactic -> tactic
-last_x_assum                type    thm_tactic -> tactic
+first_x_assum               type    (thm -> tactic) -> tactic
+last_x_assum                type    (thm -> tactic) -> tactic
 ntac 		            type    int -> tactic -> tactic
 rpt 		            type    tactic -> tactic
 
@@ -68,8 +68,8 @@ strip_tac                   type    tactic
 Induct_on 	            type    term quotation -> tactic
 rename                      type    term quotation list -> tactic
 qexists_tac                 type    term quotation -> tactic
-qspec_then                  type    term quotation -> thm_tactic -> thm_tactic
-qspecl_then                 type    term quotation list -> thm_tactic -> thm_tactic
+qspec_then                  type    term quotation -> (thm -> tactic) -> thm -> tactic
+qspecl_then                 type    term quotation list -> (thm -> tactic) -> thm -> tactic
 
 ########################
 # HOL4 - Rules : Types #
@@ -95,7 +95,7 @@ rfs                         name    reverse full simplify
 # thm tactics
 imp_res_tac                 name    resolve implication
 assume_tac                  name    assume, have
-irule 		                  name    match with, irule, imp
+irule 		            name    match with, irule, imp
 drule                       name    resolve with, drule
 match_mp_tac                name    modus ponens, match_mp_tac
 
@@ -587,25 +587,25 @@ ABS_0                       type    thm
 # HOL4 - Real number theorems : Names #
 #######################################
 #REAL_DIV                   name    real, division
-REAL_SUB	                  name    real, subtraction, additive inverse
+REAL_SUB	            name    real, subtraction, additive inverse
 POW_2                       name    power, square, two
-REAL		                    name    real, definition, successor
-REAL_ADD	                  name    real, addition
+REAL		            name    real, definition, successor
+REAL_ADD	            name    real, addition
 REAL_ADD_ASSOC	            name    real, addition, associativity
 REAL_ADD_LDISTRIB           name    real, addition, left, distributivity
 REAL_ADD_RDISTRIB           name    real, addition, right, distributivity
-REAL_ADD_SYM	              name    real, addition, symmetry
+REAL_ADD_SYM	            name    real, addition, symmetry
 REAL_DIV_LZERO	            name    real, division, left, zero
-REAL_DOUBLE	                name    real, double
+REAL_DOUBLE	            name    real, double
 REAL_HALF_DOUBLE            name    real, half, double
-REAL_LDISTRIB	              name    real, left, distributivity
-REAL_MUL	                  name    real, multiplication
-REAL_MUL_LID	              name    real, multiplication, left, identity
-REAL_MUL_RID	              name    real, multiplication, right, identity
-REAL_MUL_RINV	              name    real, multiplication, right, inverse
-REAL_MUL_SYM	              name    real, multiplication, symmetry
-REAL_NEG_ADD	              name    real, negation, addition
-REAL_NEG_LMUL	              name    real, negation, left, multiplication
-REAL_RDISTRIB	              name    real, right, distributivity
+REAL_LDISTRIB	            name    real, left, distributivity
+REAL_MUL	            name    real, multiplication
+REAL_MUL_LID	            name    real, multiplication, left, identity
+REAL_MUL_RID	            name    real, multiplication, right, identity
+REAL_MUL_RINV	            name    real, multiplication, right, inverse
+REAL_MUL_SYM	            name    real, multiplication, symmetry
+REAL_NEG_ADD	            name    real, negation, addition
+REAL_NEG_LMUL	            name    real, negation, left, multiplication
+REAL_RDISTRIB	            name    real, right, distributivity
 REAL_SUB_LDISTRIB           name    real, subtraction, left, distributivity
 REAL_SUB_RDISTRIB           name    real, subtraction, right, distributivity

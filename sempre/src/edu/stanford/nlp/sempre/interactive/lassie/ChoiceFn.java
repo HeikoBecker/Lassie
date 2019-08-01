@@ -31,24 +31,34 @@ import java.util.Arrays;
 public class ChoiceFn extends SemanticFn {
     public static class Options {
 	@Option(gloss = "Verbose") public int verbose = 0;
-    }
-    
+    }    
     public static Options opts = new Options();
-
+    
     public String[] elements;
     
     public ChoiceFn() { }
 
+    // Get the string in the uttrance which is at the origin of this derivation
+    public static String getUttString(Callable c) {
+	if (c.getChildren().size() == 0) return ((ValueFormula) ((Derivation) c).formula).value.pureString();
+	else {
+	    String uttString = getUttString(c.child(0));
+	    for (int i = 1; i < c.getChildren().size(); i++)
+		uttString = uttString + " " + getUttString(c.child(i));
+	    return uttString;
+	}
+    }
+	
     public DerivationStream call(final Example ex, final Callable c) {
 	Executor executor = new JavaExecutor();
-	//c.child(0).printDerivationRecursively();
+	c.child(0).printDerivationRecursively();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
 	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
 	if (elements.length > 1) {
+	    
 	    LassieUtils.printToSocket("Lassie.AMBIGUITY_WARNING := SOME {set= "
 				      + "[\"" + candidates.replace(",","\",\"") + "\"], "
-				      + "span= "
-				      + "(" + c.child(0).getStart() + "," + c.child(0).getEnd() + ")}");
+				      + "span= \"" + getUttString((CallInfo) c) + "\"}");
 	    elements = new String[0];
 	}
 	return new MultipleDerivationStream() {

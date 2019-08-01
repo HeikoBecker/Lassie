@@ -1,6 +1,9 @@
 structure Lassie =
 struct
+
 val map = List.map
+fun mem x l = List.exists (fn x' => x = x') l
+			  
 exception LassieException of string
 
 fun sleep t =
@@ -15,6 +18,35 @@ fun flush instream = case TextIO.canInput(instream, 5000) of
 			 SOME n => if n = 0 then ()
 				   else (TextIO.input(instream); flush(instream))
 		       | NONE => ()
+
+(* some string editing to remove long package names esp. in call formulas *)
+fun simplifyAbsoluteNames str =
+    let
+	fun isSep s =  mem s [#" ", #"(", #")", #"\""]
+	fun append s l = case l of
+			     [] => [s]
+			   | hd::tl => (s ^ hd)::tl
+	val tokens = List.foldl (fn (c,l) => if isSep c then ""::(String.str c)::l else append (String.str c) l)
+				[]
+				(List.rev (String.explode str))
+	fun isNotEmpty s = not (s = "")
+	fun getLocalName s = List.hd (List.rev (String.tokens (fn c => c = #".") s))
+    in
+	String.concat (map getLocalName (List.filter isNotEmpty tokens))
+    end
+
+(* escape quotes and backslashes before writing to a string *)
+fun escape str =
+    let
+	val escEsc = map (fn c => if c = "\\" then "\\\\" else c)
+	val escQuotes = map (fn c => if c = "\"" then "\\\"" else c)
+    in
+	str |> String.explode
+	    |> map String.str
+	    |> escEsc
+	    |> escQuotes
+	    |> String.concat
+    end
 
 (* wait for the SEMPRE prompt; signifies end of execution *)
 fun waitSempre instream =
@@ -58,7 +90,7 @@ val SEMPRE_RESPONSE = ref (SOME {candidates= [{score= 0.0,
 				 lines= [""]})
 val _ = SEMPRE_RESPONSE := NONE
 			       
-val AMBIGUITY_WARNING = ref (SOME {set= [""],  span= (0,0)})
+val AMBIGUITY_WARNING = ref (SOME {set= [""],  span= ""})
 val _ = AMBIGUITY_WARNING := NONE
 
 val lastUtterance = ref ""
@@ -90,11 +122,9 @@ fun showList lst : string =
 fun printAmbiguities () =
     case !AMBIGUITY_WARNING of
 	NONE => ()
-      | SOME warning => print ("Warning-\n   Lassie could not disambiguate the expression at ("
-			       ^ Int.toString(fst (#span warning))
-			       ^ ","
-			       ^ Int.toString(snd (#span warning))
-			       ^ ") of the utterance.\n   Possible interpretations include:\n\t"
+      | SOME warning => print ("Warning (ambiguity)-\n   Lassie could not disambiguate the expression\n      `"
+			       ^ (#span warning)
+			       ^ "`\n   in the utterance. Possible interpretations include:\n      "
 			       ^ showList (#set warning)
 			       ^ ".\n   Lassie might be able to parse the utterance if you are more specific.\n\n")
 
@@ -116,9 +146,9 @@ fun readSempre utt =
 				 [] => let
 				  val _ = printAmbiguities()
 			      in
-				  raise LassieException ("Did not understand the utterance `"
+				  raise LassieException ("Could not parse the utterance `"
 							 ^ utt
-							 ^ "`, you can provide a definition using lassie.def")
+							 ^ "`, you can provide a definition using Lassie.def")
 			      end
 				| deriv::tail => (deriv, tail) (* ensures at least one derivation *)
     end
@@ -137,11 +167,11 @@ fun accept (utt, formula) : unit =
     let
 	fun quot s = "\"" ^ s ^ "\""
     in
-	writeSempre ("(:accept " ^ (quot utt) ^ " " ^ (quot formula) ^ ")")
+	writeSempre ("(:accept " ^ (quot (escape utt)) ^ " " ^ (quot (escape formula)) ^ ")")
     end
-
+	
 (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
-fun lassie utt =
+fun lassie utt : int -> proof =
     let
 	val _ = print ("Trying to parse `" ^ utt ^ "`...\n\n")
 	val derivations = utt |> sempre |> (fn (hd,tl) => hd::tl)
@@ -149,12 +179,12 @@ fun lassie utt =
 	    case derivs of
 		[] => ()
 	      | d::ds => (print ("\nDerivation [" ^ Int.toString idx ^ "]:\n"
-				     ^ "\tFormula: " ^ (#formula d) ^ "\n"
+				     ^ "\tFormula: " ^ simplifyAbsoluteNames (#formula d) ^ "\n"
 				     ^ "\tValue: " ^ (#value d) ^ "\n\n");
 			      dprinter ds (idx + 1))
     in
 	dprinter derivations 1; (* if no index is given, just print the derivations *)
-	fn idx => if idx > length derivations orelse idx < 1 then
+	fn (idx : int) => if idx > length derivations orelse idx < 1 then
 		      raise LassieException "Derivation index out of bounds"
 		  else
 		      let
