@@ -49,7 +49,6 @@
 (def @quote edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.quote)
 (def @parens edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.parens)
 (def @op edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.op)
-(def @refine edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.refine)
 (def @fromFeature edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.fromFeature)
 (def @intersect edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.intersect)
 (def @set2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.set2string)

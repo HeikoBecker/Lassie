@@ -68,10 +68,6 @@ public class TacticWorld {
 	return "(" + arg1 + " " + operator + " " + arg2 + ")";
     }
 
-    // Feature manipulations
-    public static String refine(String s1, String s2) {
-	return s1 + "." + s2;
-    }
     public static Set<String> fromFeature(String f) {
 	HOLOntology ontology = HOLOntology.getTheOntology(); 
 	if (f.equals("top")) return ontology.entities.keySet();
