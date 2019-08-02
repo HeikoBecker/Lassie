@@ -6,6 +6,9 @@ fun mem x l = List.exists (fn x' => x = x') l
 			  
 exception LassieException of string
 
+(*********************************)
+(*            Utils              *)
+(*********************************)
 fun sleep t =
     let
 	val wakeUp = Time.+ (Time.now(), Time.fromReal(t))
@@ -13,11 +16,11 @@ fun sleep t =
     in
 	wait ()
     end
-
-fun flush instream = case TextIO.canInput(instream, 5000) of
-			 SOME n => if n = 0 then ()
-				   else (TextIO.input(instream); flush(instream))
-		       | NONE => ()
+	
+fun flushStream instream = case TextIO.canInput(instream, 5000) of
+			       SOME n => if n = 0 then ()
+					 else (TextIO.input(instream); flushStream(instream))
+			     | NONE => ()
 
 (* some string editing to remove long package names esp. in call formulas *)
 fun simplifyAbsoluteNames str =
@@ -48,6 +51,44 @@ fun escape str =
 	    |> String.concat
     end
 
+(* normalize a string representing an HOL4 expression for viewing *)
+fun normalize str =
+    let
+	(* spcae out function applications through direct parens e.g. map(f)lst *)
+	fun injectSpc sl =
+	    case sl of
+		s1::s2::tl => if (s2 = "(" andalso not (mem s1 ["("," ",")"]))
+				 orelse
+				 (s1 = ")" andalso not (mem s2 [")"," "]))
+			      then injectSpc (s1::" "::s2::tl)
+			      else s1::(injectSpc (s2::tl))
+	      | other => other
+	(* rewrite string with a minimal number of parentheses *)
+	fun paren str b = if b then ("("::str) @ [")"] else str
+	fun rmParens left p right =
+	    case right of
+		[] => (left, false, []) (* base case *)
+	      | c::tail =>
+		if c = ")" then (left, p, tail) (* base case of rec calls *)
+		else if c = "(" then
+		    let (* inductive case *)
+			val (left', p', right') = rmParens [] false tail (* rec *)
+			(* if nothing on left do not parenthesize, applications are left associative *)
+			val left' = if left = [] then left' else paren left' p'
+			val left' = if left' = [] then ["(",")"] else left' (* unit *)
+		    in rmParens (left @ left') p right' end (* continue *)
+		else rmParens (left@[c]) (p orelse c = " ") tail
+	val (retStr, _, _) = rmParens [] false ( str |> String.explode
+						     |> (map String.str)
+						     |> injectSpc )
+    in
+	String.concat retStr
+    end
+	
+	
+(**************************************)
+(*           Communication            *)
+(**************************************)
 (* wait for the SEMPRE prompt; signifies end of execution *)
 fun waitSempre instream =
     let
@@ -170,6 +211,10 @@ fun accept (utt, formula) : unit =
 	writeSempre ("(:accept " ^ (quot (escape utt)) ^ " " ^ (quot (escape formula)) ^ ")")
     end
 	
+
+(*************************************)
+(*          Main interface           *)
+(*************************************)	
 (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
 fun lassie utt : int -> proof =
     let
@@ -180,7 +225,7 @@ fun lassie utt : int -> proof =
 		[] => ()
 	      | d::ds => (print ("\nDerivation [" ^ Int.toString idx ^ "]:\n"
 				     ^ "\tFormula: " ^ simplifyAbsoluteNames (#formula d) ^ "\n"
-				     ^ "\tValue: " ^ (#value d) ^ "\n\n");
+				     ^ "\tValue: " ^ (normalize (#value d)) ^ "\n\n");
 			      dprinter ds (idx + 1))
     in
 	dprinter derivations 1; (* if no index is given, just print the derivations *)
