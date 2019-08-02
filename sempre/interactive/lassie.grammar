@@ -76,13 +76,13 @@
 (rule $termquotationlist->[thm->tactic]->thm->tactic ($TOKEN) (SimpleLexiconFn (type "termquotationlist->[thm->tactic]->thm->tactic")) (anchored 1))
 
 # Applications
-(def @appT1T2 (lambda t1 (lambda t2 (call @parens (call @app (var t1) (var t2))))))
+(def @appT1T2 (lambda t1 (lambda t2 (call @app (var t1) (var t2)))))
 (rule $tactic ($thm->tactic $thm) @appT1T2 (anchored 1))
 (rule $tactic ($thmlist->tactic $thmlist) @appT1T2 (anchored 1))
 (rule $tactic ($tactic->tactic $tactic) @appT1T2 (anchored 1))
 (rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
 (rule $tactic ($termquotation->tactic $Term) @appT1T2 (anchored 1))
-(rule $tactic->tactic ($int->tactic->tactic $Number) @appT1T2 (anchored 1))
+(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
 (rule $[thm->tactic]->tactic ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
 (rule $tactic]->tactic ($[thm->tactic]->tactic $[thm) @appT1T2 (anchored 1))
 (rule $tactic ($termquotationlist->tactic $termquotationlist) @appT1T2 (anchored 1))
@@ -90,7 +90,7 @@
 (rule $[thm->tactic]->thm->tactic ($termquotationlist->[thm->tactic]->thm->tactic $termquotationlist) @appT1T2 (anchored 1))
 
 # infix
-(rule $tactic ($termquotation $termquotation*tactic->tactic $tactic) (lambda q (lambda by (lambda t (call @op (var by) (var q) (call @parens (var t)))))) (anchored 1))
+(rule $tactic ($termquotation $termquotation*tactic->tactic $tactic) (lambda q (lambda by (lambda t (call @op (var by) (var q) (var t))))) (anchored 1))
 
 # Typed wildcards
 (rule $tactic (\( $PHRASE : tactic \)) (IdentityFn) (anchored 1))
@@ -130,6 +130,7 @@
 # Other
 (rule $termquotation (` $PHRASE `) (lambda e (call @quote (var e))) (anchored 1))
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
+(rule $int ($Number) (lambda n (call @int2string (var n))) (anchored 1))
 
 
 ########## NATURAL LANGUAGE SYNONYMS ##########

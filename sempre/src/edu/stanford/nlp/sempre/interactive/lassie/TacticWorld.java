@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public class TacticWorld {
     }
     public static String app(String fn, String arg) {
 	if (fn.equals("") || arg.equals("")) return "";
-	return fn + " " + arg;
+	return "(" + fn + " " + arg + ")";
     }
     public static String then(String tac1, String tac2) {
 	if (tac1.equals("") || tac2.equals("")) return "";
@@ -66,7 +65,7 @@ public class TacticWorld {
     }
     public static String op(String operator, String arg1, String arg2) {
 	if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
-	return arg1 + " " + operator + " " + arg2;
+	return "(" + arg1 + " " + operator + " " + arg2 + ")";
     }
 
     // Feature manipulations
