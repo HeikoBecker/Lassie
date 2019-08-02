@@ -23,9 +23,8 @@ import java.util.Arrays;
  *
  * (rule $MyType ($MyTypeCandidates) (ChoiceFn))
  *
- * where $MyTypeCandidates is an executable formula (i.e. ActionFormula
- * if using DALExecutor) returning a StringValue. $MyType will be a
- * StringValue as well.
+ * where $MyTypeCandidates is a call formula returning a
+ * StringValue. $MyType will be a StringValue as well.
  */
 
 public class ChoiceFn extends SemanticFn {

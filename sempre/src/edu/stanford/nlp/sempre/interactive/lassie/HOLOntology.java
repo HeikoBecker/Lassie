@@ -103,7 +103,7 @@ public class HOLOntology {
 	    String[] statements = line.split(",\\s*");
 	    String[] tokens = statements[0].split("\\s+");
 	    if (tokens.length == 0 || tokens[0].equals("")) continue; // Skip empty lines
-	    // We expect triplets (at least), e.g. "POW_2 feature.name feature.name.power"
+	    // We expect triplets (at least), e.g. "POW_2 name power"
 	    if (tokens.length >= 3) {  
 		String component = tokens[0];
 		String attribute = tokens[1];
