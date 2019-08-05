@@ -82,49 +82,149 @@ Once                        type    thm -> thm
 # HOL4 Tactics - Name features: #
 #################################
 # rewriting
-asm_rewrite_tac             name    rewrite with assumptions
-rewrite_tac                 name    rewrite
-once_rewrite_tac            name    rewrite once
-once_asm_rewrite_tac        name    rewrite once with assumptions, rewrite with assumptions once
+rewrite_tac                 VP	    rewrite
+rewrite_tac		    OBJ	    goal
+rewrite_tac		    PREARG  with
+
+asm_rewrite_tac		    VP	    rewrite
+asm_rewrite_tac		    OBJ	    goal
+asm_rewrite_tac		    CP	    with assumptions
+asm_rewrite_tac		    PREARG  with
+
+once_rewrite_tac            VP      rewrite
+once_rewrite_tac	    OBJ	    goal
+once_rewrite_tac	    CP	    once
+once_rewrite_tac	    PREARG  with
+
+once_asm_rewrite_tac	    VP	    rewrite
+once_asm_rewrite_tac	    OBJ	    goal
+once_asm_rewrite_tac	    CP	    once
+once_asm_rewrite_tac	    CP	    with assumptions
+once_asm_rewrite_tac	    PREARG  with
 
 # simplification
-simp                        name    simplify
-fs                          name    full simplify
-rfs                         name    reverse full simplify
+simp                        VP	    simplify
+simp			    OBJ	    goal
+simp			    CP	    with assumptions
+simp			    PREARG  with
+
+fs                          AV      full, fully
+fs			    VP	    simplify
+fs			    OBJ	    goal, all of goal, assumptions
+fs			    CP	    with assumptions
+fs			    PREARG  with
+
+rfs                         AV      reverse, full, fully
+rfs			    VP	    simplify
+rfs			    OBJ	    goal, all of goal, assumptions
+rfs			    CP	    with assumptions, in reverse order
+rfs			    PREARG  with
 
 # thm tactics
-imp_res_tac                 name    resolve implication
-assume_tac                  name    assume, have
-irule 		            name    match with, imp
+imp_res_tac                 VP	    enrich assumptions, resolve theorem
+imp_res_tac		    PREARG  with
+
+res_tac			    VP	    enrich, resolve
+res_tac			    OBJ	    assumptions
+res_tac			    CP 	    together, with eachother
+
+assume_tac                  VP      assume, have, add
+assume_tac                  OBJ     assumption
+assume_tac		    CP	    to goal, to assumptions			    
+
+irule			    VP	    reduce
+irule			    OBJ	    goal
+irule			    CP	    with matching
+irule			    PREARG  with, with implication
+
 drule                       name    resolve with
+
 match_mp_tac                name    modus ponens
+match_mp_tac		    VP	    reduce
+match_mp_tac		    OBJ	    goal
+match_mp_tac		    CP	    with matching, without normalization, without normalizing
+match_mp_tac		    PREARG  with, with implication
 
 # automation tactics
-res_tac                     name    resolve all
-metis_tac                   name    metis
+res_tac			    VP	    enrich, resolve
+res_tac			    OBJ	    assumptions
+res_tac			    CP 	    together, with eachother
+
 meson_tac                   name    meson
+meson_tac		    AV	    auto, automatic
+meson_tac		    VP	    proof search, search
+meson_tac		    OBJ	    proof
+meson_tac		    PREARG  with
+
+metis_tac                   name    metis
+metis_tac		    AV	    auto, automatic, ordered, fancy
+metis_tac		    VP	    proof search, search
+metis_tac		    OBJ	    proof
+metis_tac		    PREARG  with
 
 # pattern based tactics
-qpat_x_assum                name    remove with pattern
-qpat_assum                  name    find with pattern
+qpat_assum		    VP	    find, use
+qpat_assum		    OBJ	    assumption, matching assumption
+qpat_assum		    PREARG  with pattern
+
+qpat_x_assum		    VP	    spend, find, use
+qpat_x_assum		    OBJ	    assumption, matching assumption
+qpat_x_assum		    CP	    and remove it
+qpat_x_assum		    PREARG  with pattern
 
 # tacticals
-first_x_assum               name    first matching assumption
-last_x_assum                name    last matching assumption
-ntac 	                    name    repeat exactly
-rpt 	                    name    repeat infinitely, repeat
+first_x_assum		    VP	    map, spend, use
+first_x_assum		    OBJ	    assumption, matching assumption
+first_x_assum		    CP	    over assumptions
+
+last_x_assum		    AV	    reverse
+last_x_assum		    VP	    map, spend, use
+last_x_assum		    OBJ	    assumption, matching assumption, last matching assumption
+last_x_assum		    CP	    over assumptions
+
+ntac			    VP	    repeat, apply
+ntac			    CP	    times
+
+rpt			    VP	    repeat, keep applying
+rpt			    CP	    infinitely, indefinitely
 
 # other
-subgoal                     name    show
-by                          name    by
+subgoal			    VP	    produce, add, show
+subgoal			    OBJ	    subgoal
+subgoal			    CP	    as subgoal			   
+
+by                          name    by, shown by
 suffices_by                 name    suffices to show
-Cases                       name    Case analysis, case analysis
-Induct                      name    Induction, induction
+
+Cases                       name    case analysis, case, cases
+Cases			    VP	    split
+Cases			    OBJ	    goal
+
+Induct                      AV	    by
+Induct			    VP	    induct, induction, do induction
+
+Induct_on 	            AV	    by
+Induct_on		    VP	    induct, induction, do induction
+Induct_on		    OBJ	    on variable
+Induct_on		    PREARG  on
+
 cheat 		            name    cheat
-strip_tac                   name    strip, remove quantifier
-Induct_on 	            name    Induction on, Induct on, induction on, induct on
-rename                      name    rename into
+
+strip_tac                   name    intros
+strip_tac		    VP	    remove, strip
+strip_tac		    OBJ	    quantifiers	    
+
+rename                      name    alpha conversion
+rename			    VP	    rename, change
+rename			    OBJ	    variable names, free variables
+rename			    CP	    in goal
+rename			    PREARG  into, to, with
+
 qexists_tac                 name    exists, exists_tac
+qexists_tac		    VP	    reduce, instantiate, use witness, have witness
+qexists_tac		    OBJ	    existential
+qexists_tac		    PREARG  with
+
 qspec_then                  name    specialize for
 qspecl_then                 name    specialize for all
 
