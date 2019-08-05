@@ -1,29 +1,32 @@
-########################################################################
-# GRAMMAR FOR NATURAL PROOF EXPRESSIONS
-#
-# Refer to SEMPRE's documentation for general indications on rule
-# construction.
-#
-# Currently, domain knowledge comes from two sources. The lassie.lexicon
-# file contains component names (e.g. fs) and with their types
-# (e.g. thmlist->tactic, used for sound applications). Features of those
-# components (e.g. their natural name, their class/type) are read from
-# lassie.db into the TacticWorld.
-#
-# TacticWorld.java holds the main semantics of Lassie's operations, as
-# we piggy back on the DALExecutor for handling the semantic part of
-# this grammar. DALExecutor interprets semantic expression in a "world"
-# containing "items". We superifcially follow this convention where HOL
-# components can be considered the "items" of our "tactic-world".
-#
-# Generally, lowercased categories (e.g. $thm, $name) correspond to
-# types as found in the lexicon/database. Categories which are
-# capitalized are intermediates between lowercased categories and the
-# $tactic category.
+##########################################################################
+# GRAMMAR FOR NATURAL PROOF EXPRESSIONS					 #
+# 									 #
+# Refer to SEMPRE's documentation for general indications on rule	 #
+# construction.								 #
+# 									 #
+# Currently, domain knowledge comes from two sources. The lassie.lexicon #
+# file contains component names (e.g. fs) and with their types		 #
+# (e.g. thmlist->tactic, used for sound applications). Features of those #
+# components (e.g. their natural name, their class/type) are read from	 #
+# lassie.db into the TacticWorld.					 #
+# 									 #
+# TacticWorld.java holds the main semantics of Lassie's operations, as	 #
+# we piggy back on the DALExecutor for handling the semantic part of	 #
+# this grammar. DALExecutor interprets semantic expression in a "world"	 #
+# containing "items". We superifcially follow this convention where HOL	 #
+# components can be considered the "items" of our "tactic-world".	 #
+# 									 #
+# Generally, lowercased categories (e.g. $thm, $name) correspond to	 #
+# types as found in the lexicon/database. Categories which are		 #
+# capitalized are intermediates between lowercased categories and the	 #
+# $tactic category.							 #
+##########################################################################
 
 (rule $ROOT ($tactic) (IdentityFn) (anchored 1))
 
-# Incorporated types: #
+# ###########################################
+# #           Incorporated types:           #
+# ###########################################
 # $tactic
 # $thm
 # ($thmlist)
@@ -40,6 +43,7 @@
 # $termquotation->[thm->tactic]->thm->tactic
 # $termquotationlist->[thm->tactic]->thm->tactic
 
+
 (def @int2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.int2string)
 (def @app edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.app)
 (def @then edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.then)
@@ -53,7 +57,9 @@
 (def @intersect edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.intersect)
 (def @set2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.set2string)
 
-########## GRAMMAR SUPPORTING LITERAL HOL4 ##########
+###################################
+# GRAMMAR SUPPORTING LITERAL HOL4 #
+###################################
 
 (for @cat ($tactic)
      (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
@@ -80,7 +86,7 @@
 (rule $tactic ($thmlist->tactic $thmlist) @appT1T2 (anchored 1))
 (rule $tactic ($tactic->tactic $tactic) @appT1T2 (anchored 1))
 (rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
-(rule $tactic ($termquotation->tactic $Term) @appT1T2 (anchored 1))
+(rule $tactic ($termquotation->tactic $termquotation) @appT1T2 (anchored 1))
 (rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
 (rule $[thm->tactic]->tactic ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
 (rule $tactic]->tactic ($[thm->tactic]->tactic $[thm) @appT1T2 (anchored 1))
@@ -132,7 +138,9 @@
 (rule $int ($Number) (lambda n (call @int2string (var n))) (anchored 1))
 
 
-########## NATURAL LANGUAGE SYNONYMS ##########
+#############################
+# NATURAL LANGUAGE SYNONYMS #
+#############################
 
 # Theorem Lists
 (rule $Thms ($Thms and $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
@@ -144,57 +152,92 @@
 (rule $tactic ($tactic then $tactic on the first goal) (lambda t1 (lambda t2 (call @then1 (var t1) (var t2)))) (anchored 1))
 
 
-########## GRAMMAR SUPPORTING ABSTRACT DESCRIPTIONS OF HOL4 COMPONENTS ##########
+###############################################################
+# GRAMMAR SUPPORTING ABSTRACT DESCRIPTIONS OF HOL4 COMPONENTS #
+###############################################################
 
-# Sets and their intersections
-(rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
-(rule $type ($PHRASE) (SimpleLexiconFn (type type)) (anchored 1))
-(rule $Set ($name) (lambda n (call @fromFeature (var n))) (anchored 1))
-(rule $Set ($type) (lambda n (call @fromFeature (var n))) (anchored 1))
-(rule $Set ($Set $Set) (lambda s1 (lambda s2 (call @intersect (var s1) (var s2)))) (anchored 1))
+# Sets and their intersections, by constructing imperative sentences
 
-# Collapsing sets to single components
-(rule $tactic' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.tactic")))) (anchored 1))
-(rule $tactic ($tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+# Lexemes
+(rule $type_lx ($PHRASE) (SimpleLexiconFn (type type)) (anchored 1))
+(rule $name_lx ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
+(rule $AV_lx ($PHRASE) (SimpleLexiconFn (type AV)) (anchored 1))
+(rule $VP_lx ($PHRASE) (SimpleLexiconFn (type VP)) (anchored 1))
+(rule $OBJ_lx ($PHRASE) (SimpleLexiconFn (type OBJ)) (anchored 1))
+(rule $CP_lx ($PHRASE) (SimpleLexiconFn (type CP)) (anchored 1))
+(rule $PREARG_lx ($PHRASE) (SimpleLexiconFn (type PREARG)) (anchored 1))
 
-(rule $thm' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm")))) (anchored 1))
-(rule $thm ($thm') (interactive.lassie.ChoiceFn) (anchored 1))
+# Get sets
+(def @fromFeatureX (lambda x (call @fromFeature (var x))))
+(rule $type ($type_lx) @fromFeatureX (anchored 1))
+(rule $name ($name_lx) @fromFeatureX (anchored 1))
+(rule $AV ($AV_lx) @fromFeatureX (anchored 1))
+(rule $VP ($VP_lx) @fromFeatureX (anchored 1))
+(rule $OBJ ($OBJ_lx) @fromFeatureX (anchored 1))
+(rule $CP ($CP_lx) @fromFeatureX (anchored 1))
+(rule $PREARG ($PREARG_lx) @fromFeatureX (anchored 1))
 
-(rule $thm->tactic' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm -> tactic")))) (anchored 1))
-(rule $thm->tactic ($thm->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+# Syntactically correct intersections
+(def @intersectS1S2 (lambda s1 (lambda s2 (call @intersect (var s1) (var s2)))))
+(rule $VP ($AV $VP) @intersectS1S2 (anchored 1))
+(rule $VP ($VP $OBJ) @intersectS1S2 (anchored 1))
+(rule $VP ($VP $CP) @intersectS1S2 (anchored 1))
+(rule $VP ($VP $AV) @intersectS1S2 (anchored 1))
 
-(rule $thmlist->tactic' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm list -> tactic")))) (anchored 1))
-(rule $thmlist->tactic ($thmlist->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
-
-(rule $tactic->tactic' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.tactic -> tactic")))) (anchored 1))
-(rule $tactic->tactic ($tactic->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
-
-(rule $thm->thm' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm -> thm")))) (anchored 1))
-(rule $thm->thm ($thm->thm') (interactive.lassie.ChoiceFn) (anchored 1))
-
-(rule $termquotation->tactic' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.term quotation -> tactic")))) (anchored 1))
-(rule $termquotation->tactic ($termquotation->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
-
-(rule $int->tactic->tactic' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.int -> tactic -> tactic")))) (anchored 1))
-(rule $int->tactic->tactic ($int->tactic->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
-
-# Casting sets as lists
-(rule $Thms (all $Set theorems)
-      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
-      (anchored 1))
-(rule $Thms ($Set theorems)
-      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
-      (anchored 1))
-(rule $Thms (all $Set)
-      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
-      (anchored 1))
-
-########## REFACTORING ##########
-
-# App
 (for @a (use apply)
      (rule $Apply (@a) (ConstantFn null) (anchored 1)))
 
+(rule $VP' ($Apply $name) (lambda a (lambda n (call @fromFeature (var n)))) (anchored 1))
+(rule $VP' ($name) (lambda n (call @fromFeature (var n))) (anchored 1))
+(rule $VP' ($VP' $type) @intersectS1S2 (anchored 1))
+(rule $VP' ($type $VP') @intersectS1S2 (anchored 1))
+(rule $VP' ($VP) (IdentityFn) (anchored 1))
+(rule $VP' ($VP' $PREARG) @intersectS1S2 (anchored 1))
+(rule $VP' ($VP' with) (SelectFn 0) (anchored 1))
+
+# Collapsing sets to single components
+(rule $tactic' ($VP') (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.tactic")))) (anchored 1))
+(rule $tactic ($tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+
+(rule $thm->tactic' ($VP') (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm -> tactic")))) (anchored 1))
+(rule $thm->tactic ($thm->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+
+(rule $thmlist->tactic' ($VP') (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm list -> tactic")))) (anchored 1))
+(rule $thmlist->tactic ($thmlist->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+
+(rule $tactic->tactic' ($VP') (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.tactic -> tactic")))) (anchored 1))
+(rule $tactic->tactic ($tactic->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+
+(rule $thm->thm' ($VP') (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm -> thm")))) (anchored 1))
+(rule $thm->thm ($thm->thm') (interactive.lassie.ChoiceFn) (anchored 1))
+
+(rule $termquotation->tactic' ($VP') (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.term quotation -> tactic")))) (anchored 1))
+(rule $termquotation->tactic ($termquotation->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+
+(rule $int->tactic->tactic' ($VP') (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.int -> tactic -> tactic")))) (anchored 1))
+(rule $int->tactic->tactic ($int->tactic->tactic') (interactive.lassie.ChoiceFn) (anchored 1))
+
+
+# Theorems
+(rule $thm' ($Set) (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm")))) (anchored 1))
+(rule $thm ($thm') (interactive.lassie.ChoiceFn) (anchored 1))
+
+# Casting sets as lists
+(rule $Thms (all $VP' theorems)
+      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
+      (anchored 1))
+(rule $Thms ($VP' theorems)
+      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
+      (anchored 1))
+(rule $Thms (all $VP')
+      (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
+      (anchored 1))
+
+
+#############
+# OPTIONALS #
+#############
+# App
 (for @cat ($thm->tactic $thmlist->tactic $tactic->tactic $thm->thm $termquotation->tactic $int->tactic->tactic)
      (rule @cat ($Apply @cat) (SelectFn 1) (anchored 1)))
 
