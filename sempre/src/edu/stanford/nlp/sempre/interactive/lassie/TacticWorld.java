@@ -84,4 +84,39 @@ public class TacticWorld {
     public static String set2string(Set<String> s) {
 	return String.join(",", s);
     }
+
+    // Semantic side helper of ChoiceFn
+    // returns 
+    public static String choice(Set<String> s) {
+	if (s.size() > 1) {
+
+	    // Abduce simplest answer if its features are a subset of every other candidate's features
+	    // (i.e. abduce if there is no disambiguation possible)
+	    HOLOntology ontology = HOLOntology.getTheOntology();
+	    String smallest = "TOP_TACTIC";
+	    int smallestSize = Integer.MAX_VALUE;
+
+	    for (String e : s) {
+		if (ontology.entities.get(e).size() < smallestSize) {
+		    smallest = e;
+		    smallestSize = ontology.entities.get(e).size();
+		}
+	    }
+
+	    boolean abduceable = true;
+	    for (String e : s) {
+		if (!ontology.entities.get(e).containsAll(ontology.entities
+							  .get(smallest)
+							  .stream() // (not required to share name)
+							  .filter(x -> !x.startsWith("name"))
+							  .collect(Collectors.toSet())))
+		    abduceable = false;
+	    }
+
+	    if (abduceable)
+		return smallest;
+	}
+
+	return String.join(",", s);
+    }
 }

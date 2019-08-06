@@ -3,6 +3,7 @@ package edu.stanford.nlp.sempre.interactive.lassie;
 import edu.stanford.nlp.sempre.*;
 import edu.stanford.nlp.sempre.interactive.DALExecutor;
 import edu.stanford.nlp.sempre.interactive.lassie.LassieUtils;
+import edu.stanford.nlp.sempre.interactive.lassie.HOLOntology;
 
 import fig.basic.LispTree;
 import fig.basic.LogInfo;
@@ -50,11 +51,10 @@ public class ChoiceFn extends SemanticFn {
 	
     public DerivationStream call(final Example ex, final Callable c) {
 	Executor executor = new JavaExecutor();
-	c.child(0).printDerivationRecursively();
+	// c.child(0).printDerivationRecursively();
 	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
 	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
 	if (elements.length > 1) {
-	    
 	    LassieUtils.printToSocket("Lassie.AMBIGUITY_WARNING := SOME {set= "
 				      + "[\"" + candidates.replace(",","\",\"") + "\"], "
 				      + "span= \"" + getUttString((CallInfo) c) + "\"}");
