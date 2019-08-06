@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,7 +37,7 @@ public class TacticWorld {
     }
     public static String app(String fn, String arg) {
 	if (fn.equals("") || arg.equals("")) return "";
-	return fn + " " + arg;
+	return "(" + fn + " " + arg + ")";
     }
     public static String then(String tac1, String tac2) {
 	if (tac1.equals("") || tac2.equals("")) return "";
@@ -66,13 +65,9 @@ public class TacticWorld {
     }
     public static String op(String operator, String arg1, String arg2) {
 	if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
-	return arg1 + " " + operator + " " + arg2;
+	return "(" + arg1 + " " + operator + " " + arg2 + ")";
     }
 
-    // Feature manipulations
-    public static String refine(String s1, String s2) {
-	return s1 + "." + s2;
-    }
     public static Set<String> fromFeature(String f) {
 	HOLOntology ontology = HOLOntology.getTheOntology(); 
 	if (f.equals("top")) return ontology.entities.keySet();
@@ -87,6 +82,41 @@ public class TacticWorld {
     }
 
     public static String set2string(Set<String> s) {
+	return String.join(",", s);
+    }
+
+    // Semantic side helper of ChoiceFn
+    // returns 
+    public static String choice(Set<String> s) {
+	if (s.size() > 1) {
+
+	    // Abduce simplest answer if its features are a subset of every other candidate's features
+	    // (i.e. abduce if there is no disambiguation possible)
+	    HOLOntology ontology = HOLOntology.getTheOntology();
+	    String smallest = "TOP_TACTIC";
+	    int smallestSize = Integer.MAX_VALUE;
+
+	    for (String e : s) {
+		if (ontology.entities.get(e).size() < smallestSize) {
+		    smallest = e;
+		    smallestSize = ontology.entities.get(e).size();
+		}
+	    }
+
+	    boolean abduceable = true;
+	    for (String e : s) {
+		if (!ontology.entities.get(e).containsAll(ontology.entities
+							  .get(smallest)
+							  .stream() // (not required to share name)
+							  .filter(x -> !x.startsWith("name"))
+							  .collect(Collectors.toSet())))
+		    abduceable = false;
+	    }
+
+	    if (abduceable)
+		return smallest;
+	}
+
 	return String.join(",", s);
     }
 }
