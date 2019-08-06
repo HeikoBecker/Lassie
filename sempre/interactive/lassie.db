@@ -44,8 +44,8 @@ match_mp_tac                type    thm -> tactic
 
 # automation tactics
 res_tac                     type    tactic
-metis_tac                   type    thm -> tactic
-meson_tac                   type    thm -> tactic
+metis_tac                   type    thm list -> tactic
+MESON_TAC                   type    thm list -> tactic
 
 # pattern based tactics
 qpat_x_assum                type    term quotation -> (thm -> tactic) -> tactic
