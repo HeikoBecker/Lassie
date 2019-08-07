@@ -90,10 +90,11 @@
 (rule $tactic ($termquotation->tactic $termquotation) @appT1T2 (anchored 1))
 (rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
 (rule $[thm->tactic]->tactic ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
-(rule $tactic]->tactic ($[thm->tactic]->tactic $[thm) @appT1T2 (anchored 1))
+(rule $tactic ($[thm->tactic]->tactic $thm->tactic) @appT1T2 (anchored 1))
 (rule $tactic ($termquotationlist->tactic $termquotationlist) @appT1T2 (anchored 1))
 (rule $[thm->tactic]->thm->tactic ($termquotation->[thm->tactic]->thm->tactic $termquotation) @appT1T2 (anchored 1))
 (rule $[thm->tactic]->thm->tactic ($termquotationlist->[thm->tactic]->thm->tactic $termquotationlist) @appT1T2 (anchored 1))
+(rule $thm->tactic ($[thm->tactic]->thm->tactic $thm->tactic) @appT1T2 (anchored 1))
 
 # infix
 (rule $tactic ($termquotation $termquotation*tactic->tactic $tactic) (lambda q (lambda by (lambda t (call @op (var by) (var q) (var t))))) (anchored 1))
