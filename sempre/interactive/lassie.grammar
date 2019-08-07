@@ -168,6 +168,8 @@
 (rule $CP_lx ($PHRASE) (SimpleLexiconFn (type CP)) (anchored 1))
 (rule $PREARG_lx ($PHRASE) (SimpleLexiconFn (type PREARG)) (anchored 1))
 
+(rule $set_lx ($PHRASE) (SimpleLexiconFn (type set)) (anchored 1))
+
 # Get sets
 (def @fromFeatureX (lambda x (call @fromFeature (var x))))
 (rule $type ($type_lx) @fromFeatureX (anchored 1))
@@ -178,12 +180,18 @@
 (rule $CP ($CP_lx) @fromFeatureX (anchored 1))
 (rule $PREARG ($PREARG_lx) @fromFeatureX (anchored 1))
 
+(rule $set ($set_lx) @fromFeatureX (anchored 1))
+
 # Syntactically correct intersections
 (def @intersectS1S2 (lambda s1 (lambda s2 (call @intersect (var s1) (var s2)))))
 (rule $VP ($AV $VP) @intersectS1S2 (anchored 1))
 (rule $VP ($VP $OBJ) @intersectS1S2 (anchored 1))
 (rule $VP ($VP $CP) @intersectS1S2 (anchored 1))
 (rule $VP ($VP $AV) @intersectS1S2 (anchored 1))
+
+(for @p (on with the)
+     (rule $Prep (@p) (ConstantFn null) (anchored 1)))
+(rule $set ($set $set) @intersectS1S2 (anchored 1))
 
 (for @a (use apply)
      (rule $Apply (@a) (ConstantFn null) (anchored 1)))
@@ -220,7 +228,7 @@
 
 
 # Theorems
-(rule $thm' ($Set) (lambda s (call @choice (call @intersect (var s) (call @fromFeature "type.thm")))) (anchored 1))
+(rule $thm' ($set) (lambda s (call @choice (call @intersect (var s) (call @fromFeature "type.thm")))) (anchored 1))
 (rule $thm ($thm') (interactive.lassie.ChoiceFn) (anchored 1))
 
 # Casting sets as lists
@@ -243,8 +251,5 @@
      (rule @cat ($Apply @cat) (SelectFn 1) (anchored 1)))
 
 # Args
-(for @p (on with the)
-     (rule $Prep (@p) (ConstantFn null) (anchored 1)))
-
 (for @cat ($tactic $thm $thmlist $termquotation)
      (rule @cat ($Prep @cat) (SelectFn 1) (anchored 1)))

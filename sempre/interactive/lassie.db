@@ -150,11 +150,11 @@ res_tac			    VP	    enrich, resolve
 res_tac			    OBJ	    assumptions
 res_tac			    CP 	    together, with eachother
 
-meson_tac                   name    meson
-meson_tac		    AV	    auto, automatic
-meson_tac		    VP	    proof search, search
-meson_tac		    OBJ	    proof
-meson_tac		    PREARG  with
+MESON_TAC                   name    meson
+MESON_TAC		    AV	    auto, automatic
+MESON_TAC		    VP	    proof search, search
+MESON_TAC		    OBJ	    proof
+MESON_TAC		    PREARG  with
 
 metis_tac                   name    metis
 metis_tac		    AV	    auto, automatic, ordered, fancy
@@ -686,26 +686,26 @@ ABS_0                       type    thm
 #######################################
 # HOL4 - Real number theorems : Names #
 #######################################
-#REAL_DIV                   name    real, division
-REAL_SUB	            name    real, subtraction, additive inverse
-POW_2                       name    power, square, two
-REAL		            name    real, definition, successor
-REAL_ADD	            name    real, addition
-REAL_ADD_ASSOC	            name    real, addition, associativity
-REAL_ADD_LDISTRIB           name    real, addition, left, distributivity
-REAL_ADD_RDISTRIB           name    real, addition, right, distributivity
-REAL_ADD_SYM	            name    real, addition, symmetry
-REAL_DIV_LZERO	            name    real, division, left, zero
-REAL_DOUBLE	            name    real, double
-REAL_HALF_DOUBLE            name    real, half, double
-REAL_LDISTRIB	            name    real, left, distributivity
-REAL_MUL	            name    real, multiplication
-REAL_MUL_LID	            name    real, multiplication, left, identity
-REAL_MUL_RID	            name    real, multiplication, right, identity
-REAL_MUL_RINV	            name    real, multiplication, right, inverse
-REAL_MUL_SYM	            name    real, multiplication, symmetry
-REAL_NEG_ADD	            name    real, negation, addition
-REAL_NEG_LMUL	            name    real, negation, left, multiplication
-REAL_RDISTRIB	            name    real, right, distributivity
-REAL_SUB_LDISTRIB           name    real, subtraction, left, distributivity
-REAL_SUB_RDISTRIB           name    real, subtraction, right, distributivity
+#REAL_DIV                   set    real, division
+REAL_SUB	            set    real, subtraction, additive inverse
+POW_2                       set    power, square, two
+REAL		            set    real, definition, successor
+REAL_ADD	            set    real, addition
+REAL_ADD_ASSOC	            set    real, addition, associativity
+REAL_ADD_LDISTRIB           set    real, addition, left, distributivity
+REAL_ADD_RDISTRIB           set    real, addition, right, distributivity
+REAL_ADD_SYM	            set    real, addition, symmetry
+REAL_DIV_LZERO	            set    real, division, left, zero
+REAL_DOUBLE	            set    real, double
+REAL_HALF_DOUBLE            set    real, half, double
+REAL_LDISTRIB	            set    real, left, distributivity
+REAL_MUL	            set    real, multiplication
+REAL_MUL_LID	            set    real, multiplication, left, identity
+REAL_MUL_RID	            set    real, multiplication, right, identity
+REAL_MUL_RINV	            set    real, multiplication, right, inverse
+REAL_MUL_SYM	            set    real, multiplication, symmetry
+REAL_NEG_ADD	            set    real, negation, addition
+REAL_NEG_LMUL	            set    real, negation, left, multiplication
+REAL_RDISTRIB	            set    real, right, distributivity
+REAL_SUB_LDISTRIB           set    real, subtraction, left, distributivity
+REAL_SUB_RDISTRIB           set    real, subtraction, right, distributivity

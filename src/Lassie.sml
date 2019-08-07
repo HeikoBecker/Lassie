@@ -89,10 +89,13 @@ fun normalize str =
 (**************************************)
 (*           Communication            *)
 (**************************************)
+val logging = ref false;
+	
 (* wait for the SEMPRE prompt; signifies end of execution *)
 fun waitSempre instream =
     let
 	val s = TextIO.input(instream);
+	val _ = if !logging then print s else ()
     in
 	if String.isSuffix "\n> " s orelse s = "> " then ()
 	(* else if s = "" then raise LassieException "Reached EOS? Empty string was read."  *)
@@ -245,7 +248,7 @@ fun lassie utt : int -> proof =
 fun def ndum niens : unit =
     let
 	(* for each utterance of the definition, get its logical form *)
-	fun getFormula u = [u, (u |> sempre |> fst |> #formula)]
+	fun getFormula u = [u, (u |> sempre |> fst |> #formula |> escape |> escape)]
 
 	(* formatting *)
 	fun quot s = "\"" ^ s ^ "\""
