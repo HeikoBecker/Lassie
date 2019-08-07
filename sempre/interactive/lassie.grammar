@@ -232,13 +232,13 @@
 (rule $thm ($thm') (interactive.lassie.ChoiceFn) (anchored 1))
 
 # Casting sets as lists
-(rule $Thms (all $VP' theorems)
+(rule $Thms (all $set theorems)
       (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
       (anchored 1))
-(rule $Thms ($VP' theorems)
+(rule $Thms ($set theorems)
       (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
       (anchored 1))
-(rule $Thms (all $VP')
+(rule $Thms (all $set)
       (lambda s (call @set2string (call @intersect (var s) (call @fromFeature "type.thm"))))
       (anchored 1))
 
