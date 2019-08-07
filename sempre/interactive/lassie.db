@@ -212,7 +212,7 @@ cheat 		            name    cheat
 
 strip_tac                   name    intros
 strip_tac		    VP	    remove, strip
-strip_tac		    OBJ	    quantifiers	    
+strip_tac		    OBJ	    quantifier
 
 rename                      name    alpha conversion
 rename			    VP	    rename, change
