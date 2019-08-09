@@ -198,8 +198,8 @@ last_x_assum		    CP	    over assumptions
 ntac			    VP	    repeat, apply
 ntac			    CP	    times
 
+rpt			    AV	    infinitely, indefinitely
 rpt			    VP	    repeat, keep applying
-rpt			    CP	    infinitely, indefinitely
 
 # other
 subgoal			    VP	    produce, add, show
