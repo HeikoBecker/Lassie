@@ -58,6 +58,21 @@ public class DALAnalyzer extends LanguageAnalyzer {
       //   separate = !(i + 1 < utterance.length())
       //       || ((utterance.charAt(i + 1) != '=' && utterance.charAt(i + 1) != '='));
       // else
+
+      // WIP
+      // // Hard separators 
+      // if (",".indexOf(c) != -1) { // (include `;`?)
+      // 	  tokenList.add(buf.toString());
+      // 	  ?
+      // 	      }
+      // //
+      // int cat = 1;
+      // if ("()[]{}".indexOf(c) != -1)
+      // 	  cat *= 2;
+      // if ("!%&$#+-/:<=>?@\\~`^|*".indexOf(c) != -1)
+      // 	  cat *= 3;
+      // if ("_'".indexOf(c) != -1 || Character.isLetterOrDigit(c))
+      // 	  cat *= 5;
       separate = (",?'\"[];{}+()`".indexOf(c) != -1);
 
       if (separate)
