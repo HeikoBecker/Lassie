@@ -58,15 +58,15 @@ behind the database is an extension of what SEMPRE's overnight mode's
 database, in a slightly more compact form. At each line, we have a
 triple:
 
-	<entity>        <attribute>        <value1, value2, ...>
-	
+    <entity>        <attribute>        <value1, value2, ...>
+    
 For example:
 
-	rename        type      term quotation list -> tactic
-	rename        name      alpha conversion, renaming
-	rename	      VP	    rename, change
-	rename	      OBJ	    variables, variable names, free variables
-	
+    rename        type      term quotation list -> tactic
+    rename        name      alpha conversion, renaming
+    rename        VP        rename, change
+    rename        OBJ       variables, variable names, free variables
+    
 From those entries, Lassie builds its *ontology*: its knowledge of the
 universe it operates in. It writes a lexicon file
 [sempre/interactive/lassie.lexicon](sempre/interactive/lassie.lexicon)
@@ -77,13 +77,13 @@ logical forms get executed.
 
 With the grammar rule
 
-	(rule <new_category> ($PHRASE) (SimpleLexiconFn (type <attribute>)))
-	
+    (rule <new_category> ($PHRASE) (SimpleLexiconFn (type <attribute>)))
+    
 Lassie will parse values marked under attribute `<attribute>` in the
 database, into the syntactic category `<new_category>`, which can be
 used in other rules to build up full expressions. For example:
 
-	(rule $name ($PHRASE) (SimpleLexiconFn (type name)))
+    (rule $name ($PHRASE) (SimpleLexiconFn (type name)))
 
 #### Special Attributes
 The `type` attribute is the only one required for each component and
@@ -91,7 +91,7 @@ gives rise to literal lexemes to be parsed into their fitting type in
 the grammar; e.g. `asm_rewrite_tac` is given type `thm list -> tactic`
 for which Lassie generates a lexeme
 
-	lexeme:  "asm_rewrite_tac"
+    lexeme:  "asm_rewrite_tac"
     formula: "asm_rewrite_tac"
     type:    "thmlist->tactic"
 
@@ -101,20 +101,20 @@ into a category of choice—hopefully one with a meaningful name like
 `$thmlist->tactic`. Note that internally, those types have their
 whitespaces removed and parentheses turned into square brackets so type
 
-	term quotation list -> (thm -> tactic) -> thm -> tactic
+    term quotation list -> (thm -> tactic) -> thm -> tactic
 
 is actually fetched from SimpleLexiconFn with
 
-	(type termquotationlist->[thm->tactic]->thm->tactic)
+    (type termquotationlist->[thm->tactic]->thm->tactic)
 
 into a category potentially called
 
-	$termquotationlist->[thm->tactic]->thm->tactic
+    $termquotationlist->[thm->tactic]->thm->tactic
 
 ### The Grammar
 A SEMPRE grammar rule has the following form
 
-	(rule <target-category> (<source-1> ... <source-k>) <semantic-function>)
+    (rule <target-category> (<source-1> ... <source-k>) <semantic-function>)
 
 where `<source-1> ... <source-k>` is a pattern made of text and
 categories which will match an utterance or a derivation of it. Once
@@ -127,10 +127,10 @@ forms to compose into complex expression.
 
 For example, the rules
 
-	(rule $name ($PHRASE) (SimpleLexiconFn (type name)))
-	(rule $set_hasName ($Name) (lambda n (call fromFeature (var n))))
-	(rule $tactic_set (use tactic $hasName) 
-	      (lambda s (call intersect (var s) (call fromFeature "type.tactic"))))
+    (rule $name ($PHRASE) (SimpleLexiconFn (type name)))
+    (rule $set_hasName ($Name) (lambda n (call fromFeature (var n))))
+    (rule $tactic_set (use tactic $hasName) 
+          (lambda s (call intersect (var s) (call fromFeature "type.tactic"))))
 
 will parse the expression `use tactic res_tac` into the set of
 components from the database which have `tactic` as type and `res_tac`
@@ -141,11 +141,11 @@ expressions: we restrict the ways in which logical forms can be composed
 through function application by a fixed set of grammar rules. Thus our
 rules look more like
 
-	(rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
-	(rule $set_hasName ($Name) (lambda n (call fromFeature (var n))) (anchored 1))
-	(rule $tactic_set (use tactic $hasName) 
-	      (lambda s (call intersect (var s) (call fromFeature "type.tactic")))
-		  (anchored 1))
+    (rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
+    (rule $set_hasName ($Name) (lambda n (call fromFeature (var n))) (anchored 1))
+    (rule $tactic_set (use tactic $hasName) 
+          (lambda s (call intersect (var s) (call fromFeature "type.tactic")))
+          (anchored 1))
 
 We will show how we turn sets of potential components into actual
 components in the section about [ChoiceFn](#choicefn).
@@ -155,10 +155,10 @@ We limit our natural language input to a structured form following basic
 English sentence construction. We loosely follow an interpretation of
 different *parts of speech* (POS) as types:
 
-	noun = o
-	adjective = o -> o
-	adverb = (o -> o) -> (o -> o)
-	verb = o -> tactic
+    noun = o
+    adjective = o -> o
+    adverb = (o -> o) -> (o -> o)
+    verb = o -> tactic
 
 For simplicity, we restrict verbs to the imperative tense such that they
 only require an object but no subject. Our object language (describing
@@ -185,8 +185,8 @@ however, are directed and although equalities at the base of HOL4
 theorems often act as directed (in rewriting the LHS is rewritten into
 the RHS), they internalize both directions. For example:
 
-	val POW_2 = ⊢ ∀x. x pow 2 = x * x
-	
+    val POW_2 = ⊢ ∀x. x pow 2 = x * x
+    
 "expands" in one way and "simplifies" in the other. Using `GSYM` is
 necessary to get the "simplify" effect out of that theorem in the
 context of rewriting. This could be mediated by counting `<thm>` and
@@ -244,26 +244,26 @@ all of the attributes of that component also be attributes of all other
 components of the set of potential components. For example, in the
 current database, we can have the following attributions:
 
-	simp            VP	    simplify
-	simp		    OBJ	    goal
+    simp            VP      simplify
+    simp            OBJ     goal
 
-	fs              AV      full, fully
-	fs			    VP	    simplify
-	fs			    OBJ	    goal, all of goal, assumptions
+    fs              AV      full, fully
+    fs              VP      simplify
+    fs              OBJ     goal, all of goal, assumptions
 
-	rfs             AV      reverse, full, fully
-	rfs			    VP	    simplify
-	rfs			    OBJ	    goal, all of goal, assumptions
-	rfs			    CP	    in reverse order
-	
+    rfs             AV      reverse, full, fully
+    rfs             VP      simplify
+    rfs             OBJ     goal, all of goal, assumptions
+    rfs             CP      in reverse order
+    
 Both `fs` and `rfs` build on `simp` in different ways; they are more
 complex versions of the same functionality. Moreover, `rfs` will usually
 only be used in cases where the order in which `fs` operates is not
 satisfactory. We can capture this relation of increasing conceptual
 complexity by defining them such that
 
-	attributes(simp) ⊂ attributes(fs) ⊂ attributes(rfs)
-	
+    attributes(simp) ⊂ attributes(fs) ⊂ attributes(rfs)
+    
 Hence, calling for Lassie to "simplify" will parse to `simp` because it
 can be abduced among `fs` and `rfs` as being the simplest of the
 three. If the user cares that the assumptions also be simplified, then
@@ -287,7 +287,7 @@ but not sets). Hence, in the grammar, every call to `ChoiceFn` is done
 from a category that is uniquely construct-able from a rule having as
 semantics 
 
-	(lambda s (call choice ... (var s) ...))
+    (lambda s (call choice ... (var s) ...))
 
 We could relax this condition if we had `ChoiceFn` add the `choice` call
 itself before execution.
