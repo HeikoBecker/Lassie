@@ -59,14 +59,14 @@ database, in a slightly more compact form. At each line, we have a
 triple:
 
     <entity>        <attribute>        <value1, value2, ...>
-    
+
 For example:
 
     rename        type      term quotation list -> tactic
     rename        name      alpha conversion, renaming
     rename        VP        rename, change
     rename        OBJ       variables, variable names, free variables
-    
+
 From those entries, Lassie builds its *ontology*: its knowledge of the
 universe it operates in. It writes a lexicon file
 [sempre/interactive/lassie.lexicon](sempre/interactive/lassie.lexicon)
@@ -78,7 +78,7 @@ logical forms get executed.
 With the grammar rule
 
     (rule <new_category> ($PHRASE) (SimpleLexiconFn (type <attribute>)))
-    
+
 Lassie will parse values marked under attribute `<attribute>` in the
 database, into the syntactic category `<new_category>`, which can be
 used in other rules to build up full expressions. For example:
@@ -129,7 +129,7 @@ For example, the rules
 
     (rule $name ($PHRASE) (SimpleLexiconFn (type name)))
     (rule $set_hasName ($Name) (lambda n (call fromFeature (var n))))
-    (rule $tactic_set (use tactic $hasName) 
+    (rule $tactic_set (use tactic $hasName)
           (lambda s (call intersect (var s) (call fromFeature "type.tactic"))))
 
 will parse the expression `use tactic res_tac` into the set of
@@ -143,7 +143,7 @@ rules look more like
 
     (rule $name ($PHRASE) (SimpleLexiconFn (type name)) (anchored 1))
     (rule $set_hasName ($Name) (lambda n (call fromFeature (var n))) (anchored 1))
-    (rule $tactic_set (use tactic $hasName) 
+    (rule $tactic_set (use tactic $hasName)
           (lambda s (call intersect (var s) (call fromFeature "type.tactic")))
           (anchored 1))
 
@@ -186,7 +186,7 @@ theorems often act as directed (in rewriting the LHS is rewritten into
 the RHS), they internalize both directions. For example:
 
     val POW_2 = ⊢ ∀x. x pow 2 = x * x
-    
+
 "expands" in one way and "simplifies" in the other. Using `GSYM` is
 necessary to get the "simplify" effect out of that theorem in the
 context of rewriting. This could be mediated by counting `<thm>` and
@@ -255,7 +255,7 @@ current database, we can have the following attributions:
     rfs             VP      simplify
     rfs             OBJ     goal, all of goal, assumptions
     rfs             CP      in reverse order
-    
+
 Both `fs` and `rfs` build on `simp` in different ways; they are more
 complex versions of the same functionality. Moreover, `rfs` will usually
 only be used in cases where the order in which `fs` operates is not
@@ -263,12 +263,12 @@ satisfactory. We can capture this relation of increasing conceptual
 complexity by defining them such that
 
     attributes(simp) ⊂ attributes(fs) ⊂ attributes(rfs)
-    
+
 Hence, calling for Lassie to "simplify" will parse to `simp` because it
 can be abduced among `fs` and `rfs` as being the simplest of the
 three. If the user cares that the assumptions also be simplified, then
 they can specify further with something like "fully simplify" or
-"simplify goal and assumptions". 
+"simplify goal and assumptions".
 
 `ChoiceFn` is special in that it executes logical forms during
 derivation; the whole of SEMPRE appears to keep derivation and execution
@@ -285,7 +285,7 @@ returning a string because SEMPRE has a limited set of values it can
 get from executing semantic functions (including strings as StringValue,
 but not sets). Hence, in the grammar, every call to `ChoiceFn` is done
 from a category that is uniquely construct-able from a rule having as
-semantics 
+semantics
 
     (lambda s (call choice ... (var s) ...))
 
