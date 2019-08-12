@@ -152,19 +152,26 @@ components in the section about [ChoiceFn](#choicefn).
 
 #### Sentence Construction
 We limit our natural language input to a structured form following basic
-English sentence construction. We loosely follow an interpretation of
-different *parts of speech* (POS) as types:
+English sentence construction. For an intuition of what kind of
+constructions we want to allow, imagine the different *parts of speech*
+(POS) as types:
 
     noun = o
     adjective = o -> o
     adverb = (o -> o) -> (o -> o)
     verb = o -> tactic
 
-For simplicity, we restrict verbs to the imperative tense such that they
-only require an object but no subject. Our object language (describing
-the inhabitants of `o`) consists of terms, theorems, numbers and lists
-of terms and of theorems. Guided by this model, we can structure our
-natural language around principles of well-typed sentences.
+- Verbs are at the core of the sentence and mostly determine the tactic
+  (or tactical) to be used. Adverbs may refine the meaning of the verb.
+  (For simplicity, we restrict verbs to the imperative tense such that
+  they only require an object but no subject.)
+- Arguments to the verb (terms, theorems, numbers, and lists of terms
+  and of theorems; of type `o`) are noun phrases. At the core of a noun
+  phrase is a noun, which may be refined with an adjective, which in
+  turn can be refined with an adverb.
+
+Guided by this model, we can structure our natural language around
+principles of well-typed sentences.
 
 Hence, we name theorems with nouns (e.g. distributivity, symmetry,
 definition, etc.) refined with adjectives (e.g. addition,
@@ -203,10 +210,10 @@ Parentheses need to be escaped. Double quotes also, although they
 haven't been very much tested and would likely lead to breaks.
 
 ### The Semantics
-Lassie's semantics are written in the file
+Lassie's logical form semantics are written in the file
 [TacticWorld.java](sempre/src/edu/stanford/nlp/sempre/interactive/lassie/TacticWorld.java). Because
 our domain (HOL4 tactics) is dense in entities for which the names are
-not well defined, a good part of the semantics exist to narrow down on
+not well defined, a good part of the semantics exists to narrow down on
 the specific components an utterance is referring to.
 
 To achieve this, attributes are picked out in the sentence and cast
@@ -219,11 +226,10 @@ of its logical form returns that single element.
 #### ChoiceFn
 SEMPRE provides a number of built-in semantic functions like
 `SimpleLexiconFn` or `IdentityFn`. They differ from ordinary
-`call`-formulas in that they do not manifest themselves in the resulting
-logical form but assist in its derivation. They are executed during
-parsing and the results of this execution can influence the direction of
-derivation. We have implemented the `ChoiceFn` semantic function for
-purposes related to our set semantics.
+`call`-formulas in that they do not show up in the resulting logical
+form but help determine its derivation. They are executed during parsing
+and can influence the direction of derivation. We have implemented the
+`ChoiceFn` semantic function for purposes related to our set semantics.
 
 Every set of potential components that aims to be an actual component
 passes through `ChoiceFn`. On receiving a derivation which evaluates to
@@ -270,24 +276,25 @@ three. If the user cares that the assumptions also be simplified, then
 they can specify further with something like "fully simplify" or
 "simplify goal and assumptions".
 
-`ChoiceFn` is special in that it executes logical forms during
-derivation; the whole of SEMPRE appears to keep derivation and execution
-of logical forms very separate. Making this crossover was surprisingly
-friction-less and possibly better for running time since it allows us to
-cull from the parsing derivations that are meaningless.
-
 ##### Notes on ChoiceFn
+`ChoiceFn` is special among semantic functions in that it executes
+logical forms during derivation; the whole of SEMPRE appears to keep
+derivation and execution of logical forms very separate. Making this
+crossover was surprisingly friction-less and possibly better for running
+time since it allows us to cull from the parsing derivations that are
+meaningless.
+
 `ChoiceFn`, as it is currently implemented, exists in two parts: the
 semantic function (the actual `ChoiceFn`) and a logical form function
 `choice` which does the abduction and casting part. We are currently
 forced to wrap logical forms which execute to sets with a function call
-returning a string because SEMPRE has a limited set of values it can
-get from executing semantic functions (including strings as StringValue,
-but not sets). Hence, in the grammar, every call to `ChoiceFn` is done
-from a category that is uniquely construct-able from a rule having as
-semantics
+returning a string because SEMPRE has a limited set of values it can get
+from executing semantic functions (e.g. strings as StringValue, but we
+do not have sets). Hence, in the grammar, every call to `ChoiceFn` is
+done from a category that is uniquely construct-able from a rule having
+as semantics
 
     (lambda s (call choice ... (var s) ...))
 
-We could relax this condition if we had `ChoiceFn` add the `choice` call
-itself before execution.
+We could relax this condition if we made `ChoiceFn` wrap its child
+derivation into a `choice` call, and then proceed with execution.
