@@ -1,3 +1,11 @@
 sempre/interactive/sempre-out-socket.sml
 sempre/interactive/last-sempre-output.sml
 sempre/interactive/lassie.lexicon
+
+src/*.ui
+src/*.uo
+src/.HOLMK/*
+src/.hollogs/*
+
+examples/.HOLMK/*
+examples/.hollogs/*
