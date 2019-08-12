@@ -1,7 +1,7 @@
 structure Lassie =
 struct
 
-val LU = LassieUtils;
+open LassieUtils;
 
 val map = List.map
 fun mem x l = List.exists (fn x' => x = x') l
@@ -27,7 +27,7 @@ fun waitSempre instream =
 (* run SEMPRE as a subprocess, through its run script returns outstream of its shell *)
 fun launchSempre () =
   let
-    val LASSIEDIR = LU.getOSVar "LASSIEDIR"
+    val LASSIEDIR = getOSVar "LASSIEDIR"
     (* SEMPRE's run script is dependent on being at the top of its directory *)
     val _ = OS.FileSys.chDir (LASSIEDIR ^ "/sempre")
     val instream' =
@@ -108,7 +108,7 @@ fun printAmbiguities () =
 (* returns a derivation (i.e. the first candidate) *)
 fun readSempre utt =
   let
-    val _ = LU.sleep 0.1; (* socket file seems to appear a bit after end of execution *)
+    val _ = sleep 0.1; (* socket file seems to appear a bit after end of execution *)
     val _ =
       if not (OS.FileSys.access (socketPath, []))
       then raise LassieException ("Socket file missing after call to SEMPRE: " ^ socketPath)
@@ -147,7 +147,7 @@ fun accept (utt, formula) : unit =
   let
     fun quot s = "\"" ^ s ^ "\""
   in
-    writeSempre ("(:accept " ^ (quot (LU.escape utt)) ^ " " ^ (quot (LU.escape formula)) ^ ")")
+    writeSempre ("(:accept " ^ (quot (escape utt)) ^ " " ^ (quot (escape formula)) ^ ")")
   end;
 
 
@@ -163,8 +163,8 @@ fun lassie utt : int -> proof =
       case derivs of
         [] => ()
         | d::ds => (print ("\nDerivation [" ^ Int.toString idx ^ "]:\n"
-             ^ "\tFormula: " ^ LU.simplifyAbsoluteNames (#formula d) ^ "\n"
-             ^ "\tValue: " ^ (LU.normalize (#value d)) ^ "\n\n");
+             ^ "\tFormula: " ^ simplifyAbsoluteNames (#formula d) ^ "\n"
+             ^ "\tValue: " ^ (normalize (#value d)) ^ "\n\n");
             dprinter ds (idx + 1))
   in
     dprinter derivations 1; (* if no index is given, just print the derivations *)
@@ -185,7 +185,7 @@ fun lassie utt : int -> proof =
 fun def ndum niens : unit =
   let
     (* for each utterance of the definition, get its logical form *)
-    fun getFormula u = [u, (u |> sempre |> fst |> #formula |> LU.escape |> LU.escape)]
+    fun getFormula u = [u, (u |> sempre |> fst |> #formula |> escape |> escape)]
     (* formatting *)
     fun quot s = "\"" ^ s ^ "\""
     fun quot' s = "\\\"" ^ s ^ "\\\""
