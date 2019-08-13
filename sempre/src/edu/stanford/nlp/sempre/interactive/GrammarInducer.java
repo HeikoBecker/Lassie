@@ -344,6 +344,8 @@ public class GrammarInducer {
       deriv.grammarInfo.formula = f;
     } else if (rule.sem instanceof IdentityFn) {
       deriv.grammarInfo.formula = args.get(0).grammarInfo.formula;
+    } else if (rule.sem instanceof edu.stanford.nlp.sempre.interactive.lassie.ChoiceFn) {
+      deriv.grammarInfo.formula = args.get(0).grammarInfo.formula;
     } else if (rule.sem instanceof BlockFn) {
       deriv.grammarInfo.formula = new ActionFormula(((BlockFn) rule.sem).mode,
           args.stream().map(d -> d.grammarInfo.formula).collect(Collectors.toList()));
