@@ -279,7 +279,8 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
 
   o('GrammarInducer.useBestPacking', true),
   o('GrammarInducer.useSimplePacking', true),
-  o('GrammarInducer.maxNonterminals', 3),
+  o('GrammarInducer.maxNonterminals', 5), # default 3
+  o('GrammarInducer.minNonterminals', 0), # default 1
 
   o('Derivation.showTypes', false),
   o('Derivation.showValues', false),

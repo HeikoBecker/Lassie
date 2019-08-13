@@ -47,6 +47,8 @@ public class GrammarInducer {
     public boolean useSimplePacking = true;
     @Option(gloss = "maximum nonterminals in a rule")
     public long maxNonterminals = 4;
+    @Option(gloss = "minimum nonterminals in a rule")
+    public int minNonterminals = 1;
   }
 
   public static Options opts = new Options();
@@ -124,11 +126,8 @@ public class GrammarInducer {
       HashMap<String, String> formulaToCat = new HashMap<>();
       bestPacking.forEach(d -> formulaToCat.put(catFormulaKey(d), varName(d)));
       buildFormula(def, formulaToCat);
-      for (Rule rule : induceRules(bestPacking, def)) {
-        if (rule.rhs.stream().allMatch(s -> Rule.isCat(s)))
-          continue;
+      for (Rule rule : induceRules(bestPacking, def))
         filterRule(rule);
-      }
 
       if (opts.verbose > 1) {
         LogInfo.logs("chartList.size = %d", chartList.size());
@@ -153,17 +152,22 @@ public class GrammarInducer {
       LogInfo.logs("GrammarInducer.filterRule: already have %s", rule.toString());
       return;
     }
-    int numNT = 0;
-    for (String t : rule.rhs) {
-      if (Rule.isCat(t)) numNT++;
-    }
+
+    long numNT = rule.rhs.stream().filter(s -> !Rule.isCat(s)).count();
     
     if (numNT > GrammarInducer.opts.maxNonterminals ) {
-      LogInfo.logs("GrammarInducer.filterRule: too many nontermnimals (max %d) %s", GrammarInducer.opts.maxNonterminals, rule.rhs.toString());
+      LogInfo.logs("GrammarInducer.filterRule: too many nonterminals (max %d) %s", GrammarInducer.opts.maxNonterminals, rule.rhs.toString());
       return;
     }
+
+    if (numNT < GrammarInducer.opts.minNonterminals ) {
+      LogInfo.logs("GrammarInducer.filterRule: too few nonterminals (min %d) %s", GrammarInducer.opts.minNonterminals, rule.rhs.toString());
+      return;
+    }
+
     inducedRules.add(rule);
     RHSs.add(rule.rhs.toString());
+    // LogInfo.logs("Added rule %s", rule.toString());
   }
 
   static Map<String, List<Derivation>> makeChartMap(List<Derivation> chartList) {
@@ -313,6 +317,7 @@ public class GrammarInducer {
       // LogInfo.logs("Found match %s, %s, %s", catFormulaKey(deriv),
       // replaceMap, deriv);
       deriv.grammarInfo.formula = new VariableFormula(replaceMap.get(catFormulaKey(deriv)));
+      // LogInfo.logs("WITH VARIABLE: %s", deriv.grammarInfo.formula);
       return;
     }
     if (deriv.children.size() == 0) {
@@ -352,9 +357,9 @@ public class GrammarInducer {
     } else {
       deriv.grammarInfo.formula = deriv.formula;
     }
-    // LogInfo.logs("BUILT %s for %s", deriv.grammarInfo.formula,
-    // deriv.formula);
-    // LogInfo.log("built " + deriv.grammarInfo.formula);
+    LogInfo.logs("BUILT %s for %s", deriv.grammarInfo.formula,
+    deriv.formula);
+    LogInfo.log("built " + deriv.grammarInfo.formula);
   }
 
   private String newName(String s) {
