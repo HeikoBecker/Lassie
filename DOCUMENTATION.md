@@ -30,6 +30,13 @@ example:
 - logical form: `(call sum (call range 0 10))`
 - denotation: `55`
 
+### Interactive Mode
+There is little existing documentation on the SEMPRE's interactive
+mode. One can refer to the [Voxelurn
+paper](https://arxiv.org/pdf/1704.06956.pdf) and the [Flipper
+paper](https://arxiv.org/pdf/1803.02238.pdf) for details on SEMPRE's
+process of inductive learning. 
+
 ## HOL4
 The purpose of Lassie is to offer a natural language interface for
 proving HOL4 theorems through tactics. As such, the denotation we aim
