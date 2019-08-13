@@ -14,7 +14,7 @@ fun sleep t =
 
 fun flushStream instream =
   case TextIO.canInput(instream, 5000) of
-    NONE -> ()
+    NONE => ()
     | SOME n =>
       if n = 0 then ()
       else (TextIO.input(instream); flushStream(instream));
@@ -91,9 +91,9 @@ fun normalize str =
 
 exception VariableUndefined of string;
 
-  fun getOSVar name =
-    case OS.Process.getEnv name of
-    | NONE => raise VariableUndefined "Variable " ^ s ^ " not defined in environment"
-    | SOME s => s;
+fun getOSVar name =
+  case OS.Process.getEnv name of
+    NONE => raise VariableUndefined ("Variable " ^ name ^ " not defined in environment")
+  | SOME s => s;
 
 end
