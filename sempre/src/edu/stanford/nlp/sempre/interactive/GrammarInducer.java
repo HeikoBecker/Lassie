@@ -357,9 +357,9 @@ public class GrammarInducer {
     } else {
       deriv.grammarInfo.formula = deriv.formula;
     }
-    LogInfo.logs("BUILT %s for %s", deriv.grammarInfo.formula,
-    deriv.formula);
-    LogInfo.log("built " + deriv.grammarInfo.formula);
+    // LogInfo.logs("BUILT %s for %s", deriv.grammarInfo.formula,
+    // deriv.formula);
+    // LogInfo.log("built " + deriv.grammarInfo.formula);
   }
 
   private String newName(String s) {
