@@ -1,7 +1,6 @@
 package edu.stanford.nlp.sempre.interactive.lassie;
 
 import edu.stanford.nlp.sempre.*;
-import edu.stanford.nlp.sempre.interactive.DALExecutor;
 import edu.stanford.nlp.sempre.interactive.lassie.LassieUtils;
 import edu.stanford.nlp.sempre.interactive.lassie.HOLOntology;
 
