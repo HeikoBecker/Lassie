@@ -1,33 +1,14 @@
-# LASSIE - Naturalizing HOL4 tactic language
+# LASSIE - Documentation
+This document addresses some technical details of Lassie. If you haven't
+already, read the [introduction to Lassie](INTRODUCTION.md).
 
 ## SEMPRE
-Lassie is built on [SEMPRE](https://nlp.stanford.edu/software/sempre/),
-a toolkit for parsing structured natural language into logical forms
-which can then be executed into a denotation. This process forms a
-communication pipeline from user commands in natural form to computer
-answers. Applied to the domain of interactive theorem proving, this
-principle has the potential to make interactive proving more accessible
-to non-experts.
-
-One can get acquainted with SEMPRE through its
-[tutorial](sempre/TUTORIAL.md) and
+Lassie is designed as an extention of
+[SEMPRE](https://nlp.stanford.edu/software/sempre/). You can take a look
+at SEMPRE's [tutoral](sempre/TUTORIAL.md) and
 [documentation](sempre/DOCUMENTATION.md). Lassie does not exploit all of
 SEMPRE's application-specific features, but it does follow its general
-form: we define a core language with a lexicon (bank of natural
-expressions) and a grammar (how to combine those expressions) which
-allows us to parse *utterances* (natural language queries from a user);
-we can also add new rules to the grammar to support more utterances
-through inductive generalization.
-
-The big picture of what SEMPRE does is turn natural language utterances
-into *denotations* by the intermediate of a *logical form*. The logical
-form is thought of as a program internalizing the meaning of the
-utterance and the denotation is the result of its execution. For
-example:
-
-- utterance: `sum up the numbers between 0 and 10`
-- logical form: `(call sum (call range 0 10))`
-- denotation: `55`
+form.
 
 ### Interactive Mode
 There is little existing documentation on the SEMPRE's interactive
@@ -35,19 +16,6 @@ mode. One can refer to the [Voxelurn
 paper](https://arxiv.org/pdf/1704.06956.pdf) and the [Flipper
 paper](https://arxiv.org/pdf/1803.02238.pdf) for details on SEMPRE's
 process of inductive learning. 
-
-## HOL4
-The purpose of Lassie is to offer a natural language interface for
-proving HOL4 theorems through tactics. As such, the denotation we aim
-for is a HOL4 program of type `tactic`. HOL4 offers a number of tactics
-parameterized by patterns, other tactics, theorems, etc. The challenge of
-Lassie is therefore to capture those parameters in a natural form and
-construct a well-typed tactic which can be applied to advance a proof
-goal. For example:
-
-- utterance: `rewrite goal with multiplication distribution over addition theorems`
-- logical form: `(call app (call intersect (call fromFeature VP.rewrite) (call fromFeature type.thmlist->tactic)...)))`
-- denotation: `rewrite_tac [REAL_ADD_LDISTRIB, REAL_ADD_RDISTRIB]`
 
 ## Working on Lassie
 As a framework, SEMPRE has different ports of access which one uses to
@@ -58,7 +26,7 @@ database, which not only introduces natural forms of logical entities
 domain knowledge.
 
 ### The Database
-The database is currently a file located at
+The database is currently located at
 [sempre/interactive/lassie.db](sempre/interactive/lassie.db). The idea
 behind the database is an extension of what SEMPRE's overnight mode's
 database, in a slightly more compact form. At each line, we have a
@@ -73,15 +41,12 @@ For example:
     rename        VP        rename, change
     rename        OBJ       variables, variable names, free variables
 
-From those entries, Lassie builds its *ontology*: its knowledge of the
-universe it operates in. It writes a lexicon file
+Lassie creates a lexicon file
 [sempre/interactive/lassie.lexicon](sempre/interactive/lassie.lexicon)
 which indicates the parser which word to parse into what logical form
-(logical forms are generated to look like `<attribute>.<value>`) and
-also keeps the ontology accessible to its semantics so it gets read when
-logical forms get executed.
-
-With the grammar rule
+(logical forms are generated to look like `<attribute>.<value>`). It
+will create a lexeme for each attribute-value pair it encounters in the
+database. Then, with the grammar rule
 
     (rule <new_category> ($PHRASE) (SimpleLexiconFn (type <attribute>)))
 
@@ -90,6 +55,9 @@ database, into the syntactic category `<new_category>`, which can be
 used in other rules to build up full expressions. For example:
 
     (rule $name ($PHRASE) (SimpleLexiconFn (type name)))
+
+Lassie also keeps the ontology accessible to its semantics so it gets
+read when logical forms get executed.
 
 #### Special Attributes
 The `type` attribute is the only one required for each component and
@@ -156,46 +124,6 @@ rules look more like
 We will show how we turn sets of potential components into actual
 components in the section about [ChoiceFn](#choicefn).
 
-#### Sentence Structure
-We limit our natural language input to a structured form following basic
-English sentence construction. For an intuition of what kind of
-constructions we want to allow, imagine the different *parts of speech*
-(POS) as types:
-
-    noun = o
-    adjective = o -> o
-    adverb = (o -> o) -> (o -> o)
-    verb = o -> tactic
-
-- Verbs are at the core of the sentence and mostly determine the tactic
-  (or tactical) to be used. Adverbs may refine the meaning of the verb.
-  (For simplicity, we restrict verbs to the imperative tense such that
-  they only require an object but no subject.)
-- Arguments to the verb (terms, theorems, numbers, and lists of terms
-  and of theorems; of type `o`) are noun phrases. At the core of a noun
-  phrase is a noun, which may be refined with an adjective, which in
-  turn can be refined with an adverb.
-
-Guided by this model, we can structure our natural language around
-principles of well-typed sentences. We name theorems with nouns
-(e.g. distributivity, symmetry, definition, etc.) refined with
-adjectives (e.g. addition, multiplication, left, right). Tactical
-components (tactics or functions which produce tactics) get the verbs
-(e.g. simplify, resolve, assume, rewrite) and adverbs (e.g. reverse,
-fully, once). We allow complements (complement phrases) for
-both object components (e.g. of multiplication, over addition, on the
-left) and tactical components (e.g. with normalization) for further
-refinements.
-
-Thus, we parse sentences like
-
-- "do induction" (`Induct`)
-- "do induction on \`a\`" (`Induct_on 'a'`)
-- "rewrite once with addition association" (`once_rewrite_tac [REAL_ADD_ASSOC] `)
-- "simplify goal and assumptions using multiplication distributivity
-  theorems" (`fs [REAL_LDISTRIB, REAL_RDISTRIB, REAL_SUB_LDISTRIB, ...]`)
-- "resolve assumptions together" (`res_tac`)
-
 ##### Note
 It was observed experimentally that some users intuitively use theorems
 as if they had effects, e.g. "distribute the multiplication", or "unfold
@@ -261,9 +189,8 @@ user know what went wrong with their utterance.
 The conditions for abducing `a` in a set of candidates `C` is that `a`
 be a conceptual subset to all other components `c ∈ C`—meaning that all
 of the attributes of that component also be attributes of all other
-components of the set, i.e. iff `∀i.attributes(a) ⊂
-attributes(cᵢ)`. For example, in the current database, we can have the
-following attributions:
+components of the set, i.e. iff `∀i.attributes(a) ⊆ attributes(cᵢ)`. For
+example, we can have the following attributions:
 
     simp            VP      simplify
     simp            OBJ     goal
