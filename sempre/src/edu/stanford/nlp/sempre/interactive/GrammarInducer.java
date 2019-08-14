@@ -47,8 +47,8 @@ public class GrammarInducer {
     public boolean useSimplePacking = true;
     @Option(gloss = "maximum nonterminals in a rule")
     public long maxNonterminals = 4;
-    @Option(gloss = "minimum nonterminals in a rule")
-    public int minNonterminals = 1;
+    @Option(gloss = "minimum terminals in a rule")
+    public int minTerminals = 1;
   }
 
   public static Options opts = new Options();
@@ -152,16 +152,21 @@ public class GrammarInducer {
       LogInfo.logs("GrammarInducer.filterRule: already have %s", rule.toString());
       return;
     }
-
-    long numNT = rule.rhs.stream().filter(s -> !Rule.isCat(s)).count();
+    
+    int numNT = 0;
+    int numT = 0;
+    for (String t : rule.rhs) {
+	if (Rule.isCat(t)) numNT++;
+	else numT++;
+    }
     
     if (numNT > GrammarInducer.opts.maxNonterminals ) {
       LogInfo.logs("GrammarInducer.filterRule: too many nonterminals (max %d) %s", GrammarInducer.opts.maxNonterminals, rule.rhs.toString());
       return;
     }
 
-    if (numNT < GrammarInducer.opts.minNonterminals ) {
-      LogInfo.logs("GrammarInducer.filterRule: too few nonterminals (min %d) %s", GrammarInducer.opts.minNonterminals, rule.rhs.toString());
+    if (numT < GrammarInducer.opts.minTerminals ) {
+      LogInfo.logs("GrammarInducer.filterRule: too few nonterminals (min %d) %s", GrammarInducer.opts.minTerminals, rule.rhs.toString());
       return;
     }
 
