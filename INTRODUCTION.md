@@ -1,5 +1,30 @@
 # LASSIE - Introduction
-Lassie is a semantic parser for HOL4's tactic language.
+Lassie is a semantic parser for HOL4's tactic language. Interaction with
+Lassie is done through the following functions:
+
+- `lassie : string -> int -> proof` Try and parse a natural language
+  expression. Run it again with an index `n` to accept and apply the
+  `n`th derivation to the current goal.
+- `nltac : string -> tactic` A tactic version of `lassie` to compose
+  among other tactics of a proof. Chooses the first derivation it finds.
+- `def : string -> string list -> unit` Define a natural expression
+  which may not parse in terms of a list of expressions which do
+  parse. The definition is generalized the the new rules are added to
+  the grammar for the session.
+  
+For example:
+
+	> lassie "fully simplify goal";
+	(* prints available derivations *)
+	
+	> lassie "fully simplify goal" 2;
+	(* uses the second derivation to advance the goal *)
+	
+	> nltac "fully simplify goal";
+	val it = fn: tactic
+	
+	> def "fsg" ["fully simplify goal"];
+	val it = (): unit
 
 ## Semantic Parsing
 Lassie is built on [SEMPRE](https://nlp.stanford.edu/software/sempre/),
