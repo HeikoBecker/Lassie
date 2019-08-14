@@ -9,16 +9,15 @@ answers. Applied to the domain of interactive theorem proving, this
 principle has the potential to make interactive proving more accessible
 to non-experts.
 
-We recommend one first gets acquainted with SEMPRE before delving into
-Lassie. Take a look at [SEMPRE's tutorial](sempre/TUTORIAL.md) and, if
-you have further questions, [SEMPRE's
-documentation](sempre/DOCUMENTATION.md). Lassie does not exploit all of
-SEMPRE's context-specific features, but it does follow its general form:
-we define a core language with a lexicon (bank of natural expressions)
-and a grammar (how to combine those expressions) which allows us to
-parse *utterances* (natural language queries from a user); we can also
-add new rules to the grammar to support more utterances through
-inductive generalization.
+One can get acquainted with SEMPRE through its
+[tutorial](sempre/TUTORIAL.md) and
+[documentation](sempre/DOCUMENTATION.md). Lassie does not exploit all of
+SEMPRE's application-specific features, but it does follow its general
+form: we define a core language with a lexicon (bank of natural
+expressions) and a grammar (how to combine those expressions) which
+allows us to parse *utterances* (natural language queries from a user);
+we can also add new rules to the grammar to support more utterances
+through inductive generalization.
 
 The big picture of what SEMPRE does is turn natural language utterances
 into *denotations* by the intermediate of a *logical form*. The logical
@@ -104,7 +103,7 @@ for which Lassie generates a lexeme
 
 Calling `SimpleLexiconFn` on `(type thmlist->tactic)` captures all
 instances of `asm_rewrite_tac` (and other functions of the same type)
-into a category of choice—hopefully one with a meaningful name like
+into a category of choice—the current practice is just to call it
 `$thmlist->tactic`. Note that internally, those types have their
 whitespaces removed and parentheses turned into square brackets so type
 
@@ -157,7 +156,7 @@ rules look more like
 We will show how we turn sets of potential components into actual
 components in the section about [ChoiceFn](#choicefn).
 
-#### Sentence Construction
+#### Sentence Structure
 We limit our natural language input to a structured form following basic
 English sentence construction. For an intuition of what kind of
 constructions we want to allow, imagine the different *parts of speech*
@@ -178,16 +177,24 @@ constructions we want to allow, imagine the different *parts of speech*
   turn can be refined with an adverb.
 
 Guided by this model, we can structure our natural language around
-principles of well-typed sentences.
+principles of well-typed sentences. We name theorems with nouns
+(e.g. distributivity, symmetry, definition, etc.) refined with
+adjectives (e.g. addition, multiplication, left, right). Tactical
+components (tactics or functions which produce tactics) get the verbs
+(e.g. simplify, resolve, assume, rewrite) and adverbs (e.g. reverse,
+fully, once). We allow complements (complement phrases) for
+both object components (e.g. of multiplication, over addition, on the
+left) and tactical components (e.g. with normalization) for further
+refinements.
 
-Hence, we name theorems with nouns (e.g. distributivity, symmetry,
-definition, etc.) refined with adjectives (e.g. addition,
-multiplication, left, right). Tactical components (tactics or functions
-which produce tactics) get the verbs (e.g. simplify, resolve, assume,
-rewrite) and adverbs (e.g. reverse, fully). We allow complements
-(complement phrases) for both object components (e.g. of multiplication,
-over addition, on the left) and tactical components (e.g. together, with
-normalization, once) for further refinements.
+Thus, we parse sentences like
+
+- "do induction" (`Induct`)
+- "do induction on \`a\`" (`Induct_on 'a'`)
+- "rewrite once with addition association" (`once_rewrite_tac [REAL_ADD_ASSOC] `)
+- "simplify goal and assumptions using multiplication distributivity
+  theorems" (`fs [REAL_LDISTRIB, REAL_RDISTRIB, REAL_SUB_LDISTRIB, ...]`)
+- "resolve assumptions together" (`res_tac`)
 
 ##### Note
 It was observed experimentally that some users intuitively use theorems
@@ -223,12 +230,12 @@ our domain (HOL4 tactics) is dense in entities for which the names are
 not well defined, a good part of the semantics exists to narrow down on
 the specific components an utterance is referring to.
 
-To achieve this, attributes are picked out in the sentence and cast
-into the sets of components which posses said attribute. Through
-sensible sentence construction, attributes are composed and their sets
-are intersected. If a part of an utterance is sufficiently specific,
-then its corresponding set contains a single element and the execution
-of its logical form returns that single element.
+To achieve this, attributes are picked out in the sentence and cast into
+the sets of components which posses said attribute. Through sensible
+sentence construction, attributes are composed as their sets are
+intersected. If a part of an utterance is sufficiently specific, then
+its corresponding set contains a single element and the execution of its
+logical form returns that single element.
 
 #### ChoiceFn
 SEMPRE provides a number of built-in semantic functions like
@@ -251,11 +258,12 @@ given to the user in the case where parsing failed to produce a single
 derivation. Hopefully, this information about ambiguity can help the
 user know what went wrong with their utterance.
 
-The conditions for abduction is that the abducted component of the set
-be a conceptual subset to all other components in the set—meaning that
-all of the attributes of that component also be attributes of all other
-components of the set of potential components. For example, in the
-current database, we can have the following attributions:
+The conditions for abducing `a` in a set of candidates `C` is that `a`
+be a conceptual subset to all other components `c ∈ C`—meaning that all
+of the attributes of that component also be attributes of all other
+components of the set, i.e. iff `∀i.attributes(a) ⊂
+attributes(cᵢ)`. For example, in the current database, we can have the
+following attributions:
 
     simp            VP      simplify
     simp            OBJ     goal
