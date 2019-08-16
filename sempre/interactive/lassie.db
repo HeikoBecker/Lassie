@@ -1,24 +1,37 @@
-##########################################################################
-# Domain knowledge is written here in a mix of whitespace- or            #
-# comma-separated values. For each line, the first token is a HOL        #
-# component and the second is the attribute we want to specify. What     #
-# follows is a comma-separated list of values which characterize this    #
-# attribute of that component. In the list (and nowhere else) can tokens #
-# contain whitespaces. This allows SML types and expressions of more     #
-# than one word to be represented naturally.                             #
-#                                                                        #
-# The `type` attribute is the only one required for each component       #
-# (required for forcing well-typed terms in the grammar). All attributes #
-# give rise to a syntactic category of the same name (e.g. `name` gives  #
-# rise to the `$name` cat) which hold values of that attribute during    #
-# derivation. The final ontology covers every "relation" expressed in    #
-# this file, plus a reflexive name for each component, i.e.              #
-#                                                                        #
-#                        REAL_ADD name REAL_ADD                          #
-#                                                                        #
-# Allowing users to specify components by their literal name if they     #
-# know it.                                                               #
-##########################################################################
+############################################################################
+# Domain knowledge is written here in a mix of whitespace- and		   #
+# comma-separated values. For each line, the first token is a HOL	   #
+# component and the second is the attribute we want to specify. What	   #
+# follows is a comma-separated list of values which characterize this	   #
+# attribute of that component. In the list (and nowhere else) can tokens   #
+# contain whitespaces. This allows SML types and expressions of more than  #
+# one word to be represented naturally.					   #
+# 									   #
+# The `type` attribute is the only one required for each component and	   #
+# gives rise to litteral lexemes to be parsed into their fitting type in   #
+# the grammar; e.g. `asm_rewrite_tac` is given type `thm list -> tactic`   #
+# which produces a lexeme						   #
+# 									   #
+#                   lexeme:  `asm_rewrite_tac`				   #
+#                   formula: `asm_rewrite_tac`				   #
+#                   type:    `thmlist->tactic`				   #
+# 									   #
+# Calling SimpleLexiconFn on (type thmlist->tactic) captures all	   #
+# instances of asm_rewrite_tac (and other functions of the same type) into #
+# a category of choice. Note that internally, those types have their	   #
+# whitespaces removed and parentheses turned into square brackets so type  #
+# 									   #
+#       term quotation list -> (thm -> tactic) -> thm -> tactic		   #
+# 									   #
+# is actually fetched from SimpleLexiconFn with				   #
+# 									   #
+#        (type termquotationlist->[thm->tactic]->thm->tactic)		   #
+# 									   #
+# into a category potentially called					   #
+# 									   #
+#           $termquotationlist->[thm->tactic]->thm->tactic		   #
+############################################################################
+
 
 #########################
 # HOL4 Tactics - Types: #
@@ -130,7 +143,7 @@ res_tac			    CP 	    together, with eachother
 
 assume_tac                  VP      assume, have, add
 assume_tac                  OBJ     assumption
-assume_tac		    CP	    to goal, to assumptions			    
+assume_tac		    CP	    to goal, to assumptions
 
 irule			    VP	    reduce
 irule			    OBJ	    goal
@@ -185,13 +198,13 @@ last_x_assum		    CP	    over assumptions
 ntac			    VP	    repeat, apply
 ntac			    CP	    times
 
+rpt			    AV	    infinitely, indefinitely
 rpt			    VP	    repeat, keep applying
-rpt			    CP	    infinitely, indefinitely
 
 # other
 subgoal			    VP	    produce, add, show
 subgoal			    OBJ	    subgoal
-subgoal			    CP	    as subgoal			   
+subgoal			    CP	    as subgoal
 
 by                          name    by, shown by
 suffices_by                 name    suffices to show

@@ -94,16 +94,17 @@ fun showList lst : string =
 
 fun printAmbiguities () =
   case !AMBIGUITY_WARNING of
-  NONE => ()
+    NONE => ()
   | SOME warning =>
-    print ("Warning (ambiguity)-\n" ^
-           "   Lassie could not disambiguate the expression\n      `"
-           ^ (#span warning)
-           ^ "`\n   in the utterance. Possible interpretations include:\n      "
-           ^ showList (#set warning) ^ ".\n"
-           ^ "   Lassie might be able to parse the utterance if you are more specific.\n\n"
-          );
-
+      let val _ = print ("Warning (ambiguity)-\n   Lassie could not disambiguate the expression\n      `"
+                         ^ (#span warning)
+                         ^ "`\n   in the utterance. Possible interpretations include:\n      "
+                         ^ showList (#set warning)
+                         ^ ".\n   Lassie might be able to parse the utterance if you are more specific.\n\n")
+      in
+        AMBIGUITY_WARNING := NONE
+      end
+	    
 (* read SEMPRE's response from the "socket" file once there and remove it *)
 (* returns a derivation (i.e. the first candidate) *)
 fun readSempre utt =

@@ -263,8 +263,8 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
   o('Params.adaptiveStepSize', true),
   #o('Params.stepSizeReduction', 0.25),
 
-  o('FeatureExtractor.featureComputers', 'interactive.DALFeatureComputer'),
-  o('FeatureExtractor.featureDomains', ':rule', ':span', ':stats', ':scope', ':social', ':window'),
+  # o('FeatureExtractor.featureComputers', 'interactive.DALFeatureComputer'),
+  # o('FeatureExtractor.featureDomains', ':rule', ':span', ':stats', ':scope', ':social', ':window'),
   # o('FeatureExtractor.featureDomains', ':rule'),
 
   o('InteractiveMaster.intOutputPath', './int-output/'),
@@ -279,7 +279,8 @@ addMode('lassie', 'interactive semantic parsing for proving theorems in HOL4', l
 
   o('GrammarInducer.useBestPacking', true),
   o('GrammarInducer.useSimplePacking', true),
-  o('GrammarInducer.maxNonterminals', 3),
+  o('GrammarInducer.maxNonterminals', 5), # default 3
+  o('GrammarInducer.minTerminals', 0), # default 1
 
   o('Derivation.showTypes', false),
   o('Derivation.showValues', false),

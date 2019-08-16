@@ -91,9 +91,9 @@ fun normalize str =
 
 exception VariableUndefined of string;
 
-  fun getOSVar name =
-    case OS.Process.getEnv name of
-    NONE => raise (VariableUndefined "Variable " ^ name ^ " not defined in environment")
-    | SOME s => s;
+fun getOSVar name =
+  case OS.Process.getEnv name of
+    NONE => raise VariableUndefined ("Variable " ^ name ^ " not defined in environment")
+  | SOME s => s;
 
 end

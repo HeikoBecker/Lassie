@@ -47,6 +47,8 @@ public class GrammarInducer {
     public boolean useSimplePacking = true;
     @Option(gloss = "maximum nonterminals in a rule")
     public long maxNonterminals = 4;
+    @Option(gloss = "minimum terminals in a rule")
+    public int minTerminals = 1;
   }
 
   public static Options opts = new Options();
@@ -124,11 +126,8 @@ public class GrammarInducer {
       HashMap<String, String> formulaToCat = new HashMap<>();
       bestPacking.forEach(d -> formulaToCat.put(catFormulaKey(d), varName(d)));
       buildFormula(def, formulaToCat);
-      for (Rule rule : induceRules(bestPacking, def)) {
-        if (rule.rhs.stream().allMatch(s -> Rule.isCat(s)))
-          continue;
+      for (Rule rule : induceRules(bestPacking, def))
         filterRule(rule);
-      }
 
       if (opts.verbose > 1) {
         LogInfo.logs("chartList.size = %d", chartList.size());
@@ -153,17 +152,27 @@ public class GrammarInducer {
       LogInfo.logs("GrammarInducer.filterRule: already have %s", rule.toString());
       return;
     }
+    
     int numNT = 0;
+    int numT = 0;
     for (String t : rule.rhs) {
-      if (Rule.isCat(t)) numNT++;
+	if (Rule.isCat(t)) numNT++;
+	else numT++;
     }
     
     if (numNT > GrammarInducer.opts.maxNonterminals ) {
-      LogInfo.logs("GrammarInducer.filterRule: too many nontermnimals (max %d) %s", GrammarInducer.opts.maxNonterminals, rule.rhs.toString());
+      LogInfo.logs("GrammarInducer.filterRule: too many nonterminals (max %d) %s", GrammarInducer.opts.maxNonterminals, rule.rhs.toString());
       return;
     }
+
+    if (numT < GrammarInducer.opts.minTerminals ) {
+      LogInfo.logs("GrammarInducer.filterRule: too few nonterminals (min %d) %s", GrammarInducer.opts.minTerminals, rule.rhs.toString());
+      return;
+    }
+
     inducedRules.add(rule);
     RHSs.add(rule.rhs.toString());
+    // LogInfo.logs("Added rule %s", rule.toString());
   }
 
   static Map<String, List<Derivation>> makeChartMap(List<Derivation> chartList) {
@@ -313,6 +322,7 @@ public class GrammarInducer {
       // LogInfo.logs("Found match %s, %s, %s", catFormulaKey(deriv),
       // replaceMap, deriv);
       deriv.grammarInfo.formula = new VariableFormula(replaceMap.get(catFormulaKey(deriv)));
+      // LogInfo.logs("WITH VARIABLE: %s", deriv.grammarInfo.formula);
       return;
     }
     if (deriv.children.size() == 0) {
@@ -343,6 +353,8 @@ public class GrammarInducer {
       }
       deriv.grammarInfo.formula = f;
     } else if (rule.sem instanceof IdentityFn) {
+      deriv.grammarInfo.formula = args.get(0).grammarInfo.formula;
+    } else if (rule.sem instanceof edu.stanford.nlp.sempre.interactive.lassie.ChoiceFn) {
       deriv.grammarInfo.formula = args.get(0).grammarInfo.formula;
     } else if (rule.sem instanceof BlockFn) {
       deriv.grammarInfo.formula = new ActionFormula(((BlockFn) rule.sem).mode,
