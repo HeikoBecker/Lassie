@@ -32,11 +32,16 @@ public class ChoiceFn extends SemanticFn {
 	@Option(gloss = "Verbose") public int verbose = 0;
     }    
     public static Options opts = new Options();
-    
-    public String[] elements;
+
+    Formula formula;
+    String[] elements;
     
     public ChoiceFn() { }
 
+    public ChoiceFn(Formula formula) {
+	this.formula = formula;
+    }
+    	
     // Get the string in the uttrance which is at the origin of this derivation
     public static String getUttString(Callable c) {
 	if (c.getChildren().size() == 0) return ((ValueFormula) ((Derivation) c).formula).value.pureString();
@@ -51,8 +56,10 @@ public class ChoiceFn extends SemanticFn {
     public DerivationStream call(final Example ex, final Callable c) {
 	Executor executor = new JavaExecutor();
 	// c.child(0).printDerivationRecursively();
-	String candidates = executor.execute(c.child(0).formula, ex.context).value.pureString();
-	elements = candidates.split(","); // current representation of sets is as a string (comma-separated)
+	if (this.formula == null)
+	    this.formula = c.child(0).formula;
+	String candidates = executor.execute(this.formula, ex.context).value.pureString();
+	elements = candidates.split(","); // representation of set is as a string (comma-separated)
 	if (elements.length > 1) {
 	    LassieUtils.printToSocket("Lassie.AMBIGUITY_WARNING := SOME {set= "
 				      + "[\"" + candidates.replace(",","\",\"") + "\"], "
@@ -67,7 +74,7 @@ public class ChoiceFn extends SemanticFn {
 		else {
 		    Derivation res = new Derivation.Builder()
 			.withCallable(c)
-			.withFormulaFrom(c.child(0))
+			.formula(formula)
 			.createDerivation();
 		    chosen = true;
 		    return res;
