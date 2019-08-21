@@ -166,7 +166,7 @@ public class GrammarInducer {
     }
 
     if (numT < GrammarInducer.opts.minTerminals ) {
-      LogInfo.logs("GrammarInducer.filterRule: too few nonterminals (min %d) %s", GrammarInducer.opts.minTerminals, rule.rhs.toString());
+      LogInfo.logs("GrammarInducer.filterRule: too few terminals (min %d) %s", GrammarInducer.opts.minTerminals, rule.rhs.toString());
       return;
     }
 
