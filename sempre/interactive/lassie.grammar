@@ -58,6 +58,8 @@
 (def @set2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.set2string)
 (def @choice edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.choice)
 
+(def @ChoiceFn edu.stanford.nlp.sempre.interactive.lassie.ChoiceFn)
+
 ###################################
 # GRAMMAR SUPPORTING LITERAL HOL4 #
 ###################################

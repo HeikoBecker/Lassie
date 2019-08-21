@@ -95,28 +95,24 @@ public class TacticWorld {
 	    HOLOntology ontology = HOLOntology.getTheOntology();
 	    String smallest = "TOP_TACTIC";
 	    int smallestSize = Integer.MAX_VALUE;
-
-	    for (String e : s) {
+	    for (String e : s)
 		if (ontology.entities.get(e).size() < smallestSize) {
 		    smallest = e;
 		    smallestSize = ontology.entities.get(e).size();
 		}
-	    }
-
 	    boolean abduceable = true;
-	    for (String e : s) {
+	    for (String e : s)
 		if (!ontology.entities.get(e).containsAll(ontology.entities
 							  .get(smallest)
 							  .stream() // (not required to share name)
 							  .filter(x -> !x.startsWith("name"))
 							  .collect(Collectors.toSet())))
 		    abduceable = false;
-	    }
 
 	    if (abduceable)
 		return smallest;
 	}
-
-	return String.join(",", s);
+	// not abduceable, therefore ambiguous
+	return String.join(",", s); // send the set of candidates to alert ambiguity
     }
 }

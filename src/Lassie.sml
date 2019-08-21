@@ -24,7 +24,7 @@ fun waitSempre instream =
     else waitSempre instream
   end;
 
-(* run SEMPRE as a subprocess, through its run script returns outstream of its shell *)
+(* run SEMPRE as a subprocess, through its run script returns in- and outstream of its shell *)
 fun launchSempre () =
   let
     val LASSIEDIR = getOSVar "LASSIEDIR"
