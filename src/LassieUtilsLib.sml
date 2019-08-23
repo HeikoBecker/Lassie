@@ -96,4 +96,67 @@ fun getOSVar name =
     NONE => raise VariableUndefined ("Variable " ^ name ^ " not defined in environment")
   | SOME s => s;
 
+fun string_split s cr =
+  let
+    fun nextStr cr [] strAcc = ([],List.rev strAcc) |
+        nextStr cr (c::res) strAcc =
+          if c = cr
+          then (res, List.rev strAcc)
+          else nextStr cr res (c :: strAcc);
+    fun splitAll cr [] acc = List.rev acc |
+        splitAll cr chrl acc =
+          let val (res, nextStr) = nextStr cr chrl [] in splitAll cr res (implode nextStr::acc) end;
+  in
+    splitAll cr (explode s) []
+  end;
+
+fun list_replace n x l =
+  if (n = 0)
+  then
+    case l of
+    [] => []
+    | y::l' => x::l'
+  else
+    case l of
+    [] => []
+    | y :: l' => y :: (list_replace (n-1) x l');
+
+fun matchRBrack [] = NONE |
+  matchRBrack (s::sl) =
+    if (String.isPrefix "(" s)
+    then
+      if (String.isSuffix ")" s)
+      then case matchRBrack sl of
+        NONE => NONE
+      | SOME (sNew, rs) => SOME (s ^ sNew, rs)
+      else
+        case matchRBrack sl of
+          NONE => NONE
+        | SOME (sNew1, rs1) =>
+          case matchRBrack rs1 of
+            NONE => NONE
+          | SOME (sNew2, rs2) =>
+            SOME (s^ sNew1 ^ sNew2, rs2)
+    else if (String.isSuffix ")" s)
+    then SOME (s, sl)
+    else
+      case matchRBrack sl of
+        NONE => NONE
+      | SOME (sNew, rs) =>
+        SOME (s ^ sNew, rs);
+
+fun rejoin_pars [] = [] |
+  rejoin_pars (s::sl) =
+    if (String.isPrefix "(" s)
+    then
+      if (String.isSuffix ")" s)
+      then s :: rejoin_pars sl
+      else
+        let val (sNew, rs) = valOf (matchRBrack sl) in
+          (s ^ sNew) :: rejoin_pars rs
+        end
+    else s :: (rejoin_pars sl);
+
+rejoin_pars ["(ABC", "(CDEF)", "ABD)", "(ABC", "DEF)", "(AB)"]
+
 end
