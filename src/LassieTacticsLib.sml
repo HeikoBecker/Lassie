@@ -33,7 +33,7 @@ fun gen_pats sl (n:int) asl tm : string list list=
     if (Int.< (n,(List.length sl))) (* check that we can replace a part by _ *)
     then
       let
-        val thePat = LassieUtils.list_replace n "_" sl
+        val thePat = LassieUtilsLib.list_replace n "_" sl
         val r1 = gen_pats thePat (n+1) asl tm
                 handle PATGENERROR s => []
         val r2 = gen_pats sl (n+1) asl tm
@@ -52,8 +52,8 @@ fun get_tac (n:int) (ttac:term quotation -> tactic) : tactic =
   fn (g as (asl, tm)) =>
     let
       val theAsm = List.nth (asl, n)
-      val strList = LassieUtils.string_split (term_to_string tm) #" "
-      val finalList = LassieUtils.rejoin_pars strList
+      val strList = LassieUtilsLib.string_split (term_to_string tm) #" "
+      val finalList = LassieUtilsLib.rejoin_pars strList
       val pats = gen_pats strList n asl tm
       val theQuote = (mk_tm_quote (hd pats)) (* TODO: Find good heuristic for picking a quotation *)
     in
@@ -70,7 +70,7 @@ val (r,_) = qpat_x_assum tmquot_test kall_tac (asms, gl);
 val (r, _) = qpat_x_assum tmquot_test kall_tac (hd r);
 
 
-gen_pat ["f", "a", "b"] 0 asms ``T``;
+gen_pats ["f", "a", "b"] 0 asms ``T``;
 
 g `f a b ==> T`
 rpt strip_tac

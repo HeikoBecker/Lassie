@@ -138,7 +138,7 @@ public class InteractiveMaster extends Master {
       }
 
       LogInfo.logs("Printing response to socket");
-      LassieUtils.printToSocket("Lassie.SEMPRE_RESPONSE := SOME "
+      LassieUtils.printToSocket("LassieLib.SEMPRE_RESPONSE := SOME "
 				+ LassieUtils.json2sml(Json.writeValueAsStringHard(InteractiveServer.makeJson(response))));
       
     } else if (command.equals(":qdbg")) {

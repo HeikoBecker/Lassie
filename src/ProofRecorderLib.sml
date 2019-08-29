@@ -1,7 +1,8 @@
-structure ProofRecorder =
+structure ProofRecorderLib =
 struct
 
   open proofManagerLib;
+  open Feedback;
 
   type 'a stack = 'a list;
 
@@ -110,7 +111,7 @@ struct
                val steps = removeN n (! finished)
                val _ = (finished := (List.drop (!finished, n)))
                val (prevSteps, nCurr) = popMulti (numTacsBefore (! currProof)) (! currProof)
-               val _ = (currProof := (case (snd (popSubgoal nCurr)) of NONE => Subgoal [] | SOME stk => stk))
+               val _ = (currProof := (case (#2 (popSubgoal nCurr)) of NONE => Subgoal [] | SOME stk => stk))
             in
               finished := ((Subgoal (List.rev prevSteps @ steps)) :: !finished)
           end)
@@ -164,6 +165,7 @@ struct
 
 end
 
+(** TESTS:
 (** SIMPLE END_TO_END TEST **)
 
 g `! x y. x < y ==> T`;
@@ -174,7 +176,6 @@ app (Cases_on `x`) ("Cases_on `x`");
 
 app (cheat) ("cheat");
 
-(** TESTS:
 val ts = Step "test";
 
 val stk = pushStep ts (! currProof);

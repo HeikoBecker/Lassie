@@ -1,6 +1,7 @@
-structure LassieUtils =
+structure LassieUtilsLib =
 struct
 
+  open Lib;
 (*********************************)
 (*            Utils              *)
 (*********************************)
@@ -156,7 +157,5 @@ fun rejoin_pars [] = [] |
           (s ^ sNew) :: rejoin_pars rs
         end
     else s :: (rejoin_pars sl);
-
-rejoin_pars ["(ABC", "(CDEF)", "ABD)", "(ABC", "DEF)", "(AB)"]
 
 end
