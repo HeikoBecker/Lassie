@@ -1,32 +1,30 @@
-##########################################################################
-# GRAMMAR FOR NATURAL PROOF EXPRESSIONS					 #
-# 									 #
-# Refer to SEMPRE's documentation for general indications on rule	 #
-# construction.								 #
-# 									 #
-# Currently, domain knowledge comes from two sources. The lassie.lexicon #
-# file contains component names (e.g. fs) and with their types		 #
-# (e.g. thmlist->tactic, used for sound applications). Features of those #
-# components (e.g. their natural name, their class/type) are read from	 #
-# lassie.db into the TacticWorld.					 #
-# 									 #
-# TacticWorld.java holds the main semantics of Lassie's operations, as	 #
-# we piggy back on the DALExecutor for handling the semantic part of	 #
-# this grammar. DALExecutor interprets semantic expression in a "world"	 #
-# containing "items". We superifcially follow this convention where HOL	 #
-# components can be considered the "items" of our "tactic-world".	 #
-# 									 #
-# Generally, lowercased categories (e.g. $thm, $name) correspond to	 #
-# types as found in the lexicon/database. Categories which are		 #
-# capitalized are intermediates between lowercased categories and the	 #
-# $tactic category.							 #
-##########################################################################
+ ############################################################################
+ # GRAMMAR FOR NATURAL PROOF EXPRESSIONS                                    #
+ #                                                                          #
+ # Refer to SEMPRE's documentation for general indications on rule          #
+ # construction.                                                            #
+ #                                                                          #
+ # Currently, domain knowledge comes from two sources. The lassie.lexicon   #
+ # file contains component names (e.g. fs) and with their types             #
+ # (e.g. thmlist->tactic, used for sound applications). Features of those   #
+ # components (e.g. their natural name, their class/type) are read from     #
+ # lassie.db into the TacticWorld.                                          #
+ #                                                                          #
+ # TacticWorld.java holds the main semantics of Lassie's operations, as     #
+ # we piggy back on the DALExecutor for handling the semantic part of       #
+ # this grammar. DALExecutor interprets semantic expression in a "world"    #
+ # containing "items". We superifcially follow this convention where HOL    #
+ # components can be considered the "items" of our "tactic-world".          #
+ #                                                                          #
+ # Generally, lowercased categories (e.g. $thm, $name) correspond to        #
+ # types as found in the lexicon/database. Categories which are             #
+ # capitalized are intermediates between lowercased categories and the      #
+ # $tactic category.                                                        #
+ ############################################################################
 
-(rule $ROOT ($tactic) (IdentityFn) (anchored 1))
-
-# ###########################################
-# #           Incorporated types:           #
-# ###########################################
+###########################################
+#           Incorporated SML types:       #
+###########################################
 # $tactic
 # $thm
 # ($thmlist)
@@ -43,7 +41,9 @@
 # $termquotation->[thm->tactic]->thm->tactic
 # $termquotationlist->[thm->tactic]->thm->tactic
 
-
+ ################################################################
+ # Define some abbreviations for calling into library functions #
+ ################################################################
 (def @int2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.int2string)
 (def @app edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.app)
 (def @then edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.then)
@@ -64,27 +64,65 @@
 # GRAMMAR SUPPORTING LITERAL HOL4 #
 ###################################
 
+# The root is always a tactic or a command
+(rule $ROOT ($tactic) (IdentityFn) (anchored 1))
+(rule $ROOT ($command) (IdentityFn) (anchored 1))
+
+# We can put parentheses around a tactic
 (for @cat ($tactic)
      (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
 
 # Literal Components Import
-(rule $tactic ($TOKEN) (SimpleLexiconFn (type "tactic")) (anchored 1))
-(rule $thm ($TOKEN) (SimpleLexiconFn (type "thm")) (anchored 1))
-(rule $thm->tactic ($TOKEN) (SimpleLexiconFn (type "thm->tactic")) (anchored 1))
-(rule $thmlist->tactic ($TOKEN) (SimpleLexiconFn (type "thmlist->tactic")) (anchored 1))
-(rule $tactic->tactic ($TOKEN) (SimpleLexiconFn (type "tactic->tactic")) (anchored 1))
-(rule $thm->thm ($TOKEN) (SimpleLexiconFn (type "thm->thm")) (anchored 1))
-(rule $termquotation->tactic ($TOKEN) (SimpleLexiconFn (type term "quotation->tactic")) (anchored 1))
-(rule $int->tactic->tactic ($TOKEN) (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
-(rule $termquotation->[thm->tactic]->tactic ($TOKEN) (SimpleLexiconFn (type "termquotation->[thm->tactic]->tactic")) (anchored 1))
-(rule $[thm->tactic]->tactic ($TOKEN) (SimpleLexiconFn (type "[thm->tactic]->tactic")) (anchored 1))
-(rule $termquotation*tactic->tactic ($TOKEN) (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))
-(rule $termquotationlist->tactic ($TOKEN) (SimpleLexiconFn (type "termquotationlist->tactic")) (anchored 1))
-(rule $termquotation->[thm->tactic]->thm->tactic ($TOKEN) (SimpleLexiconFn (type "termquotation->[thm->tactic]->thm->tactic")) (anchored 1))
-(rule $termquotationlist->[thm->tactic]->thm->tactic ($TOKEN) (SimpleLexiconFn (type "termquotationlist->[thm->tactic]->thm->tactic")) (anchored 1))
+(rule $tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "tactic")) (anchored 1))
+(rule $thm
+      ($TOKEN)
+      (SimpleLexiconFn (type "thm")) (anchored 1))
+(rule $thm->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "thm->tactic")) (anchored 1))
+(rule $thmlist->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "thmlist->tactic")) (anchored 1))
+(rule $tactic->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "tactic->tactic")) (anchored 1))
+(rule $thm->thm
+      ($TOKEN)
+      (SimpleLexiconFn (type "thm->thm")) (anchored 1))
+(rule $termquotation->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type term "quotation->tactic")) (anchored 1))
+(rule $int->tactic->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
+(rule $termquotation->[thm->tactic]->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "termquotation->[thm->tactic]->tactic")) (anchored 1))
+(rule $[thm->tactic]->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "[thm->tactic]->tactic")) (anchored 1))
+(rule $termquotation*tactic->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))
+(rule $termquotationlist->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "termquotationlist->tactic")) (anchored 1))
+(rule $termquotation->[thm->tactic]->thm->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "termquotation->[thm->tactic]->thm->tactic")) (anchored 1))
+(rule $termquotationlist->[thm->tactic]->thm->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "termquotationlist->[thm->tactic]->thm->tactic")) (anchored 1))
+#Commands to the interactive prove interface
+(rule $command
+      ($TOKEN)
+      (SimpleLexiconFn (type "command") (anchored 1)))
+
+(def @appT1T2 (lambda t1 (lambda t2 (call @app (var t1) (var t2)))))
 
 # Applications
-(def @appT1T2 (lambda t1 (lambda t2 (call @app (var t1) (var t2)))))
 (rule $tactic ($thm->tactic $thm) @appT1T2 (anchored 1))
 (rule $tactic ($thmlist->tactic $thmlist) @appT1T2 (anchored 1))
 (rule $tactic ($tactic->tactic $tactic) @appT1T2 (anchored 1))
@@ -99,7 +137,9 @@
 (rule $thm->tactic ($[thm->tactic]->thm->tactic $thm->tactic) @appT1T2 (anchored 1))
 
 # infix
-(rule $tactic ($termquotation $termquotation*tactic->tactic $tactic) (lambda q (lambda by (lambda t (call @op (var by) (var q) (var t))))) (anchored 1))
+(rule $tactic
+      ($termquotation $termquotation*tactic->tactic $tactic)
+      (lambda q (lambda by (lambda t (call @op (var by) (var q) (var t))))) (anchored 1))
 
 # Typed wildcards
 (rule $tactic (\( $PHRASE : tactic \)) (IdentityFn) (anchored 1))
