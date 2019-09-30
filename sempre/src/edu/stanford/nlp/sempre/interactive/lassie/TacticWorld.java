@@ -31,88 +31,97 @@ import edu.stanford.nlp.sempre.interactive.lassie.Component;
 // the world of tactics
 public class TacticWorld {
 
+    // Wrap a tactic text as a "Tactic":
+    public static String tactic (String t) {
+        return "Tactic " + t;
+    }
+
+    public static String command (String c) {
+        return "Command " + c;
+    }
+
     // String constructions, basically tactic language
     public static String int2string(Integer n) {
-	return n.toString();
+        return n.toString();
     }
     public static String app(String fn, String arg) {
-	if (fn.equals("") || arg.equals("")) return "";
-	return "(" + fn + " " + arg + ")";
+        if (fn.equals("") || arg.equals("")) return "";
+        return "(" + fn + " " + arg + ")";
     }
     public static String then(String tac1, String tac2) {
-	if (tac1.equals("") || tac2.equals("")) return "";
-	return tac1 + " \\ " + tac2;
+        if (tac1.equals("") || tac2.equals("")) return "";
+        return tac1 + " \\ " + tac2;
     }
     public static String then1(String tac1, String tac2) {
-	if (tac1.equals("") || tac2.equals("")) return "";
-	return tac1 + " >- " + parens(tac2);
+        if (tac1.equals("") || tac2.equals("")) return "";
+        return tac1 + " >- " + parens(tac2);
     }
     public static String cons(String hd, String tl) {
-	if (hd.equals("") || tl.equals("")) return "";
-	return hd + "," + tl;
+        if (hd.equals("") || tl.equals("")) return "";
+        return hd + "," + tl;
     }
     public static String list(String seq) {
-	if (seq.equals("")) return "";
-	return "[" + seq + "]";
+        if (seq.equals("")) return "";
+        return "[" + seq + "]";
     }
     public static String quote(String exp) {
-	if (exp.equals("")) return "";
-	return "`" + exp + "`";
+        if (exp.equals("")) return "";
+        return "`" + exp + "`";
     }
     public static String parens(String exp) {
-	if (exp.equals("")) return "";
-	return "(" + exp + ")";
+        if (exp.equals("")) return "";
+        return "(" + exp + ")";
     }
     public static String op(String operator, String arg1, String arg2) {
-	if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
-	return "(" + arg1 + " " + operator + " " + arg2 + ")";
+        if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
+        return "(" + arg1 + " " + operator + " " + arg2 + ")";
     }
 
     public static Set<String> fromFeature(String f) {
-	HOLOntology ontology = HOLOntology.getTheOntology(); 
-	if (f.equals("top")) return ontology.entities.keySet();
-	else if (f.equals("bot")) return new HashSet<String>();
+        HOLOntology ontology = HOLOntology.getTheOntology();
+        if (f.equals("top")) return ontology.entities.keySet();
+        else if (f.equals("bot")) return new HashSet<String>();
         else if (ontology.features.containsKey(f)) return ontology.features.get(f);
-	else throw new RuntimeException("Feature not recognized: " + f);
+        else throw new RuntimeException("Feature not recognized: " + f);
     }
-    
+
     // Set operations
     public static Set<String> intersect(Set<String> s1, Set<String> s2) {
-	return s1.stream().filter(i -> s2.contains(i)).collect(Collectors.toSet());
+        return s1.stream().filter(i -> s2.contains(i)).collect(Collectors.toSet());
     }
 
     public static String set2string(Set<String> s) {
-	return String.join(",", s);
+        return String.join(",", s);
     }
 
     // Semantic side helper of ChoiceFn
-    // returns 
+    // returns
     public static String choice(Set<String> s) {
-	if (s.size() > 1) {
+        if (s.size() > 1) {
 
-	    // Abduce simplest answer if its features are a subset of every other candidate's features
-	    // (i.e. abduce if there is no disambiguation possible)
-	    HOLOntology ontology = HOLOntology.getTheOntology();
-	    String smallest = "TOP_TACTIC";
-	    int smallestSize = Integer.MAX_VALUE;
-	    for (String e : s)
-		if (ontology.entities.get(e).size() < smallestSize) {
-		    smallest = e;
-		    smallestSize = ontology.entities.get(e).size();
-		}
-	    boolean abduceable = true;
-	    for (String e : s)
-		if (!ontology.entities.get(e).containsAll(ontology.entities
-							  .get(smallest)
-							  .stream() // (not required to share name)
-							  .filter(x -> !x.startsWith("name"))
-							  .collect(Collectors.toSet())))
-		    abduceable = false;
+            // Abduce simplest answer if its features are a subset of every other candidate's features
+            // (i.e. abduce if there is no disambiguation possible)
+            HOLOntology ontology = HOLOntology.getTheOntology();
+            String smallest = "TOP_TACTIC";
+            int smallestSize = Integer.MAX_VALUE;
+            for (String e : s)
+                if (ontology.entities.get(e).size() < smallestSize) {
+                    smallest = e;
+                    smallestSize = ontology.entities.get(e).size();
+                }
+            boolean abduceable = true;
+            for (String e : s)
+                if (!ontology.entities.get(e).containsAll(ontology.entities
+                                                          .get(smallest)
+                                                          .stream() // (not required to share name)
+                                                          .filter(x -> !x.startsWith("name"))
+                                                          .collect(Collectors.toSet())))
+                    abduceable = false;
 
-	    if (abduceable)
-		return smallest;
-	}
-	// not abduceable, therefore ambiguous
-	return String.join(",", s); // send the set of candidates to alert ambiguity
+            if (abduceable)
+                return smallest;
+        }
+        // not abduceable, therefore ambiguous
+        return String.join(",", s); // send the set of candidates to alert ambiguity
     }
 }

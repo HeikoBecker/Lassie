@@ -52,7 +52,7 @@ public class InteractiveMaster extends Master {
     public int maxSequence = 20;
     @Option(gloss = "path to the citations")
     public int maxChars = 200;
-    
+
     @Option(gloss = "allow regular commands specified in Master")
     public boolean allowRegularCommands = false;
   }
@@ -138,9 +138,9 @@ public class InteractiveMaster extends Master {
       }
 
       LogInfo.logs("Printing response to socket");
-      LassieUtils.printToSocket("LassieLib.SEMPRE_RESPONSE := SOME "
+      LassieUtils.printToSocket("LassieLib.sempreResponse := "
 				+ LassieUtils.json2sml(Json.writeValueAsStringHard(InteractiveServer.makeJson(response))));
-      
+
     } else if (command.equals(":qdbg")) {
       // Create example
       String utt = tree.children.get(1).value;
@@ -297,9 +297,9 @@ public class InteractiveMaster extends Master {
       throw BadInteractionException.headIsEmpty(head);
     if (isNonsense(exHead))
       throw BadInteractionException.nonSenseDefinition(head);
-    
+
     InteractiveBeamParserState state = ((InteractiveBeamParser)parser).parseWithoutExecuting(params, exHead, false);
-    
+
     if (GrammarInducer.getParseStatus(exHead) == GrammarInducer.ParseStatus.Core)
       throw BadInteractionException.headIsCore(head);
 

@@ -57,6 +57,8 @@
 (def @intersect edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.intersect)
 (def @set2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.set2string)
 (def @choice edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.choice)
+(def @tactic edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.tactic)
+(def @command edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.command)
 
 (def @ChoiceFn edu.stanford.nlp.sempre.interactive.lassie.ChoiceFn)
 
@@ -65,8 +67,8 @@
 ###################################
 
 # The root is always a tactic or a command
-(rule $ROOT ($tactic) (IdentityFn) (anchored 1))
-(rule $ROOT ($command) (IdentityFn) (anchored 1))
+(rule $ROOT ($tactic) (lambda t (call @tactic (var t))) (anchored 1))
+(rule $ROOT ($command) (lambda c (call @command (var c))) (anchored 1))
 
 # We can put parentheses around a tactic
 (for @cat ($tactic)
