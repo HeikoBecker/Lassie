@@ -228,13 +228,16 @@ struct
       (
       map (fn x => print (x ^"\n"))
         [ "",
-          "==== Lassie Interactive Mode ====",
+          "=======================================",
+          "======= Lassie Interactive Mode =======",
+          "=======================================",
           " ",
-          "Send natural language commands with the same keybinding as the one used",
-          "to send code to you running HOL4 session.",
+          "Send natural language commands with the same keybinding as the one",
+          "used to send code to you running HOL4 session.",
           "The commands will be send to Lassie and evaluated.",
           "HOL4 keybindings still work as before.",
-          "Sending \"exit\" quits the session andand resets the proof recording, \"pause\" keeps the state of the proof recorder ",
+          "Sending \"exit\" quits the session and clears the goal state,",
+          "\"pause\" quits the session and keeps the goal state.",
           ""
         ]; ());
   fun getAll instream =
@@ -247,23 +250,30 @@ struct
   in
     fun proveInteractive () =
       let
+        (* Set up prompt; wait for input *)
         val _ = print LASSIEPROMPT;
         val theText =
           case (TextIO.inputLine (TextIO.stdIn)) of
           NONE => raise LassieException "Error getting input"
           | SOME s => s ^ (getAll (TextIO.stdIn))
       in
+        (* Handle exit keyword separately TODO: Make command? *)
         if (theText = "exit;\n")
-        then (print "Exiting\n"; ProofRecorderLib.reset())
+        then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
+        (* Handle pause keyword separately TODO: Make command? *)
         else if (theText = "pause;\n")
         then (print "Pausing proof.\nReturn with LassieLib.proveInteractive().\n")
+        (* help keyword *)
         else if (theText = "help;\n")
         then (printHelp(); print LASSIEPROMPT; proveInteractive())
+        (* Proof step or command was given, parse with SEMPRE *)
         else
           let
+            (* Remove semicolons and line-breaks from string *)
             val theString = String.translate
                               (fn x => if ((x = #"\n") orelse (x = #";")) then "" else implode [x])
                               theText
+            (* Get a tactic from SEMPRE *)
             val res = theString |> sempre |> fst
             val theText = #value res;
             val theResult = #result res;
@@ -271,17 +281,21 @@ struct
                     Command c => SOME (c ())
                     | _ => NONE;
             val _ = case theResult of
-                    Tactic t => ProofRecorderLib.app t theText
-                    | _ => ();
+                    Tactic t => et (theText, t)
+                    | _ => raise LassieException "No valid parse found; Please provide a command or a tactic."
+
+            (*
             val done =
               (let val _ = proofManagerLib.top_goal(); in false end
-              handle HOL_ERR _=> true);
+              handle HOL_ERR _=> true); *)
           in
+            (*
             if (done)
             then (print ("Finished proof;\nPrinting proofscript\n\n" ^
                         ProofRecorderLib.pp_finished (hd(! ProofRecorderLib.finished)));
                   ProofRecorderLib.reset())
-            else (print LASSIEPROMPT;proveInteractive())
+            else *)
+            (print LASSIEPROMPT;proveInteractive())
           end
         end
   end;
