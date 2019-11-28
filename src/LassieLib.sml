@@ -4,16 +4,50 @@ struct
   open Abbrev Tactical Manager;
   open LassieUtilsLib ProofRecorderLib;
 
+  exception LassieException of string;
+
+  datatype SempreParse = Tactic of tactic | Command of unit -> proof;
+
+  type sempre_response =
+    { score: real,
+      prob:real,
+      value: string,
+      formula: string,
+      result: SempreParse};
+
+  type ambiguity_warning =
+    { set : string list,
+      span: string };
+
+  datatype AmbiguityWarning =
+    Warning of ambiguity_warning;
+
   val map = List.map
   fun mem x l = List.exists (fn x' => x = x') l
   val LASSIEPROMPT = "|>";
 
-  exception LassieException of string;
+  val sempreResponse :sempre_response list ref = ref [];
+
+  val ambiguityWarning : AmbiguityWarning option ref = ref NONE;
+
+  val lastUtterance = ref "";
+
+  val socketPath = "interactive/sempre-out-socket.sml";
+  val historyPath = "interactive/last-sempre-output.sml";
+
+  fun showList lst : string =
+    let
+      fun helper l s = foldl (fn (s1,s2) => s2 ^ ", "^ s1) s l
+    in
+      case lst of
+        [] => "[]"
+        | hd::tl => "[ " ^ helper tl hd ^ " ]"
+    end;
 
   (**************************************)
   (*           Communication            *)
   (**************************************)
-  val logging = ref true;
+  val logging = ref false;
 
   (* wait for the SEMPRE prompt; signifies end of execution *)
   fun waitSempre instream =
@@ -46,32 +80,8 @@ struct
       (ref instr, ref outstr)
     end;
 
+  (* Start SEMPRE when the Lib file is loaded *)
   val (instream, outstream) = launchSempre();
-
-  datatype SempreParse = Tactic of tactic | Command of unit -> proof;
-
-  type sempre_response =
-    { score: real,
-      prob:real,
-      value: string,
-      formula: string,
-      result: SempreParse};
-
-  type ambiguity_warning =
-    { set : string list,
-      span: string };
-
-  datatype AmbiguityWarning =
-    Warning of ambiguity_warning;
-
-  val sempreResponse :sempre_response list ref = ref [];
-
-  val ambiguityWarning : AmbiguityWarning option ref = ref NONE;
-
-  val lastUtterance = ref "";
-
-  val socketPath = "interactive/sempre-out-socket.sml";
-  val historyPath = "interactive/last-sempre-output.sml";
 
   (* send a string to sempre *)
   fun writeSempre (cmd : string) =
@@ -81,18 +91,6 @@ struct
       val _ = TextIO.output(!outstream, cmd ^ "\n")
     in
       waitSempre(!instream)
-    end;
-
-  fun showList lst : string =
-    let
-      fun helper l s =
-        case l of
-          [] => "[" ^ s ^ "]"
-          | hd::tl => helper tl (s ^ "," ^ hd)
-    in
-      case lst of
-        [] => "[]"
-        | hd::tl => helper (rev tl) hd
     end;
 
   fun printAmbiguities () =
@@ -139,18 +137,6 @@ struct
   (* send a NL query to sempre and return at least a derivation *)
   fun sempre utt = (writeSempre utt; readSempre utt);
 
-  (* parse and return most likely tactic *)
-  fun nltac utt : tactic =
-    let val theTac = utt |> sempre |> fst |> #result in
-    case theTac of
-    Command c => raise LassieException ("Entered a command when a tactic was expected")
-    | Tactic t => t
-    end;
-  fun nltacl uttl : tactic =
-    case uttl of
-      [] => ALL_TAC
-      | utt::tail => (nltac utt) THEN (nltacl tail);
-
   (* tell sempre you accepted a derivation; affects future weights *)
   fun accept (utt, formula) : unit =
     let
@@ -191,6 +177,18 @@ struct
             end
     end;
 
+  (* parse and return most likely tactic *)
+  fun nltac utt : tactic =
+    let val theTac = utt |> sempre |> fst |> #result in
+    case theTac of
+    Command c => raise LassieException ("Entered a command when a tactic was expected")
+    | Tactic t => t
+    end;
+  fun nltacl uttl : tactic =
+    case uttl of
+      [] => ALL_TAC
+      | utt::tail => (nltac utt) THEN (nltacl tail);
+
   (* define an utterance in terms of a list of utterances*)
   fun def ndum niens : unit =
     let
@@ -221,6 +219,26 @@ struct
         end
     in
       writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")")
+    end;
+
+  fun stripSpaces s =
+    case s of
+     [] => ""
+    | c::cs => if (c = #" ")
+              then stripSpaces cs
+              else implode (c::cs);
+
+  fun preprocess s =
+    let
+      val strs = LassieUtilsLib.string_split s #")"
+      val remainder =
+        if (String.isPrefix "(*#loc" (hd (strs)))
+        then tl (strs)
+        else strs
+      in
+        if String.isPrefix " " (hd remainder)
+        then String.concatWith ")" (stripSpaces (explode (hd remainder)) :: (tl remainder))
+        else String.concatWith ")"remainder
     end;
 
   local
@@ -255,35 +273,42 @@ struct
         val theText =
           case (TextIO.inputLine (TextIO.stdIn)) of
           NONE => raise LassieException "Error getting input"
-          | SOME s => s ^ (getAll (TextIO.stdIn))
+          | SOME s => preprocess (s ^ (getAll (TextIO.stdIn)))
+        val theTrueText =
+          preprocess theText
       in
         (* Handle exit keyword separately TODO: Make command? *)
-        if (theText = "exit;\n")
+        if (theTrueText = "exit;\n")
         then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
         (* Handle pause keyword separately TODO: Make command? *)
-        else if (theText = "pause;\n")
+        else if (theTrueText = "pause;\n")
         then (print "Pausing proof.\nReturn with LassieLib.proveInteractive().\n")
         (* help keyword *)
-        else if (theText = "help;\n")
-        then (printHelp(); print LASSIEPROMPT; proveInteractive())
+        else if (theTrueText = "help;\n")
+        then (printHelp(); proveInteractive())
         (* Proof step or command was given, parse with SEMPRE *)
         else
           let
             (* Remove semicolons and line-breaks from string *)
-            val theString = String.translate
+           val theString = String.translate
                               (fn x => if ((x = #"\n") orelse (x = #";")) then "" else implode [x])
-                              theText
+                              theTrueText;
             (* Get a tactic from SEMPRE *)
             val res = theString |> sempre |> fst
-            val theText = #value res;
+            val theTactic = #value res;
             val theResult = #result res;
             val _ = case theResult of
                     Command c => SOME (c ())
                     | _ => NONE;
             val _ = case theResult of
-                    Tactic t => et (theText, t)
+                    Tactic t => et (theTactic, t)
                     | _ => raise LassieException "No valid parse found; Please provide a command or a tactic."
 
+            (* first print the current goal *)
+            val _  = print "\n";
+            val t = proofManagerLib.pp_proof (proofManagerLib.p());
+            val _ = PolyML.prettyPrint (print, 80) t;
+            val _  = print "\n";
             (*
             val done =
               (let val _ = proofManagerLib.top_goal(); in false end
@@ -295,13 +320,9 @@ struct
                         ProofRecorderLib.pp_finished (hd(! ProofRecorderLib.finished)));
                   ProofRecorderLib.reset())
             else *)
-            (print LASSIEPROMPT;proveInteractive())
+            (proveInteractive())
           end
         end
   end;
-
-(*
-  val t = proofManagerLib.pp_proof (proofManagerLib.p());
-  val _ = PolyML.prettyPrint (print, 80) t; *)
 
 end
