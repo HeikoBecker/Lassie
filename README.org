@@ -1,0 +1,30 @@
+* Lassie
+
+Naturalizing theorem prover tactic languages
+
+** Dependencies
+
+To run Lassie you need to have a working HOL4 installation.
+For this please refer to [https://github.com/HOL-Theorem-Prover/HOL].
+
+Lassie additionally depends on the following shell variables:
+  `POLYDIR` which must point to the polyml installation folder (e.g. ~/git/polyml)
+  `LASSIEDIR` which must point to the folder where Lassie is stored (i.e. this directory)
+
+#+BEGIN_SRC bash :results silent
+#+END_SRC
+
+** Setup
+
+First you need to set up SEMPRE:
+
+#+NAME:setup_sempre
+#+BEGIN_SRC bash :results silent
+export LASSIEDIR=~/Projects/Lassie/
+export POLYDIR=~/Git_Repos/polyml/
+cd $LASSIEDIR/sempre/
+./pull-dependencies core interactive
+ant core interactive
+#+END_SRC
+
+Now you should be able to run Lassie by invoking the `run` script: `$LASSIEDIR/sempre/interactive/run @mode=lassie`
