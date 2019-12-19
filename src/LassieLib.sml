@@ -208,7 +208,7 @@ struct
       writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
     end;
 
-  fun addRule lhs rhs sem : unit =
+  fun addRule lhs rhs sem anchoring : unit =
     let
       fun paren str =
         let
@@ -218,8 +218,33 @@ struct
           else "(" ^ str ^ ")"
         end
     in
-      writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ ")")
+      writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ " " ^ paren anchoring ^ ")")
     end;
+
+  fun addIDRule (cat:string) (str:string) (anchoring:string) : unit =
+    addRule cat str ("ConstantFn ( string \"" ^ str ^ "\")") anchoring;
+
+  (** Adding a custom SML tactic to the grammar **)
+  fun addCustomTactic tac : unit =
+    addIDRule "$tactic" tac "anchored 1";
+
+  (** Adding a custom SML thm tactic to the grammar **)
+  fun addCustomThmTactic tac : unit =
+    addIDRule "$thm->tactic" tac "anchored 1";
+
+  (** Adding a custom SML thmlist tactic to the grammar **)
+  fun addCustomThmlistTactic tac : unit =
+    addIDRule "$thmlist->tactic" tac "anchored 1";
+
+  fun printGrammar () : unit =
+    let
+      val prev = !logging;
+      val _ = logging := true;
+      val _ = writeSempre ("(grammar)");
+      val _ = logging := prev;
+    in
+      () end;
+
 
   fun stripSpaces s =
     case s of

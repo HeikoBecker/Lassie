@@ -1,7 +1,6 @@
 open bossLib realTheory arithmeticTheory RealArith;
-open Lassie;
 
-val _ = new_theory "experiment1";
+val _ = new_theory "examples";
 
 fun rw thm = rewrite_tac [thm]
 val use_last_assum = pop_assum rw
@@ -12,6 +11,7 @@ fun impl_subgoal_tac th =
     in
 	SUBGOAL_THEN hyp_to_prove (fn thm => assume_tac (MP th thm))
     end;
+
 
 Theorem binom1:
   ! (a b:real). (a + b) pow 2 = a pow 2 + 2 * a * b + b pow 2
@@ -24,9 +24,6 @@ rpt strip_tac
 \\ fs [REAL_MUL_SYM]
 QED
 
-(*
-  The sum of all n uneven numbers is n^2
-*)
 val square_number_def = Define `
   (square_number (0:num) = 1:real) /\
   (square_number (SUC n) = ((2:real) * (&(SUC n)) + &1) + square_number n)`
@@ -44,32 +41,7 @@ Induct_on `n`
 \\ fs [SUM_SQUARED]
 QED
 
-val sum_def = Define `
-  (sum 0 = 0) /\
-  (sum (SUC n) = (SUC n + sum n))`
-
-Theorem gaussian_sum
-  `! n. (sum n = (n * (1 + n)) DIV 2)`
-  (Induct_on `n` \\ fs[sum_def] (* note: no fs[sum_def] here! *)
-  \\ pop_assum (fn thm=> once_rewrite_tac [GSYM thm] \\ assume_tac thm)
-  \\ fs[MULT]
-  \\ qspec_then `n` (fn thm => once_rewrite_tac [thm]) MULT_SYM
-  \\ `SUC n + 1 = SUC (SUC n)`
-      by (pop_assum kall_tac \\ Induct_on `n` \\ fs[])
-  \\ qpat_x_assum `SUC n + 1 = _` (fn thm => once_rewrite_tac [thm])
-  \\ `SUC (SUC n) * n = n + n + n * n`
-      by (fs[MULT])
-  \\ qpat_x_assum `SUC (SUC n) * _ = _` (fn thm => once_rewrite_tac [thm])
-  \\ `n + n + n * n + 1 = SUC n + n * (n + 1)`
-      by (once_rewrite_tac [ADD1] \\ once_rewrite_tac [LEFT_ADD_DISTRIB]
-          \\ rewrite_tac [ADD_ASSOC, MULT_RIGHT_1] \\ fs[])
-  \\ qpat_x_assum `n + n + _ + _ = _` (fn thm => once_rewrite_tac [thm])
-  \\ rewrite_tac [ADD_ASSOC]
-  \\ `SUC n + SUC n = 2 * (SUC n)`
-      by (fs[] )
-  \\ qpat_x_assum `SUC n + _ = _` (fn thm => once_rewrite_tac [thm])
-  \\ once_rewrite_tac [MULT_COMM]
-  \\ fs[ADD_DIV_ADD_DIV])
+(* TODO Gaussian sum *)
 
 val sum_of_cubes_def = Define `
   (sum_of_cubes 0 = 0:real) /\

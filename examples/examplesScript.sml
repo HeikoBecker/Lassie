@@ -1,4 +1,5 @@
 open bossLib realTheory arithmeticTheory RealArith;
+open LassieLib;
 
 val _ = new_theory "examples";
 
@@ -12,10 +13,11 @@ fun impl_subgoal_tac th =
 	SUBGOAL_THEN hyp_to_prove (fn thm => assume_tac (MP th thm))
     end;
 
-			  
 Theorem binom1:
   ! (a b:real). (a + b) pow 2 = a pow 2 + 2 * a * b + b pow 2
 Proof
+remove quantifier
+
 rpt strip_tac
 \\ fs [POW_2]
 \\ fs [REAL_RDISTRIB, REAL_LDISTRIB, REAL_ADD_ASSOC]
@@ -132,7 +134,7 @@ Induct_on `n`
 \\ rewrite_tac [REAL_ADD_RDISTRIB, REAL_ADD_LDISTRIB]
 \\ rewrite_tac [REAL_MUL_ASSOC]
 \\ rewrite_tac [REAL_ADD_ASSOC]
- 
+
 \\ rewrite_tac [GSYM REAL_ADD, GSYM REAL_MUL]
 \\ rewrite_tac [REAL_ADD_RDISTRIB, REAL_ADD_LDISTRIB]
 

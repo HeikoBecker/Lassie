@@ -69,6 +69,8 @@ first_x_assum               type    (thm -> tactic) -> tactic
 last_x_assum                type    (thm -> tactic) -> tactic
 ntac                        type    int -> tactic -> tactic
 rpt                         type    tactic -> tactic
+TRY                         type    tactic -> tactic
+
 
 # other
 subgoal                     type    term quotation -> tactic
@@ -77,12 +79,20 @@ suffices_by                 type    term quotation * tactic -> tactic
 Cases                       type    tactic
 Induct                      type    tactic
 cheat                       type    tactic
+gen_tac                     type    tactic
 strip_tac                   type    tactic
+conj_tac                    type    tactic
 Induct_on                   type    term quotation -> tactic
 rename                      type    term quotation list -> tactic
 qexists_tac                 type    term quotation -> tactic
 qspec_then                  type    term quotation -> (thm -> tactic) -> thm -> tactic
 qspecl_then                 type    term quotation list -> (thm -> tactic) -> thm -> tactic
+
+###################
+# Tactic chaining #
+###################
+THEN                        type    tactic -> tactic -> tactic
+
 
 ########################
 # HOL4 - Rules : Types #
@@ -94,6 +104,7 @@ Once                        type    thm -> thm
 ############################
 # Interactive mode : Types #
 ############################
+bt                          type    command
 undo                        type    command
 
 #################################
@@ -200,7 +211,7 @@ last_x_assum                VP      map, spend, use
 last_x_assum                OBJ     assumption, matching assumption, last matching assumption
 last_x_assum                CP      over assumptions
 
-ntac                        VP      repeat, apply
+ntac                        VP      apply
 ntac                        CP      times
 
 rpt                         AV      infinitely, indefinitely
