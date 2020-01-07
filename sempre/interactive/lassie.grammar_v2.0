@@ -64,6 +64,7 @@
 (def @ChoiceFn edu.stanford.nlp.sempre.interactive.lassie.ChoiceFn)
 
 (def @appT1T2 (lambda t1 (lambda t2 (call @app (var t1) (var t2)))))
+
 (def @infixT1T2T3 (lambda t1 (lambda t2 (lambda t3 (call @infix (var t1) (var t2) (var t3))))))
 
 ###################################
@@ -71,126 +72,138 @@
 ###################################
 
 # The root is always a tactic or a command
-#(rule $ROOT ($tactic) (lambda t (call @tactic (var t))) (anchored 1))
-(rule $ROOT ($tactic) (IdentityFn) (anchored 1))
+(rule $ROOT ($tactic) (lambda t (call @tactic (var t))) (anchored 1))
 (rule $ROOT ($command) (lambda c (call @command (var c))) (anchored 1))
 
-# Tactics can be produced by combining different constructs
-(for @category
-    (($thm->tactic $thm) ($tactic->tactic $tactic) ($thmlist->tactic $thmlist)
-     ($termquotation->tactic $termquotation)
-     ($termquotationlist->tactic $termquotationlist)
-     ($[thm->tactic]->tactic $thm->tactic))
-  (rule $tactic @category @appT1T2 (anchored 1)))
-(rule $tactic ($tactic $tactic->tactic->tactic $tactic) @infixT1T2T3 (anchored 1))
-
-# Partial applications for things like qpat_x_assum or first_x_assum
-(rule $[thm->tactic]->tactic
-  ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
-(rule $[thm->tactic]->thm->tactic
-  ($termquotation->[thm->tactic]->thm->tactic $termquotation) @appT1T2 (anchored 1))
-(rule $[thm->tactic]->thm->tactic
-  ($termquotationlist->[thm->tactic]->thm->tactic $termquotationlist) @appT1T2 (anchored 1))
-(rule $thm->tactic ($[thm->tactic]->thm->tactic $thm->tactic) @appT1T2 (anchored 1))
-#(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
-#(rule $[thm->tactic]->tactic ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
-
-# We can put parentheses around a tactic or a command
-(for @cat ($ROOT $command)
+# We can put parentheses around a tactic
+(for @cat ($tactic $command)
      (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
 
-##############################################################
-# Below are literal SML objects, looked up from the database #
-##############################################################
-# tactics
+# Literal SML tactics:
 (rule $tactic
   ($TOKEN)
   (SimpleLexiconFn (type "tactic")) (anchored 1))
-# tactic modifiers
+
+# Literal SML tactic modifiers
 (rule $tactic->tactic
   ($TOKEN)
   (SimpleLexiconFn (type "tactic->tactic")) (anchored 1))
-# thm tactics
+
+# Literal SML thm tactics:
 (rule $thm->tactic
   ($TOKEN)
   (SimpleLexiconFn (type "thm->tactic") (anchored 1)))
-# thm list tactics:
+
+# Literal SML thm list tactics:
 (rule $thmlist->tactic
   ($TOKEN)
   (SimpleLexiconFn (type "thmlist->tactic") (anchored 1)))
-# tactic combinators
+
+# Literal Tactic combinators
 (rule $tactic->tactic->tactic
   ($TOKEN)
   (SimpleLexiconFn (type "tactic->tactic->tactic") (anchored 1)))
-# term tactics
+
+# Literal Term tactics
 (rule $termquotation->tactic
   ($TOKEN)
   (SimpleLexiconFn (type "termquotation->tactic") (anchored 1)))
-# first_x_assum, last_x_assum, ...
-(rule $[thm->tactic]->tactic
-  ($TOKEN)
-  (SimpleLexiconFn (type "[thm->tactic]->tactic") (anchored 1)))
-# qspec
-(rule $termquotation->[thm->tactic]->thm->tactic
-  ($TOKEN)
-  (SimpleLexiconFn (type "termquotation->[thm->tactic]->thm->tactic") (anchored 1)))
-# qspecl
-(rule $termquotationlist->[thm->tactic]->thm->tactic
-  ($TOKEN)
-  (SimpleLexiconFn (type "termquotationlist->[thm->tactic]->thm->tactic") (anchored 1)))
-# qpat_x_assum, qpat_assum, ...
-(rule $termquotation->[thm->tactic]->tactic
-  ($TOKEN)
-  (SimpleLexiconFn (type "termquotation->[thm->tactic]->tactic")) (anchored 1))
-# ntac
-(rule $int->tactic->tactic
-      ($TOKEN)
-      (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
-(rule $thm->thm
-  ($TOKEN)
-  (SimpleLexiconFn (type "thm->thm")) (anchored 1))
 
-#### UNUSED LITERAL COMPONENTS
+(rule $tactic ($thm->tactic $thm) @appT1T2 (anchored 1))
+(rule $tactic ($tactic->tactic $tactic) @appT1T2 (anchored 1))
+(rule $tactic ($thmlist->tactic $thmlist) @appT1T2 (anchored 1))
+(rule $tactic ($tactic $tactic->tactic->tactic $tactic) @infixT1T2T3 (anchored 1))
+(rule $tactic ($termquotation->tactic $termquotation) @appT1T2 (anchored 1))
 
+(rule $termquotation (` $PHRASE `) (lambda e (call @quote (var e))) (anchored 1))
+
+#Thm fallback:
+(rule $thm ($TOKEN) (IdentityFn) (anchored 1))
+
+# Lists
+(rule $thmlist ([ ]) (ConstantFn []) (anchored 1))
+(rule $thmlist ([ $Thms ]) (lambda thms (call @list (var thms))) (anchored 1))
+
+(rule $Thms ($TOKEN) (IdentityFn) (anchored 1))
+(rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
+
+#(rule $tactic ($thmlist->tactic $thmlist) @appT1T2 (anchored 1))
+#(rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
+
+#(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->tactic ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
+#(rule $tactic ($[thm->tactic]->tactic $thm->tactic) @appT1T2 (anchored 1))
+#(rule $tactic ($termquotationlist->tactic $termquotationlist) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->thm->tactic ($termquotation->[thm->tactic]->thm->tactic $termquotation) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->thm->tactic ($termquotationlist->[thm->tactic]->thm->tactic $termquotationlist) @appT1T2 (anchored 1))
+#(rule $thm->tactic ($[thm->tactic]->thm->tactic $thm->tactic) @appT1T2 (anchored 1))
+
+
+
+## Literal Components Import
+#(rule $tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "tactic")) (anchored 1))
+#(rule $thm
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "thm")) (anchored 1))
+#(rule $thm->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "thm->tactic")) (anchored 1))
+#(rule $thmlist->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "thmlist->tactic")) (anchored 1))
+#(rule $tactic->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "tactic->tactic")) (anchored 1))
+#(rule $thm->thm
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "thm->thm")) (anchored 1))
+#(rule $termquotation->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type term "quotation->tactic")) (anchored 1))
+#(rule $int->tactic->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
+#(rule $termquotation->[thm->tactic]->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "termquotation->[thm->tactic]->tactic")) (anchored 1))
+#(rule $[thm->tactic]->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "[thm->tactic]->tactic")) (anchored 1))
 #(rule $termquotation*tactic->tactic
 #      ($TOKEN)
 #      (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))
 #(rule $termquotationlist->tactic
 #      ($TOKEN)
 #      (SimpleLexiconFn (type "termquotationlist->tactic")) (anchored 1))
-
-(rule $termquotation (` $PHRASE `) (lambda e (call @quote (var e))) (anchored 1))
-
-#Thms are just plain strings for now, no type checking by Lassie
-(rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
-(rule $thm ($TOKEN) (IdentityFn) (anchored 1))
-# TODO: Necessary?
-#(rule $thm
+#(rule $termquotation->[thm->tactic]->thm->tactic
 #      ($TOKEN)
-#      (SimpleLexiconFn (type "thm")) (anchored 1))
-
-
-## Lists
-(rule $Thms ($thm) (IdentityFn) (anchored 1))
-(rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
-(rule $thmlist ([ $Thms ]) (lambda thms (call @list (var thms))) (anchored 1))
-#Disabled to make learning easier... See test on "repeat" in LassieTests
-#(rule $thmlist ($Thms) (lambda thms (call @list (var thms))) (anchored 1))
-(rule $thmlist ([ ]) (ConstantFn []) (anchored 1))
-
-(rule $Terms ($termquotation) (IdentityFn) (anchored 1))
-(rule $Terms ($termquotation , $Terms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
-(rule $termquotationlist ([ $Terms ]) (lambda termquotations (call @list (var termquotations))) (anchored 1))
-(rule $termquotationlist ($Terms) (lambda termquotations (call @list (var termquotations))) (anchored 1))
-(rule $termquotationlist ([ ]) (ConstantFn []) (anchored 1))
-
-#(rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
-
+#      (SimpleLexiconFn (type "termquotation->[thm->tactic]->thm->tactic")) (anchored 1))
+#(rule $termquotationlist->[thm->tactic]->thm->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "termquotationlist->[thm->tactic]->thm->tactic")) (anchored 1))
 ##Commands to the interactive prove interface
-(rule $command
-      ($TOKEN)
-      (SimpleLexiconFn (type "command") (anchored 1)))
-
+#(rule $command
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "command") (anchored 1)))
+#
+#(def @appT1T2 (lambda t1 (lambda t2 (call @app (var t1) (var t2)))))
+#
+## Applications
+#(rule $tactic ($thm->tactic $thm) @appT1T2 (anchored 1))
+#(rule $tactic ($thmlist->tactic $thmlist) @appT1T2 (anchored 1))
+#(rule $tactic ($tactic->tactic $tactic) @appT1T2 (anchored 1))
+#(rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
+#(rule $tactic ($termquotation->tactic $termquotation) @appT1T2 (anchored 1))
+#(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->tactic ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
+#(rule $tactic ($[thm->tactic]->tactic $thm->tactic) @appT1T2 (anchored 1))
+#(rule $tactic ($termquotationlist->tactic $termquotationlist) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->thm->tactic ($termquotation->[thm->tactic]->thm->tactic $termquotation) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->thm->tactic ($termquotationlist->[thm->tactic]->thm->tactic $termquotationlist) @appT1T2 (anchored 1))
+#(rule $thm->tactic ($[thm->tactic]->thm->tactic $thm->tactic) @appT1T2 (anchored 1))
+#
 ## infix
 #(rule $tactic
 #      ($termquotation $termquotation*tactic->tactic $tactic)
@@ -217,6 +230,19 @@
 #(rule $tactic ($tactic THEN1 $tactic) (lambda t1 (lambda t2 (call @then1 (var t1) (var t2)))) (anchored 1))
 #(rule $tactic ($tactic \\ $tactic) (lambda t1 (lambda t2 (call @then (var t1) (var t2)))) (anchored 1))
 #(rule $tactic ($tactic >- $tactic) (lambda t1 (lambda t2 (call @then1 (var t1) (var t2)))) (anchored 1))
+#
+## Lists
+#(rule $Thms ($thm) (IdentityFn) (anchored 1))
+#(rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
+#(rule $thmlist ([ $Thms ]) (lambda thms (call @list (var thms))) (anchored 1))
+#(rule $thmlist ($Thms) (lambda thms (call @list (var thms))) (anchored 1))
+#(rule $thmlist ([ ]) (ConstantFn []) (anchored 1))
+#
+#(rule $Terms ($termquotation) (IdentityFn) (anchored 1))
+#(rule $Terms ($termquotation , $Terms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
+#(rule $termquotationlist ([ $Terms ]) (lambda termquotations (call @list (var termquotations))) (anchored 1))
+#(rule $termquotationlist ($Terms) (lambda termquotations (call @list (var termquotations))) (anchored 1))
+#(rule $termquotationlist ([ ]) (ConstantFn []) (anchored 1))
 #
 ## Other
 #(rule $termquotation (` $PHRASE `) (lambda e (call @quote (var e))) (anchored 1))

@@ -25,6 +25,7 @@ struct
   val map = List.map
   fun mem x l = List.exists (fn x' => x = x') l
   val LASSIEPROMPT = "|>";
+  val LASSIESEP = ref ".";
 
   val sempreResponse :sempre_response list ref = ref [];
 
@@ -50,14 +51,14 @@ struct
   val logging = ref false;
 
   (* wait for the SEMPRE prompt; signifies end of execution *)
-  fun waitSempre instream =
+  fun waitSempre instream :string =
     let
       val s = TextIO.input(instream);
       val _ = if !logging then print s else ()
     in
-      if String.isSuffix "\n> " s orelse s = "> " then ()
+      if String.isSuffix "\n> " s orelse s = "> " then s
       (* else if s = "" then raise LassieException "Reached EOS? Empty string was read."  *)
-      else waitSempre instream
+      else s ^ (waitSempre instream)
     end;
 
   (* run SEMPRE as a subprocess, through its run script returns in- and outstream of its shell *)
@@ -89,8 +90,9 @@ struct
       val _ = if OS.FileSys.access (socketPath, []) then OS.FileSys.remove socketPath else ()
       val _ = lastUtterance := cmd
       val _ = TextIO.output(!outstream, cmd ^ "\n")
+      val _ =  waitSempre(!instream)
     in
-      waitSempre(!instream)
+      ()
     end;
 
   fun printAmbiguities () =
@@ -177,13 +179,38 @@ struct
             end
     end;
 
+  (* FIXME *)
+  fun listStrip ls1 ls2 =
+    case (ls1, ls2) of
+    ([], _) => ls2
+    | (i1::ls1, i2::ls2) => if (i1 = i2) then listStrip ls1 ls2 else []
+    | (_,_) => [];
+
+  fun strip str fullStr =
+    implode (rev (listStrip (List.rev (explode str)) (List.rev (explode fullStr))));
+
   (* parse and return most likely tactic *)
   fun nltac utt : tactic =
-    let val theTac = utt |> sempre |> fst |> #result in
-    case theTac of
-    Command c => raise LassieException ("Entered a command when a tactic was expected")
-    | Tactic t => t
-    end;
+    let
+      val _ = if (not (String.isSuffix (! LASSIESEP) utt)) then raise LassieException "Tactics must end with LASSIESEP" else ();
+      val theStrings = LassieUtilsLib.string_split utt #" ";
+    in
+      snd (List.foldl
+        (fn (str, (strAcc,tAcc)) =>
+          if (String.isSuffix (! LASSIESEP) str) then
+            let
+              val theString = strAcc ^ " " ^ (strip (! LASSIESEP) str);
+              val theResult = theString |> sempre |> fst;
+              val _ = if (! logging) then print (#formula theResult) else ();
+              val theTac = (#result theResult)
+            in
+              case theTac of
+              Command c => raise LassieException ("Entered a command when a tactic was expected")
+              | Tactic t => ("",tAcc THEN t)
+            end
+          else (strAcc ^ " " ^ str,tAcc)) ("", ALL_TAC) theStrings)
+  end;
+
   fun nltacl uttl : tactic =
     case uttl of
       [] => ALL_TAC
@@ -204,7 +231,9 @@ struct
               |> (map (map quot'))
               |> (map list2string)
               |> list2string
+      val theDef = "(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")"
     in
+      if (!logging) then print theDef else ();
       writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
     end;
 

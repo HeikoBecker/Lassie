@@ -117,7 +117,7 @@ public final class InteractiveUtils {
             // setting start to -1 is important,
             // which grammarInducer interprets to mean we do not want partial
             // rules
-            .withCallable(new SemanticFn.CallInfo("$Action", -1, -1, null, new ArrayList<>())).createDerivation();
+            .withCallable(new SemanticFn.CallInfo("$ROOT", -1, -1, null, new ArrayList<>())).createDerivation();
         allDerivs.add(res);
       }
     }
@@ -171,7 +171,7 @@ public final class InteractiveUtils {
   static Rule blockRule(ActionFormula.Mode mode) {
     BlockFn b = new BlockFn(mode);
     b.init(LispTree.proto.parseFromString("(BlockFn sequential)"));
-    return new Rule("$Action", Lists.newArrayList("$Action", "$Action"), b);
+    return new Rule("$ROOT", Lists.newArrayList("$ROOT", "$ROOT"), b);
   }
 
   public static Derivation combine(List<Derivation> children) {
@@ -183,7 +183,7 @@ public final class InteractiveUtils {
     Derivation res = new Derivation.Builder().formula(f)
         // setting start to -1 is important,
         // which grammarInducer interprets to mean we do not want partial rules
-        .withCallable(new SemanticFn.CallInfo("$Action", -1, -1, blockRule(mode), ImmutableList.copyOf(children)))
+        .withCallable(new SemanticFn.CallInfo("$ROOT", -1, -1, blockRule(mode), ImmutableList.copyOf(children)))
         .createDerivation();
     return res;
   }

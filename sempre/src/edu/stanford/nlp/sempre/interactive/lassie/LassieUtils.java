@@ -43,6 +43,7 @@ public class LassieUtils{
             .replaceAll("\"stats\":\\{(.*?)\\},","")
             .replaceAll(",\"lines\":\\[(.*?)\\]","")
             .replaceAll("\"value\":\"Tactic (.*?)\"", "value = \"Tactic $1\",result = Tactic ($1)")
+            .replaceAll("\"value\":\"(.*?)\"", "value = \"$1\",result = Tactic ($1)")
             .replaceAll("\"value\":\"Command (.*?)\"", "value = \"Command $1\",result = Command ($1)")
             .replaceAll("\\{\\[(.*?)\\]\\}","\\[$1\\]");
 

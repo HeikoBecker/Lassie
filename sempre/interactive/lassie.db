@@ -54,6 +54,7 @@ assume_tac                  type    thm -> tactic
 irule                       type    thm -> tactic
 drule                       type    thm -> tactic
 match_mp_tac                type    thm -> tactic
+mp_tac                      type    thm -> tactic
 
 # automation tactics
 res_tac                     type    tactic
@@ -74,6 +75,7 @@ TRY                         type    tactic -> tactic
 
 # other
 subgoal                     type    term quotation -> tactic
+Cases_on                    type    term quotation -> tactic
 by                          type    term quotation * tactic -> tactic
 suffices_by                 type    term quotation * tactic -> tactic
 Cases                       type    tactic
@@ -85,8 +87,10 @@ conj_tac                    type    tactic
 Induct_on                   type    term quotation -> tactic
 rename                      type    term quotation list -> tactic
 qexists_tac                 type    term quotation -> tactic
+sg                          type    term quotation -> tactic
 qspec_then                  type    term quotation -> (thm -> tactic) -> thm -> tactic
 qspecl_then                 type    term quotation list -> (thm -> tactic) -> thm -> tactic
+pop_assum                   type    (thm -> tactic) -> tactic
 
 ###################
 # Tactic chaining #
