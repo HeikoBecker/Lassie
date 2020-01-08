@@ -38,8 +38,8 @@ public class DALAnalyzer extends LanguageAnalyzer {
     languageInfo.nerValues.clear();
     languageInfo.lemmaTokens.clear();
 
-    // Break hyphens
-    utterance = breakHyphens(utterance);
+    // do not break hyphens
+    //utterance = breakHyphens(utterance);
 
     // Default analysis - create tokens crudely
     StringBuilder buf = new StringBuilder();
@@ -60,7 +60,7 @@ public class DALAnalyzer extends LanguageAnalyzer {
       // else
 
       // WIP
-      // // Hard separators 
+      // // Hard separators
       // if (",".indexOf(c) != -1) { // (include `;`?)
       // 	  tokenList.add(buf.toString());
       // 	  ?
