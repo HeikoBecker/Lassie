@@ -79,7 +79,6 @@
 (for @category
     (($thm->tactic $thm) ($tactic->tactic $tactic) ($thmlist->tactic $thmlist)
      ($termquotation->tactic $termquotation)
-     ($termquotationlist->tactic $termquotationlist)
      ($[thm->tactic]->tactic $thm->tactic))
   (rule $tactic @category @appT1T2 (anchored 1)))
 (rule $tactic ($tactic $tactic->tactic->tactic $tactic) @infixT1T2T3 (anchored 1))
