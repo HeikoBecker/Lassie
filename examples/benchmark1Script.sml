@@ -88,14 +88,15 @@ LassieLib.addCustomTactic "REAL_ASM_ARITH_TAC";
 LassieLib.addCustomTactic "impl_tac";
 
 LassieLib.def "introduce variables" ["rpt gen_tac"];
-(* LassieLib.def "case split for ` s `" ["Cases_on ` s `"]; *)
+LassieLib.def "case split for ` s `" ["Cases_on ` s `"];
 LassieLib.def "trivial using [CONJ_COMM]" ["metis_tac [CONJ_COMM]"];
 LassieLib.def "simplify with [min4_def]" ["simp [min4_def]"];
 LassieLib.def "try solving with [min4_def]" ["TRY simp [min4_def]"];
-(* LassieLib.def "choose `e`" ["qexists_tac `e`"]; *)
+LassieLib.def "choose `e`" ["qexists_tac `e`"];
 LassieLib.def "use REAL_LE_TRANS" ["irule REAL_LE_TRANS"];
 LassieLib.def "perform a case split" ["rpt conj_tac"];
-(* LassieLib.def "we show first `T`" ["sg `T`"]; *)
+LassieLib.def "we show first `T`" ["sg `T`"];
+LassieLib.def "use transitivity for `x`" ["irule REAL_LE_TRANS THEN qexists_tac `x`"];
 
 Theorem contained_implies_valid:
   !(a:real) (iv:real#real).
@@ -110,15 +111,11 @@ Theorem min4_correct:
       m <= a /\ m <= b /\ m <= c /\ m <= d
 Proof
   LassieLib.nltac (
-  "introduce variables."
-  ^^ "simplify with [min4_def]."
-  ^^ "perform a case split."
+  "introduce variables. simplify with [min4_def]. perform a case split."
   ^^ "try solving with [REAL_MIN_LE1]."
-  ^^ "use REAL_LE_TRANS."
-  ^^ "choose `min b (min c d)`."
+  ^^ "use transitivity for `min b (min c d)`."
   ^^ "simplify with [REAL_MIN_LE1, REAL_MIN_LE2]."
-  ^^ "use REAL_LE_TRANS."
-  ^^ "choose `(min c d)`."
+  ^^ "use transitivity for `min c d`."
   ^^ "simplify with [REAL_MIN_LE1, REAL_MIN_LE2].")
 QED
 
@@ -128,15 +125,11 @@ Theorem max4_correct:
       a <= m /\ b <= m /\ c <= m /\ d <= m
 Proof
   LassieLib.nltac (
-  "introduce variables."
-  ^^ "simplify with [max4_def]."
-  ^^ "perform a case split."
+  "introduce variables. simplify with [max4_def]. perform a case split."
   ^^ "try solving with [REAL_LE_MAX1]."
-  ^^ "use REAL_LE_TRANS."
-  ^^ "choose `max b (max c d)`."
+  ^^ "use transitivity for `max b (max c d)`."
   ^^ "simplify with [REAL_LE_MAX1, REAL_LE_MAX2]."
-  ^^ "use REAL_LE_TRANS."
-  ^^ "choose `(max c d)`."
+  ^^ "use transitivity for `max c d`."
   ^^ "simplify with [REAL_LE_MAX1, REAL_LE_MAX2].")
 QED
 
@@ -145,8 +138,7 @@ Theorem interval_negation_valid:
     contained a iv ==> contained (- a) (negateInterval iv)
 Proof
   LassieLib.nltac (
-  "introduce variables."
-  ^^ "case split for `iv`."
+  "introduce variables. case split for `iv`."
   ^^ "try solving with [contained_def, negateInterval_def, REAL_LE_TRANS].")
 QED
 
@@ -166,6 +158,9 @@ LassieLib.def "rewrite once [<- REAL_INV_1OVER]" ["once_rewrite_tac [GSYM REAL_I
 LassieLib.def "rewrite with [REAL_INV_1OVER]" ["rewrite_tac [REAL_INV_1OVER]"];
 LassieLib.def "rewrite with [<- REAL_INV_1OVER]" ["rewrite_tac [GSYM REAL_INV_1OVER]"];
 LassieLib.def "we show next `T`" ["we show first `T`"];
+LassieLib.def "`T` using (fs[])" ["`T` by (fs[])"];
+LassieLib.def "we know `T`" ["`T` by (REAL_ASM_ARITH_TAC)"];
+LassieLib.def "thus `T`" ["we know `T`"];
 LassieLib.def "resolve with REAL_NEG_INV" ["imp_res_tac REAL_NEG_INV"];
 
 val REAL_INV_LE_ANTIMONO = store_thm ("REAL_INV_LE_ANTIMONO",
@@ -190,45 +185,28 @@ Proof
   ^^ "introduce assumptions."
   ^^ "rewrite once [<- REAL_INV_1OVER].")
   >- (
-    LassieLib.nltac "rewrite once [ <- REAL_LE_NEG]."
-    || "we show first `a < 0`."
-    >- (LassieLib.nltac "REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "we show next `a <> 0`."
-    >- (LassieLib.nltac "REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "we show next `r < 0`."
-    >- (LassieLib.nltac "REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "we show next `r <> 0`."
-    >- (LassieLib.nltac "REAL_ASM_ARITH_TAC.")
+    LassieLib.nltac ("rewrite once [ <- REAL_LE_NEG]. we know `a < 0`. thus `a <> 0`."
+    ^^ "we know `r < 0`. thus `r <> 0`.")
     \\ `inv(-a) ≤ inv (-r) <=> (- r) <= - a`
-      by (LassieLib.nltac "use REAL_INV_LE_ANTIMONO THEN simplify with [].")
-    || "resolve with REAL_NEG_INV."
-    || "asm_rewrite_tac[]."
-    || "fs [].")
+      by (LassieLib.nltac "use REAL_INV_LE_ANTIMONO. simplify with [].")
+    \\ LassieLib.nltac (
+        "resolve with REAL_NEG_INV. asm_rewrite_tac[]. fs []."))
   >- (
-    LassieLib.nltac "rewrite once [<- REAL_LE_NEG]."
-    || "we show first `a < 0`."
-    >- (LassieLib.nltac "REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "we show next `a <> 0`."
-    >- (LassieLib.nltac "REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "we show next `q <> 0`."
-    >- (LassieLib.nltac "REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "resolve with REAL_NEG_INV."
+    LassieLib.nltac (
+       "rewrite once [<- REAL_LE_NEG]."
+    ^^ "we know `a < 0`. thus `a <> 0`. we know `q <> 0`."
+    ^^ "resolve with REAL_NEG_INV.")
     \\ `inv (-q) <= inv (-a) <=> (-a) <= (-q)`
-      by (LassieLib.nltac "use REAL_INV_LE_ANTIMONO THEN simplify with [] THEN REAL_ASM_ARITH_TAC.")
-    || "asm_rewrite_tac[]."
-    || "fs[].")
+      by (LassieLib.nltac "use REAL_INV_LE_ANTIMONO. simplify with []. REAL_ASM_ARITH_TAC.")
+    \\ LassieLib.nltac "asm_rewrite_tac []. fs[].")
   >- (
-    LassieLib.nltac "rewrite with [<- REAL_INV_1OVER]."
-    || "we show first `inv r <= inv a <=> a <= r`."
+    LassieLib.nltac "rewrite with [<- REAL_INV_1OVER]. we show first `inv r <= inv a <=> a <= r`."
     >- (
-      LassieLib.nltac "use REAL_INV_LE_ANTIMONO."
-      || "REAL_ASM_ARITH_TAC.")
+      LassieLib.nltac "use REAL_INV_LE_ANTIMONO. REAL_ASM_ARITH_TAC.")
     \\ LassieLib.nltac "fs[].")
-  \\ LassieLib.nltac "rewrite with [<- REAL_INV_1OVER]."
-  || "we show first `inv a <= inv q <=> q <= a`."
+  \\ LassieLib.nltac "rewrite with [<- REAL_INV_1OVER]. we show first `inv a <= inv q <=> q <= a`."
     >- (
-      LassieLib.nltac "use REAL_INV_LE_ANTIMONO."
-      || "REAL_ASM_ARITH_TAC.")
+      LassieLib.nltac "use REAL_INV_LE_ANTIMONO. REAL_ASM_ARITH_TAC.")
     \\ LassieLib.nltac "fs[]."
 QED
 
