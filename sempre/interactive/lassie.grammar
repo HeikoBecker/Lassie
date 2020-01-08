@@ -159,7 +159,11 @@
 #      ($TOKEN)
 #      (SimpleLexiconFn (type "termquotationlist->tactic")) (anchored 1))
 
-(rule $termquotation (` $PHRASE `) (lambda e (call @quote (var e))) (anchored 1))
+#(rule $termquotation (` $PHRASE `) (lambda e (call @quote (var e))) (anchored 1))
+(rule $termquotation (` $term `) (lambda e (call @quote (var e))) (anchored 1))
+(rule $term ($PHRASE) (IdentityFn) (anchored 1))
+(rule $term ($term and $term) (lambda t1 (lambda t2 (call @op (string "∧") (var t1) (var t2)))) (anchored 1))
+(rule $term ($term or $term) (lambda t1 (lambda t2 (call @op (string "∨") (var t1) (var t2)))) (anchored 1))
 
 #Thms are just plain strings for now, no type checking by Lassie
 (rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
