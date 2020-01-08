@@ -186,28 +186,24 @@ Proof
   ^^ "rewrite once [<- REAL_INV_1OVER].")
   >- (
     LassieLib.nltac ("rewrite once [ <- REAL_LE_NEG]. we know `a < 0`. thus `a <> 0`."
-    ^^ "we know `r < 0`. thus `r <> 0`.")
-    \\ `inv(-a) ≤ inv (-r) <=> (- r) <= - a`
-      by (LassieLib.nltac "use REAL_INV_LE_ANTIMONO. simplify with [].")
-    \\ LassieLib.nltac (
-        "resolve with REAL_NEG_INV. asm_rewrite_tac[]. fs []."))
+    ^^ "we know `r < 0`. thus `r <> 0`."
+    ^^ "`inv(-a) <= inv (-r) <=> (- r) <= - a` by (use REAL_INV_LE_ANTIMONO THEN simplify with [])."
+    ^^ "resolve with REAL_NEG_INV. asm_rewrite_tac[]. fs []."))
   >- (
     LassieLib.nltac (
        "rewrite once [<- REAL_LE_NEG]."
     ^^ "we know `a < 0`. thus `a <> 0`. we know `q <> 0`."
-    ^^ "resolve with REAL_NEG_INV.")
-    \\ `inv (-q) <= inv (-a) <=> (-a) <= (-q)`
-      by (LassieLib.nltac "use REAL_INV_LE_ANTIMONO. simplify with []. REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "asm_rewrite_tac []. fs[].")
+    ^^ "resolve with REAL_NEG_INV."
+    ^^ "`inv (-q) <= inv (-a) <=> (-a) <= (-q)` by (use REAL_INV_LE_ANTIMONO THEN simplify with [] THEN REAL_ASM_ARITH_TAC)."
+    ^^ "asm_rewrite_tac []. fs[]."))
   >- (
-    LassieLib.nltac "rewrite with [<- REAL_INV_1OVER]. we show first `inv r <= inv a <=> a <= r`."
-    >- (
-      LassieLib.nltac "use REAL_INV_LE_ANTIMONO. REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "fs[].")
-  \\ LassieLib.nltac "rewrite with [<- REAL_INV_1OVER]. we show first `inv a <= inv q <=> q <= a`."
-    >- (
-      LassieLib.nltac "use REAL_INV_LE_ANTIMONO. REAL_ASM_ARITH_TAC.")
-    \\ LassieLib.nltac "fs[]."
+    LassieLib.nltac ("rewrite with [<- REAL_INV_1OVER]."
+      ^^ "`inv r <= inv a <=> a <= r` by (use REAL_INV_LE_ANTIMONO THEN REAL_ASM_ARITH_TAC)."
+      ^^ "fs[]."))
+  \\ LassieLib.nltac (
+    "rewrite with [<- REAL_INV_1OVER]."
+    ^^ "`inv a <= inv q <=> q <= a` by (use REAL_INV_LE_ANTIMONO THEN REAL_ASM_ARITH_TAC)."
+    ^^ "fs[].")
 QED
 
 val _ = export_theory();
