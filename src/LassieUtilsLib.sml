@@ -92,6 +92,13 @@ fun normalize str =
 
 exception VariableUndefined of string;
 
+fun endsWith (s:string) (c:char) : bool =
+  let
+    val sl = explode s;
+  in
+    (hd (List.rev sl) = c)
+  end;
+
 fun getOSVar name =
   case OS.Process.getEnv name of
     NONE => raise VariableUndefined ("Variable " ^ name ^ " not defined in environment")

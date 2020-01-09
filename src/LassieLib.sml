@@ -33,7 +33,8 @@ struct
 
   val lastUtterance = ref "";
 
-  val LASSIEDIR = getOSVar "LASSIEDIR"
+  val LASSIEDIR = let val lDir = getOSVar "LASSIEDIR"; in
+    if (endsWith lDir #"/") then lDir else (lDir ^ "/") end;
   val socketPath = LASSIEDIR ^ "sempre/interactive/sempre-out-socket.sml";
   val historyPath = LASSIEDIR ^ "sempre/interactive/last-sempre-output.sml";
 
