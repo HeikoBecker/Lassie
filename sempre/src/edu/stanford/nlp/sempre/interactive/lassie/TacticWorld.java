@@ -48,10 +48,6 @@ public class TacticWorld {
         if (fn.equals("") || arg.equals("")) return "";
         return "(" + fn + " " + arg + ")";
     }
-    public static String infix(String arg1, String fn, String arg2) {
-        if (fn.equals("") || arg1.equals("") || arg2.equals("")) return "";
-        return "(" + arg1 + " " + fn + " " + arg2 + ")";
-    }
     public static String then(String tac1, String tac2) {
         if (tac1.equals("") || tac2.equals("")) return "";
         return tac1 + " \\ " + tac2;
