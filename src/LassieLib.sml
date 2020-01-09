@@ -33,8 +33,9 @@ struct
 
   val lastUtterance = ref "";
 
-  val socketPath = "interactive/sempre-out-socket.sml";
-  val historyPath = "interactive/last-sempre-output.sml";
+  val LASSIEDIR = getOSVar "LASSIEDIR"
+  val socketPath = LASSIEDIR ^ "sempre/interactive/sempre-out-socket.sml";
+  val historyPath = LASSIEDIR ^ "sempre/interactive/last-sempre-output.sml";
 
   fun showList lst : string =
     let
@@ -64,7 +65,7 @@ struct
   (* run SEMPRE as a subprocess, through its run script returns in- and outstream of its shell *)
   fun launchSempre () =
     let
-      val LASSIEDIR = getOSVar "LASSIEDIR"
+      val currDir = OS.FileSys.getDir();
       (* SEMPRE's run script is dependent on being at the top of its directory *)
       val _ = OS.FileSys.chDir (LASSIEDIR ^ "/sempre")
       val instream' =
@@ -77,6 +78,7 @@ struct
           [] => raise Fail "Run script returned no arguments"
           | cmd::args => Unix.streamsOf(Unix.execute(cmd,args))
       val _ = waitSempre(instr);
+      val _ = OS.FileSys.chDir currDir;
     in
       (ref instr, ref outstr)
     end;
@@ -118,7 +120,7 @@ struct
         then raise LassieException ("Socket file missing after call to SEMPRE: " ^ socketPath)
         else ()
     in
-      use socketPath;
+      QUse.use socketPath;
       if OS.FileSys.access (historyPath, []) then OS.FileSys.remove historyPath else ();
       OS.FileSys.rename {old = socketPath, new = historyPath};
       case !sempreResponse of
