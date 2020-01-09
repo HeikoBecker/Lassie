@@ -4,8 +4,16 @@ sempre/interactive/lassie.lexicon
 
 src/*.ui
 src/*.uo
+src/*.dat
+src/*.sig
+src/*Theory.sml
 src/.HOLMK/*
 src/.hollogs/*
 
+examples/*.ui
+examples/*.uo
+examples/*.dat
+examples/*.sig
+examples/*Theory.sml
 examples/.HOLMK/*
 examples/.hollogs/*
