@@ -182,7 +182,6 @@ struct
             end
     end;
 
-  (* FIXME *)
   fun listStrip ls1 ls2 =
     case (ls1, ls2) of
     ([], _) => ls2

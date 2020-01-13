@@ -1,5 +1,6 @@
 open BasicProvers Defn HolKernel Parse SatisfySimps Tactic monadsyntax boolTheory bossLib lcsymtacs;
-open realTheory arithmeticTheory realTheory realLib RealArith;
+
+  open realTheory arithmeticTheory realTheory realLib RealArith;
 open LassieLib;
 
 val _ = new_theory "benchmark1";
@@ -86,6 +87,7 @@ End
 (** Lassie definitions **)
 LassieLib.addCustomTactic "REAL_ASM_ARITH_TAC";
 LassieLib.addCustomTactic "impl_tac";
+LassieLib.addCustomTactic "cheat";
 
 LassieLib.def "introduce variables" ["rpt gen_tac"];
 LassieLib.def "case split for ` s `" ["Cases_on ` s `"];
@@ -162,6 +164,7 @@ LassieLib.def "`T` using (fs[])" ["`T` by (fs[])"];
 LassieLib.def "we know `T`" ["`T` by (REAL_ASM_ARITH_TAC)"];
 LassieLib.def "thus `T`" ["we know `T`"];
 LassieLib.def "resolve with REAL_NEG_INV" ["imp_res_tac REAL_NEG_INV"];
+LassieLib.def "follows from [ADD_COMM]" ["asm_rewrite_tac [ADD_COMM] THEN fs[ADD_COMM]"];
 
 val REAL_INV_LE_ANTIMONO = store_thm ("REAL_INV_LE_ANTIMONO",
   ``! x y. 0 < x /\ 0 < y ==> (inv x <= inv y <=> y <= x)``,
@@ -183,27 +186,27 @@ Proof
   ^^ "case split for `iv`."
   ^^ "simplify with [contained_def, invertInterval_def]."
   ^^ "introduce assumptions."
-  ^^ "rewrite once [<- REAL_INV_1OVER].")
-  >- (
-    LassieLib.nltac ("rewrite once [ <- REAL_LE_NEG]. we know `a < 0`. thus `a <> 0`."
+  ^^ "rewrite once [<- REAL_INV_1OVER]."
+  ^^ ">>"
+    ^^ "rewrite once [ <- REAL_LE_NEG]. we know `a < 0`. thus `a <> 0`."
     ^^ "we know `r < 0`. thus `r <> 0`."
-    ^^ "`inv(-a) <= inv (-r) <=> (- r) <= - a` by (use REAL_INV_LE_ANTIMONO THEN simplify with [])."
-    ^^ "resolve with REAL_NEG_INV. asm_rewrite_tac[]. fs []."))
+    ^^ "`inv(-a) <= inv (-r) <=> (- r) <= -a` by (use REAL_INV_LE_ANTIMONO THEN simplify with [])."
+    ^^ "resolve with REAL_NEG_INV. follows from []. End.")
   >- (
     LassieLib.nltac (
        "rewrite once [<- REAL_LE_NEG]."
     ^^ "we know `a < 0`. thus `a <> 0`. we know `q <> 0`."
     ^^ "resolve with REAL_NEG_INV."
     ^^ "`inv (-q) <= inv (-a) <=> (-a) <= (-q)` by (use REAL_INV_LE_ANTIMONO THEN simplify with [] THEN REAL_ASM_ARITH_TAC)."
-    ^^ "asm_rewrite_tac []. fs[]."))
+    ^^ "follows from []."))
   >- (
     LassieLib.nltac ("rewrite with [<- REAL_INV_1OVER]."
       ^^ "`inv r <= inv a <=> a <= r` by (use REAL_INV_LE_ANTIMONO THEN REAL_ASM_ARITH_TAC)."
-      ^^ "fs[]."))
+      ^^ "follows from []."))
   \\ LassieLib.nltac (
     "rewrite with [<- REAL_INV_1OVER]."
     ^^ "`inv a <= inv q <=> q <= a` by (use REAL_INV_LE_ANTIMONO THEN REAL_ASM_ARITH_TAC)."
-    ^^ "fs[].")
+    ^^ "follows from [].")
 QED
 
 val _ = export_theory();

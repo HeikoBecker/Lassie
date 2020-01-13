@@ -1,6 +1,8 @@
 structure LassieTacticsLib =
 struct
 
+  open LassieUtilsLib;
+
 (* Exception to be raised if no valid pattern can be found *)
 exception PATGENERROR of string;
 
@@ -52,13 +54,22 @@ fun get_tac (n:int) (ttac:term quotation -> tactic) : tactic =
   fn (g as (asl, tm)) =>
     let
       val theAsm = List.nth (asl, n)
-      val strList = LassieUtilsLib.string_split (term_to_string tm) #" "
+      val strList = LassieUtilsLib.string_split (term_to_string theAsm) #" "
       val finalList = LassieUtilsLib.rejoin_pars strList
       val pats = gen_pats strList n asl tm
+      val thePat = hd pats
+      val _ = print (
+        "\nAssumption " ^ (Int.toString n) ^ " can be obtained with pattern "
+        ^ (String.concatWith " " thePat) ^ "\n"
+        ^ "using the tactic qpat_x_assum " ^ (String.concatWith " " thePat)
+        ^ "ttac\n");
       val theQuote = (mk_tm_quote (hd pats)) (* TODO: Find good heuristic for picking a quotation *)
     in
       ttac theQuote g
     end;
+
+rpt strip_tac
+get_tac 0 (fn p => qpat_x_assum p mp_tac)
 
 (*
 val quot_ls = ["f", "a", "b"];
@@ -72,10 +83,10 @@ val (r, _) = qpat_x_assum tmquot_test kall_tac (hd r);
 
 gen_pats ["f", "a", "b"] 0 asms ``T``;
 
-g `f a b ==> T`
+g `f a b /\ g a b==> T`
 rpt strip_tac
 
-get 0 (fn (t:term) => qpat_x_assum (mk_tm_quote (string_split (term_to_string t) #" ")) mp_tac)
+get_tac 0 (fn (t) => qpat_x_assum (mk_tm_quote (string_split (term_to_string t) #" ")) mp_tac)
 
 get 0 (fn tm =>
         (fn g as (asl, gl) =>

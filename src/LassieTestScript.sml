@@ -43,4 +43,6 @@ Proof
   LassieLib.nltac "fs[]."
 QED
 
+val _ = LassieLib.nltac "fs []. - fs [] End .";
+
 val _ = export_theory();
