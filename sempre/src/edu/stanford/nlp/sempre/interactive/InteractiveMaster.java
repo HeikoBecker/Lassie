@@ -295,8 +295,9 @@ public class InteractiveMaster extends Master {
 
     if (exHead.getTokens() == null || exHead.getTokens().size() == 0)
       throw BadInteractionException.headIsEmpty(head);
-    if (isNonsense(exHead))
-      throw BadInteractionException.nonSenseDefinition(head);
+    //isNonsense for Lassie, not used
+    //if (isNonsense(exHead))
+    //throw BadInteractionException.nonSenseDefinition(head);
 
     InteractiveBeamParserState state = ((InteractiveBeamParser)parser).parseWithoutExecuting(params, exHead, false);
 

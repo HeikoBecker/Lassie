@@ -96,6 +96,7 @@ pop_assum                   type    (thm -> tactic) -> tactic
 # Tactic chaining #
 ###################
 THEN                        type    tactic -> tactic -> tactic
+ORELSE                      type    tactic -> tactic -> tactic
 
 
 ########################
