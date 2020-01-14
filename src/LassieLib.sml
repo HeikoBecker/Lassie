@@ -192,10 +192,12 @@ struct
     implode (rev (listStrip (List.rev (explode str)) (List.rev (explode fullStr))));
 
   (* parse and return most likely tactic *)
-  fun nltac utt : tactic =
+  fun nltac (utt:'a frag list) : tactic =
     let
-      val _ = if (not (String.isSuffix (! LASSIESEP) utt)) then raise LassieException "Tactics must end with LASSIESEP" else ();
-      val theStrings = LassieUtilsLib.string_split utt #" ";
+      val uttStr1 = case utt of [QUOTE s] => LassieUtilsLib.preprocess s | _ => raise LassieException "";
+      val uttStr = String.translate (fn c => if c = #"\n" then " " else implode [c]) uttStr1;
+      val _ = if (not (String.isSuffix (! LASSIESEP) uttStr)) then raise LassieException "Tactics must end with LASSIESEP" else ();
+      val theStrings = LassieUtilsLib.string_split uttStr #" ";
     in
       snd (List.foldl
         (fn (str, (strAcc,tAcc)) =>
@@ -219,6 +221,32 @@ struct
       | utt::tail => (nltac utt) THEN (nltacl tail);
 
   (* define an utterance in terms of a list of utterances*)
+  fun def (tac:'a frag list) (tacDescriptions:'a frag list list) : unit =
+    let
+      (* for each utterance of the definition, get its logical form *)
+      fun getFormula u = [u, (u |> sempre |> fst |> #formula |> escape |> escape)]
+      (* formatting *)
+      fun quot s = "\"" ^ s ^ "\""
+      fun quot' s = "\\\"" ^ s ^ "\\\""
+      fun list2string l = "[" ^ (String.concatWith "," l) ^ "]"
+
+      val definiens =
+        tacDescriptions
+              |> (map (fn q => case q of [QUOTE s] => preprocess s | _ => ""))
+              |> (fn sl => if (!logging) then (map (fn s => print (s^"\n")) sl; sl) else sl)
+              |> (map getFormula)
+              |> (map (map quot'))
+              |> (map list2string)
+              |> list2string
+      val ndum = case tac of [QUOTE s] => preprocess s | _ => ""
+      val theDef = "(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")"
+    in
+      if (!logging) then print theDef else ();
+      writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
+    end;
+
+(**
+  (* define an utterance in terms of a list of utterances*)
   fun def ndum niens : unit =
     let
       (* for each utterance of the definition, get its logical form *)
@@ -238,6 +266,7 @@ struct
       if (!logging) then print theDef else ();
       writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
     end;
+**)
 
   fun addRule lhs rhs sem anchoring : unit =
     let
@@ -276,27 +305,6 @@ struct
     in
       () end;
 
-
-  fun stripSpaces s =
-    case s of
-     [] => ""
-    | c::cs => if (c = #" ")
-              then stripSpaces cs
-              else implode (c::cs);
-
-  fun preprocess s =
-    let
-      val strs = LassieUtilsLib.string_split s #")"
-      val remainder =
-        if (String.isPrefix "(*#loc" (hd (strs)))
-        then tl (strs)
-        else strs
-      in
-        if String.isPrefix " " (hd remainder)
-        then String.concatWith ")" (stripSpaces (explode (hd remainder)) :: (tl remainder))
-        else String.concatWith ")"remainder
-    end;
-
   local
     fun printHelp () =
       (
@@ -329,9 +337,9 @@ struct
         val theText =
           case (TextIO.inputLine (TextIO.stdIn)) of
           NONE => raise LassieException "Error getting input"
-          | SOME s => preprocess (s ^ (getAll (TextIO.stdIn)))
+          | SOME s => LassieUtilsLib.preprocess (s ^ (getAll (TextIO.stdIn)))
         val theTrueText =
-          preprocess theText
+          LassieUtilsLib.preprocess theText
       in
         (* Handle exit keyword separately TODO: Make command? *)
         if (theTrueText = "exit;\n")

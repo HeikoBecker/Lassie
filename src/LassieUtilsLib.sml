@@ -165,4 +165,27 @@ fun rejoin_pars [] = [] |
         end
     else s :: (rejoin_pars sl);
 
+  fun stripSpaces s =
+    case s of
+     [] => ""
+    | c::cs => if (c = #" ")
+              then stripSpaces cs
+              else implode (c::cs);
+
+  fun preprocess s =
+    let
+      val strs = string_split s #")"
+      val remainder =
+        if (String.isPrefix "(*#loc" (stripSpaces (explode (hd (strs)))))
+        then tl (strs)
+        else strs
+      val res =
+        if String.isPrefix " " (hd remainder)
+        then String.concatWith ")" (stripSpaces (explode (hd remainder)) :: (tl remainder))
+        else String.concatWith ")"remainder
+      in
+        if (String.isSuffix ")" s)
+        then (res^")")
+        else res
+    end;
 end
