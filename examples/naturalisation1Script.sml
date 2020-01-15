@@ -95,6 +95,18 @@ LassieLib.def `perform a case split` [`rpt conj_tac`];
 LassieLib.def `we show first 'T'` [`sg 'T'`];
 LassieLib.def `use transitivity for 'x'` [`irule REAL_LE_TRANS THEN qexists_tac 'x'`];
 
+LassieLib.def `introduce assumptions` [`rpt strip_tac`];
+LassieLib.def `rewrite once [REAL_INV_1OVER]` [`once_rewrite_tac [REAL_INV_1OVER]`];
+LassieLib.def `rewrite once [<- REAL_INV_1OVER]` [`once_rewrite_tac [GSYM REAL_INV_1OVER]`];
+LassieLib.def `rewrite with [REAL_INV_1OVER]` [`rewrite_tac [REAL_INV_1OVER]`];
+LassieLib.def `rewrite with [<- REAL_INV_1OVER]` [`rewrite_tac [GSYM REAL_INV_1OVER]`];
+LassieLib.def `we show next 'T'` [`we show first 'T'`];
+LassieLib.def `'T' using (fs[])` [`'T' by ( fs[] )`];
+LassieLib.def `we know 'T'` [`'T' by (REAL_ASM_ARITH_TAC)`];
+LassieLib.def `thus 'T'` [`we know 'T'`];
+LassieLib.def `resolve with REAL_NEG_INV` [`imp_res_tac REAL_NEG_INV`];
+LassieLib.def `follows from [ADD_COMM]` [`asm_rewrite_tac [ADD_COMM] THEN fs[ADD_COMM]`];
+
 Theorem contained_implies_valid:
   !(a:real) (iv:real#real).
   contained a iv ==> valid iv

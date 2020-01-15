@@ -47,6 +47,7 @@ once_asm_rewrite_tac        type    thm list -> tactic
 simp                        type    thm list -> tactic
 fs                          type    thm list -> tactic
 rfs                         type    thm list -> tactic
+rw                          type    thm list -> tactic
 
 # thm tactics
 imp_res_tac                 type    thm -> tactic
@@ -84,13 +85,19 @@ cheat                       type    tactic
 gen_tac                     type    tactic
 strip_tac                   type    tactic
 conj_tac                    type    tactic
+all_tac                     type    tactic
+NO_TAC                      type    tactic
+EQ_TAC                      type    tactic
+CCONTR_TAC                  type    tactic
 Induct_on                   type    term quotation -> tactic
+completeInduct_on           type    term quotation -> tactic
 rename                      type    term quotation list -> tactic
 qexists_tac                 type    term quotation -> tactic
 sg                          type    term quotation -> tactic
 qspec_then                  type    term quotation -> (thm -> tactic) -> thm -> tactic
 qspecl_then                 type    term quotation list -> (thm -> tactic) -> thm -> tactic
 pop_assum                   type    (thm -> tactic) -> tactic
+spose_not_then              type    (thm -> tactic) -> tactic
 
 ###################
 # Tactic chaining #

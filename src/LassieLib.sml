@@ -195,7 +195,7 @@ struct
   fun nltac (utt:'a frag list) : tactic =
     let
       val uttStr1 = case utt of [QUOTE s] => LassieUtilsLib.preprocess s | _ => raise LassieException "";
-      val uttStr = String.translate (fn c => if c = #"\n" then " " else implode [c]) uttStr1;
+      val uttStr = String.translate (fn c => if c = #"\n" then " " else if Char.isCntrl c then "" else implode [c]) uttStr1;
       val _ = if (not (String.isSuffix (! LASSIESEP) uttStr)) then raise LassieException "Tactics must end with LASSIESEP" else ();
       val theStrings = LassieUtilsLib.string_split uttStr #" ";
     in
