@@ -5,7 +5,7 @@ open realTheory arithmeticTheory realLib RealArith;
 
 open LassieLib;
 
-val _ = new_theory "exampleRealNums";
+val _ = new_theory "caseStudy2RealNums";
 
 val rw_th = fn thm => once_rewrite_tac[thm];
 

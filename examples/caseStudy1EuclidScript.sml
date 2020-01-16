@@ -19,7 +19,7 @@ open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
 
 open LassieLib;
 
-val _ = new_theory "euclid";
+val _ = new_theory "caseStudy1Euclid";
 
 (*---------------------------------------------------------------------------*)
 (* Divisibility.                                                             *)
