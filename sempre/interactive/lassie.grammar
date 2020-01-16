@@ -162,7 +162,8 @@
 (rule $Terms ($termquotation) (IdentityFn) (anchored 1))
 (rule $Terms ($termquotation , $Terms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
 (rule $termquotationlist ([ $Terms ]) (lambda termquotations (call @list (var termquotations))) (anchored 1))
-(rule $termquotationlist ([ ]) (ConstantFn []) (anchored 1))
+(rule $termquotationlist ([ ]) (ConstantFn (call @list (string " "))) (anchored 1))
+(rule $termquotationlist ([]) (ConstantFn (call @list (string " "))) (anchored 1))
 
 #### HOL4 Theorems
 (rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
@@ -172,8 +173,9 @@
 (rule $Thms ($thm) (IdentityFn) (anchored 1))
 (rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
 (rule $thmlist ([ $Thms ]) (lambda thms (call @list (var thms))) (anchored 1))
-(rule $thmlist ([ ]) (ConstantFn []) (anchored 1))
-(rule $thmlist ([]) (ConstantFn []) (anchored 1))
+(rule $thmlist ([]) (ConstantFn (call @list (string " "))) (anchored 1))
+(rule $thmlist ([ ]) (ConstantFn (call @list (string " "))) (anchored 1))
+
 
 ##Commands to the interactive prove interface
 (rule $command

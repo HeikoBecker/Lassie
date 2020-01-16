@@ -14,9 +14,12 @@
 (* available without supplying the "arithmeticTheory." prefix.               *)
 (*---------------------------------------------------------------------------*)
 
-open arithmeticTheory;
+open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
+     boolTheory bossLib lcsymtacs arithmeticTheory;
 
-open bossLib LassieLib;
+open LassieLib;
+
+val _ = new_theory "euclid";
 
 (*---------------------------------------------------------------------------*)
 (* Divisibility.                                                             *)
@@ -25,7 +28,7 @@ open bossLib LassieLib;
 set_fixity "divides" (Infix(NONASSOC, 450));
 
 Definition divides_def:
-  (a divides b) = (?x. b = a * x)
+(a divides b) = (? x. b = a * x)
 End
 
 
@@ -34,7 +37,7 @@ End
 (*---------------------------------------------------------------------------*)
 
 Definition prime_def:
-  prime p = (p<>1 /\ !x. x divides p ==> (x=1) \/ (x=p))
+  prime p = (p<>1 /\ !x . x divides p ==> (x=1) \/ (x=p))
 End
 
 (*---------------------------------------------------------------------------*)
@@ -44,7 +47,7 @@ End
 QUse.use "arithTactics.sml";
 
 Theorem DIVIDES_0:
-  !x. x divides 0
+  ! x . x divides 0
 Proof
   LassieLib.nltac `
     follows from [divides_def, MULT_CLAUSES].`
@@ -52,7 +55,7 @@ Proof
 QED
 
 Theorem DIVIDES_ZERO:
-  !x. (0 divides x) = (x = 0)
+  ! x . (0 divides x) = (x = 0)
 Proof
   LassieLib.nltac `
     follows from [divides_def, MULT_CLAUSES].`
@@ -60,7 +63,7 @@ Proof
 QED
 
 Theorem DIVIDES_ONE:
-  !x. (x divides 1) = (x = 1)
+  ! x . (x divides 1) = (x = 1)
 Proof
   LassieLib.nltac
     `follows from [divides_def, MULT_CLAUSES, MULT_EQ_1].`
@@ -68,7 +71,7 @@ Proof
 QED
 
 Theorem DIVIDES_REFL:
-  !x. x divides x
+  ! x . x divides x
 Proof
   LassieLib.nltac `
     follows from [divides_def, MULT_CLAUSES].`
@@ -76,7 +79,7 @@ Proof
 QED
 
 Theorem DIVIDES_TRANS:
-  !a b c. a divides b /\ b divides c ==> a divides c
+  ! a b c . a divides b /\ b divides c ==> a divides c
 Proof
   LassieLib.nltac `
     follows from [divides_def, MULT_ASSOC].`
@@ -84,7 +87,7 @@ Proof
 QED
 
 Theorem DIVIDES_ADD:
-  !d a b. d divides a /\ d divides b ==> d divides (a + b)
+  ! d a b . d divides a /\ d divides b ==> d divides (a + b)
 Proof
   LassieLib.nltac `
     follows from [divides_def, LEFT_ADD_DISTRIB].`
@@ -92,7 +95,7 @@ Proof
 QED
 
 Theorem DIVIDES_SUB:
-  !d a b. d divides a /\ d divides b ==> d divides (a - b)
+  !d a b . d divides a /\ d divides b ==> d divides (a - b)
 Proof
   LassieLib.nltac `
     follows from [divides_def, LEFT_SUB_DISTRIB].`
@@ -100,7 +103,7 @@ Proof
 QED
 
 Theorem DIVIDES_ADDL:
-  !d a b. d divides a /\ d divides (a + b) ==> d divides b
+  !d a b . d divides a /\ d divides (a + b) ==> d divides b
 Proof
   LassieLib.nltac `
     follows from [ADD_SUB, ADD_SYM, DIVIDES_SUB].`
@@ -108,7 +111,7 @@ Proof
 QED
 
 Theorem DIVIDES_LMUL:
-  !d a x. d divides a ==> d divides (x * a)
+  !d a x . d divides a ==> d divides (x * a)
 Proof
   LassieLib.nltac `
     follows from [divides_def, MULT_ASSOC, MULT_SYM].`
@@ -116,7 +119,7 @@ Proof
 QED
 
 Theorem DIVIDES_RMUL:
-  !d a x. d divides a ==> d divides (a * x)
+  !d a x . d divides a ==> d divides (a * x)
 Proof
   LassieLib.nltac `
     follows from [MULT_SYM,DIVIDES_LMUL].`
@@ -124,7 +127,7 @@ Proof
 QED
 
 Theorem DIVIDES_LE:
-  !m n. m divides n ==> m <= n \/ (n = 0)
+  !m n . m divides n ==> m <= n \/ (n = 0)
 Proof
   LassieLib.nltac `
     rewrite [divides_def]. trivial using [].`
@@ -137,7 +140,7 @@ QED
 val NOT_X_LE = DECIDE ``! x. ~(x < x)``;
 
 Theorem DIVIDES_FACT:
-  !m n. 0 < m /\ m <= n ==> m divides (FACT n)
+  !m n . 0 < m /\ m <= n ==> m divides (FACT n)
 Proof
   LassieLib.nltac `
     rewrite [LESS_EQ_EXISTS].
@@ -183,7 +186,7 @@ Proof
 QED
 
 Theorem PRIME_POS:
-  !p. prime p ==> 0<p
+  !p . prime p ==> 0<p
 Proof
   LassieLib.nltac `perform a case split. rewrite [NOT_PRIME_0].`
   (* Cases >> rw [NOT_PRIME_0] *)
@@ -203,7 +206,7 @@ QED
 val _ = LassieLib.LASSIESEP := ";";
 
 Theorem PRIME_FACTOR:
-  !n. ~(n = 1) ==> ?p. prime p /\ p divides n
+  !n . ~(n = 1) ==> ?p . prime p /\ p divides n
 Proof
   LassieLib.nltac `
     Complete Induction on 'n';
@@ -234,7 +237,7 @@ val _ = LassieLib.LASSIESEP := ".";
 (*---------------------------------------------------------------------------*)
 
 Theorem PRIME_FACTOR:
- !n. n<>1 ==> ?p. prime p /\ p divides n
+ !n . n<>1 ==> ?p . prime p /\ p divides n
 Proof
   LassieLib.nltac `
     Complete Induction on 'n'.
@@ -261,7 +264,7 @@ val neq_zero = DECIDE ``~(x=0) = (0 < x)``;
 val _ = LassieLib.LASSIESEP := ";";
 
 Theorem EUCLID:
-  !n. ?p. n < p /\ prime p
+  !n . ?p . n < p /\ prime p
 Proof
   LassieLib.nltac `
     suppose not; simplify with [];
@@ -302,3 +305,5 @@ val EUCLID_AGAIN = prove (``!n. ?p. n < p /\ prime p``,
    `p = 1`                       by metis_tac [DIVIDES_ONE]  >>
    `~prime p`                    by metis_tac [NOT_PRIME_1]  >>
    metis_tac[]);
+
+val _ = export_theory();
