@@ -104,9 +104,9 @@ struct
     | SOME (Warning warning) =>
         let val _ = print ("Warning (ambiguity)-\n   Lassie could not disambiguate the expression\n      `"
                            ^ (#span warning)
-                           ^ "`\n   in the utterance. Possible interpretations include:\n      "
+                           ^ "`\n   in the description. Possible interpretations include:\n      "
                            ^ showList (#set warning)
-                           ^ ".\n   Lassie might be able to parse the utterance if you are more specific.\n\n")
+                           ^ ".\n   Lassie might be able to parse the description if you are more specific.\n\n")
         in
           ambiguityWarning := NONE
         end
@@ -132,7 +132,7 @@ struct
               let
                 val _ = printAmbiguities()
               in
-                raise LassieException ("Could not parse the utterance `"
+                raise LassieException ("Could not parse the description `"
                    ^ utt
                    ^ "`, you can provide a definition using LassieLib.def")
               end

@@ -7,6 +7,10 @@ open LassieLib;
 
 val _ = new_theory "proofsCaseStudy";
 
+val rw_th = fn thm => once_rewrite_tac[thm];
+
+QUse.use "realTactics.sml";
+
 Definition min4_def:
 min4 a b c d = min a (min b (min c d))
 End
@@ -75,49 +79,6 @@ End
 Definition minAbsFun_def:
   minAbsFun iv = min (abs (FST iv)) (abs (SND iv))
 End
-
-(** Lassie definitions **)
-val _ = LassieLib.addCustomTactic "REAL_ASM_ARITH_TAC";
-val _ = LassieLib.addCustomTactic "impl_tac";
-val _ = LassieLib.addCustomTactic "cheat";
-
-val _ = LassieLib.def `introduce variables` [`rpt gen_tac`];
-val _ = LassieLib.def `introduce assumptions` [`rpt strip_tac`];
-val _ = LassieLib.def `introduce variables and assumptions` [`rpt strip_tac`];
-
-val _ = LassieLib.def `case split` [`(rpt conj_tac ORELSE EQ_TAC) ORELSE Cases`];
-val _ = LassieLib.def `case split for 's'` [`Cases_on 's'`];
-val _ = LassieLib.def `perform a case split` [`case split`];
-val _ = LassieLib.def `trivial` [`metis_tac []`];
-val _ = LassieLib.def `trivial using [CONJ_COMM]` [`metis_tac [CONJ_COMM]`];
-
-val _ = LassieLib.def `simplify` [`simp []`];
-val _ = LassieLib.def `simplify with [min4_def]` [`simp [min4_def]`];
-val _ = LassieLib.def `try gen_tac` [`TRY gen_tac`];
-(* val _ = LassieLib.def `try solving with [min4_def]` [`TRY simp [min4_def]`]; *)
-val _ = LassieLib.def `choose 'e'` [`qexists_tac 'e'`];
-val _ = LassieLib.def `use REAL_LE_TRANS` [`irule REAL_LE_TRANS`];
-val _ = LassieLib.def `we show first 'T'` [`sg 'T'`];
-
-val _ = LassieLib.def `use transitivity for 'x'` [`irule REAL_LE_TRANS THEN qexists_tac 'x'`];
-val _ = LassieLib.def `resolve with REAL_NEG_INV` [`imp_res_tac REAL_NEG_INV`];
-
-val _ = LassieLib.def `rewrite once [REAL_INV_1OVER]` [`once_rewrite_tac [REAL_INV_1OVER]`];
-val _ = LassieLib.def `rewrite once [<- REAL_INV_1OVER]` [`once_rewrite_tac [GSYM REAL_INV_1OVER]`];
-val _ = LassieLib.def `rewrite with [REAL_INV_1OVER]` [`rewrite_tac [REAL_INV_1OVER]`];
-val _ = LassieLib.def `rewrite with [<- REAL_INV_1OVER]` [`rewrite_tac [GSYM REAL_INV_1OVER]`];
-
-val _ = LassieLib.def `we show next 'T'` [`we show first 'T'`];
-val _ = LassieLib.def `'T' using (fs[])` [`'T' by ( fs[] )`];
-val _ = LassieLib.def `we know 'T'` [`'T' by (REAL_ASM_ARITH_TAC)`];
-val _ = LassieLib.def `we show 'T' using (gen_tac)` [`'T' by (gen_tac)`];
-val _ = LassieLib.def `thus 'T'` [`we know 'T'`];
-
-val _ = LassieLib.def `follows trivially` [`fs []`];
-val _ = LassieLib.def `follows from [ADD_COMM]` [`fs[ADD_COMM]`];
-
-val _ = LassieLib.def `rewrite assumptions` [`asm_rewrite_tac []`];
-val _ = LassieLib.def `rewrite assumptions and [ADD_ASSOC] ` [`asm_rewrite_tac [ADD_ASSOC]`];
 
 Theorem contained_implies_valid:
   !(a:real) (iv:real#real).

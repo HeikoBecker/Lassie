@@ -1,5 +1,13 @@
-open bossLib realTheory RealArith arithmeticTheory;
+open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
+     boolTheory bossLib lcsymtacs;
+
+open realTheory arithmeticTheory realLib RealArith;
+
 open LassieLib;
+
+val _ = new_theory "exampleRealNums";
+
+val rw_th = fn thm => once_rewrite_tac[thm];
 
 QUse.use "realTactics.sml";
 
@@ -93,8 +101,6 @@ Proof
   \\ fs[REAL_MUL_ASSOC]
 QED
 
-val rw_th = fn thm => once_rewrite_tac[thm];
-
 Theorem pow_3:
   n pow 3 = n * n * n
 Proof
@@ -112,11 +118,10 @@ Proof
   LassieLib.nltac `
     induction on 'n'.
     simplify with [sum_of_cubes_def, sum_def, POW_2].
-    rewrite once [REAL_LDISTRIB].
-    rewrite once [REAL_RDISTRIB].
-    rewrite with [REAL_ADD_ASSOC].
-    it suffices to show '&SUC n pow 3 = &SUC n * &SUC n + sum n * &SUC n + &SUC n * sum n' because (simplify with [REAL_EQ_LADD]).
-    we know 'sum n * &SUC n + & SUC n * sum n = 2 * (sum n * & SUC n)'.
+    rewrite with [REAL_LDISTRIB, REAL_RDISTRIB, REAL_ADD_ASSOC].
+    it suffices to show '&SUC n pow 3 = &SUC n * &SUC n + &SUC n * sum n + sum n * &SUC n'
+      because (simplify with [REAL_EQ_LADD]).
+    we know '& SUC n * sum n + sum n * &SUC n = 2 * (sum n * & SUC n)'.
     rewrite once [<- REAL_ADD_ASSOC].
     rewrite last assumption.
     simplify with [pow_3].
@@ -134,6 +139,7 @@ Proof
     rewrite with [MULT_RIGHT_1, RIGHT_ADD_DISTRIB, LEFT_ADD_DISTRIB, MULT_LEFT_1].`
 QED
 
+(*
     \\ fs[pow_3]
     \\ once_rewrite_tac [REAL_ADD_ASSOC]
     \\ pop_assum rw_th
@@ -155,7 +161,7 @@ QED
     \\ `n + 1 = SUC n` by (fs[])
     \\ pop_assum rw_th \\ fs[]
 QED
-
+*)
 (*
 Theorem binom3:
   ! (a b:real). (a + b) * (a - b) = a pow 2 - b pow 2
@@ -238,3 +244,5 @@ Proof
 QED
 
 *)
+
+val _ = export_theory();
