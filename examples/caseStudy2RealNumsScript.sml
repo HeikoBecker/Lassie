@@ -16,9 +16,7 @@ Theorem binom1:
 Proof
   LassieLib.nltac `
     introduce variables and assumptions.
-  rewrite once [POW_2].
-  rewrite once [REAL_LDISTRIB].
-  rewrite once [REAL_RDISTRIB].
+  rewrite with [POW_2, REAL_LDISTRIB, REAL_RDISTRIB].
   rewrite with [<- REAL_ADD_ASSOC].
   simplify with [REAL_EQ_RADD].
   rewrite with [REAL_ADD_ASSOC].
@@ -73,8 +71,26 @@ val sum_def = Define `
 Theorem gaussian_sum:
   ! n. (sum n = (((&n):real) * (1 + &n)) / 2)
 Proof
-  Induct_on `n`
-  \\ fs[sum_def, REAL_DIV_LZERO] (* note: no fs[sum_def] here! *)
+  LassieLib.nltac `
+    induction on 'n'. simplify with [sum_def, REAL_DIV_LZERO, MULT].
+    rewrite MULT_SYM for 'n'.
+    we show 'SUC n + 1 = SUC (SUC n)' using (simplify).
+    rewrite last assumption.
+    we show 'SUC (SUC n) * n = n + n + n * n' using (simplify with [MULT]).
+    rewrite last assumption.
+    we show 'n + n + n * n + 1 = SUC n + n * (n + 1)' using
+      (simplify with [ADD1, LEFT_ADD_DISTRIB, MULT_RIGHT_1]).
+    rewrite last assumption.
+    rewrite with [ADD_ASSOC].
+    we show 'SUC n + SUC n = 2 * (SUC n)' using (simplify).
+    rewrite last assumption.
+    rewrite once [MULT_COMM].
+    rewrite with [GSYM REAL_MUL, GSYM REAL_ADD, GSYM REAL_DIV_ADD].
+    rewrite with [real_div].
+    simplify with [GSYM REAL_MUL_ASSOC, REAL_MUL_RINV].
+    simplify with [REAL_MUL_ASSOC].`
+  (* Induct_on `n`
+  \\ fs[sum_def, REAL_DIV_LZERO]
   \\ pop_assum (fn thm=> once_rewrite_tac [GSYM thm] \\ assume_tac thm)
   \\ fs[MULT]
   \\ qspec_then `n` (fn thm => once_rewrite_tac [thm]) MULT_SYM
@@ -98,15 +114,19 @@ Proof
   \\ rewrite_tac [real_div]
   \\ rewrite_tac [GSYM REAL_MUL_ASSOC]
   \\ fs[REAL_MUL_RINV]
-  \\ fs[REAL_MUL_ASSOC]
+  \\ fs[REAL_MUL_ASSOC] *)
 QED
 
 Theorem pow_3:
   n pow 3 = n * n * n
 Proof
+  LassieLib.nltac `
+    we show '3 = SUC 2' using (simplify).
+    rewrite last assumption. simplify with [pow, POW_2]. trivial.`
+  (*
   `3 = SUC 2` by (fs[])
   \\ pop_assum rw_th
-  \\ fs[pow, POW_2] \\ REAL_ASM_ARITH_TAC
+  \\ fs[pow, POW_2] \\ REAL_ASM_ARITH_TAC *)
 QED
 
 (**
@@ -161,88 +181,6 @@ QED
     \\ `n + 1 = SUC n` by (fs[])
     \\ pop_assum rw_th \\ fs[]
 QED
-*)
-(*
-Theorem binom3:
-  ! (a b:real). (a + b) * (a - b) = a pow 2 - b pow 2
-Proof
-  rpt strip_tac
-  \\ rewrite_tac [POW_2]
-  \\ once_rewrite_tac [real_sub]
-  \\ once_rewrite_tac [REAL_LDISTRIB]
-  \\ once_rewrite_tac [REAL_RDISTRIB]
-  \\ `a * - b = - b * a` by (fs[REAL_MUL_COMM])
-  \\ rewrite_tac [GSYM REAL_ADD_ASSOC]
-  \\ simp [REAL_EQ_LADD]
-  \\ rewrite_tac [REAL_NEG_RMUL]
-  \\ qspec_then `b * -b` assume_tac REAL_ADD_LID
-  \\ pop_assum (fn thm => once_rewrite_tac [GSYM thm])
-  \\ rewrite_tac [REAL_ADD_ASSOC]
-  \\ simp [REAL_EQ_RADD, REAL_ADD_RID]
-  \\ rewrite_tac [GSYM REAL_NEG_LMUL]
-  \\ rewrite_tac [GSYM real_sub]
-  \\ MATCH_ACCEPT_TAC REAL_SUB_REFL
-QED
-
-(*
-  Gaussian formula
-*)
-val sum_def = Define `
-  (sum 0 = 0:real) /\
-  (sum (SUC n) = (&(SUC n) + sum n))`
-
-Theorem gaussian_sum:
-  ! n. (sum n = (((&n):real) * (1 + &n)) / 2)
-Proof
-  Induct_on `n`
-  \\ fs[sum_def, REAL_DIV_LZERO] (* note: no fs[sum_def] here! *)
-  \\ pop_assum (fn thm=> once_rewrite_tac [GSYM thm] \\ assume_tac thm)
-  \\ fs[MULT]
-  \\ qspec_then `n` (fn thm => once_rewrite_tac [thm]) MULT_SYM
-  \\ `SUC n + 1 = SUC (SUC n)`
-      by (pop_assum kall_tac \\ Induct_on `n` \\ fs[])
-  \\ qpat_x_assum `SUC n + 1 = _` (fn thm => once_rewrite_tac [thm])
-  \\ `SUC (SUC n) * n = n + n + n * n`
-      by (fs[MULT])
-  \\ qpat_x_assum `SUC (SUC n) * _ = _` (fn thm => once_rewrite_tac [thm])
-  \\ `n + n + n * n + 1 = SUC n + n * (n + 1)`
-      by (once_rewrite_tac [ADD1] \\ once_rewrite_tac [LEFT_ADD_DISTRIB]
-          \\ rewrite_tac [ADD_ASSOC, MULT_RIGHT_1] \\ fs[])
-  \\ qpat_x_assum `n + n + _ + _ = _` (fn thm => once_rewrite_tac [thm])
-  \\ rewrite_tac [ADD_ASSOC]
-  \\ `SUC n + SUC n = 2 * (SUC n)`
-      by (fs[])
-  \\ qpat_x_assum `SUC n + _ = _` (fn thm => once_rewrite_tac [thm])
-  \\ once_rewrite_tac [MULT_COMM]
-  \\ rewrite_tac [GSYM REAL_MUL, GSYM REAL_ADD]
-  \\ rewrite_tac [GSYM REAL_DIV_ADD]
-  \\ rewrite_tac [real_div]
-  \\ rewrite_tac [GSYM REAL_MUL_ASSOC]
-  \\ fs[REAL_MUL_RINV]
-  \\ fs[REAL_MUL_ASSOC]
-QED
-
-(*
-  The sum of all n uneven numbers is n^2
-*)
-val square_number_def = Define `
-  (square_number (0:num) = 1:real) /\
-  (square_number (SUC n) = ((2:real) * (&(SUC n)) + &1) + square_number n)`
-
-Theorem square_number_is_square:
-  ! n. square_number n = (&n+1) * (&n+1)
-Proof
-  Induct_on `n`
-  >- (fs[Once square_number_def])
-  \\ simp[Once square_number_def]
-  \\ once_rewrite_tac [SUM_SQUARED]
-  \\ once_rewrite_tac [MULT_RIGHT_1]
-  \\ once_rewrite_tac [ADD1]
-  \\ once_rewrite_tac [SUM_SQUARED]
-  \\ once_rewrite_tac [MULT_RIGHT_1]
-  \\ fs[]
-QED
-
-*)
+  *)
 
 val _ = export_theory();

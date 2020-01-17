@@ -1,30 +1,20 @@
-val _ = LassieLib.addCustomTactic "REAL_ASM_ARITH_TAC";
-val _ = LassieLib.addCustomTactic "DECIDE_TAC";
-val _ = LassieLib.addCustomTactic "impl_tac";
-val _ = LassieLib.addCustomTactic "cheat";
-val _ = LassieLib.addCustomTactic "EQ_TAC";
-val _ = LassieLib.addCustomThmTactic "rw_th";
-
-(* intro tactics *)
-val _ = LassieLib.def `introduce variables` [`rpt gen_tac`];
-val _ = LassieLib.def `introduce assumptions` [`rpt strip_tac`];
-val _ = LassieLib.def `introduce variables and assumptions` [`rpt strip_tac`];
-
 (* Case splitting *)
 val _ = LassieLib.def `case split` [`(rpt conj_tac ORELSE EQ_TAC) ORELSE Cases`];
 val _ = LassieLib.def `case split for 's'` [`Cases_on 's'`];
 val _ = LassieLib.def `perform a case split` [`case split`];
+val _ = LassieLib.def `specialize for 'T'` [`first_x_assum qspec_then 'T' assume_tac`];
+val _ = LassieLib.def `assume the contrary` [`CCONTR_TAC`];
 
 (* Automation a la textbook *)
-val _ = LassieLib.def `trivial` [`REAL_ASM_ARITH_TAC ORELSE metis_tac []`];
+val _ = LassieLib.def `trivial` [`metis_tac []`];
 val _ = LassieLib.def `trivial using [CONJ_COMM]`
-                      [`REAL_ASM_ARITH_TAC ORELSE metis_tac [CONJ_COMM]`];
+                      [`metis_tac [CONJ_COMM]`];
 val _ = LassieLib.def `follows trivially` [`fs []`];
 val _ = LassieLib.def `follows from [ADD_COMM]` [`fs[ADD_COMM]`];
 
 (* Simplification *)
-val _ = LassieLib.def `simplify` [`simp []`];
-val _ = LassieLib.def `simplify with [CONJ_COMM]` [`simp [CONJ_COMM]`];
+val _ = LassieLib.def `simplify` [`fs []`];
+val _ = LassieLib.def `simplify with [CONJ_COMM]` [`fs [CONJ_COMM]`];
 
 (* lc aliases *)
 val _ = LassieLib.def `try gen_tac` [`TRY gen_tac`];
@@ -49,11 +39,10 @@ val _ = LassieLib.def `rewrite assumptions and [ADD_ASSOC] ` [`asm_rewrite_tac [
 val _ = LassieLib.def `we show first 'T'` [`sg 'T'`];
 val _ = LassieLib.def `we show next 'T'` [`we show first 'T'`];
 val _ = LassieLib.def `we show 'T' using (gen_tac)` [`'T' by (gen_tac)`];
-val _ = LassieLib.def `we know 'T'` [`'T' by (REAL_ASM_ARITH_TAC ORELSE DECIDE_TAC)`];
+val _ = LassieLib.def `we know 'T'` [`'T' by (fs[])`];
 val _ = LassieLib.def `thus 'T'` [`we know 'T'`];
 val _ = LassieLib.def `'T' using (fs[])` [`'T' by ( fs[] )`];
 val _ = LassieLib.def `it suffices to show 'T' because (gen_tac)` [`'T' suffices_by (gen_tac)`];
 
 (* Custom tactic *)
 val _ = LassieLib.def `rewrite last assumption` [`pop_assum rw_th`];
-val _ = LassieLib.def `rewrite ADD_ASSOC for 'n'` [`qspec_then 'n' rw_th ADD_ASSOC`];
