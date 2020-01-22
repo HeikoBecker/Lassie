@@ -296,6 +296,9 @@ struct
   fun addCustomThmlistTactic tac : unit =
     addIDRule "$thmlist->tactic" tac "anchored 1";
 
+  fun addCustomTermTactic tac : unit =
+    addIDRule "$term->tactic" tac "anchored 1";
+
   fun printGrammar () : unit =
     let
       val prev = !logging;
@@ -330,7 +333,7 @@ struct
       NONE => ""
       | SOME c => implode [c] ^ (getAll instream))
   in
-    fun proveInteractive () =
+    fun proveVerbose () =
       let
         (* Set up prompt; wait for input *)
         val _ = print LASSIEPROMPT;
@@ -346,10 +349,10 @@ struct
         then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
         (* Handle pause keyword separately TODO: Make command? *)
         else if (theTrueText = "pause;\n")
-        then (print "Pausing proof.\nReturn with LassieLib.proveInteractive().\n")
+        then (print "Pausing proof.\nReturn with LassieLib.proveVerbose().\n")
         (* help keyword *)
         else if (theTrueText = "help;\n")
-        then (printHelp(); proveInteractive())
+        then (printHelp(); proveVerbose())
         (* Proof step or command was given, parse with SEMPRE *)
         else
           let
@@ -384,7 +387,7 @@ struct
                         ProofRecorderLib.pp_finished (hd(! ProofRecorderLib.finished)));
                   ProofRecorderLib.reset())
             else *)
-            (proveInteractive())
+            (proveVerbose())
           end
         end
   end;
