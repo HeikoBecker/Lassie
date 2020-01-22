@@ -137,6 +137,15 @@ Proof
   simplify with [valid_def, negateInterval_def].`
 QED
 
+(*
+gt `! x y. 0 < x /\ 0 < y ==> (inv x <= inv y <=> y <= x)`
+
+proveInteractive();
+
+introduce variables and assumptions
+we show 'inv x < inv y <=> y < x' using (use REAL_INV_LT_ANTIMONO THEN follows trivially)
+*)
+
 Theorem REAL_INV_LE_ANTIMONO[local]:
   ! x y.
     0 < x /\ 0 < y ==>
@@ -166,23 +175,23 @@ Proof
     LassieLib.nltac `
     rewrite once [ <- REAL_LE_NEG]. we know 'a < 0'. thus 'a <> 0'.
     we know 'r < 0'. thus 'r <> 0'.
-    'inv(-a) <= inv (-r) <=> (- r) <= -a' by (use REAL_INV_LE_ANTIMONO THEN simplify with []).
-    resolve with REAL_NEG_INV. rewrite assumptions and []. follows trivially.`)
+    'inv(-a) <= inv (-r) <=> (- r) <= -a' by (use REAL_INV_LE_ANTIMONO THEN simplify).
+    resolve with REAL_NEG_INV. rewrite assumptions. follows trivially.`)
   >- (
     LassieLib.nltac `
     rewrite once [<- REAL_LE_NEG].
     we know 'a < 0'. thus 'a <> 0'. we know 'q <> 0'.
     resolve with REAL_NEG_INV.
-    'inv (-q) <= inv (-a) <=> (-a) <= (-q)' by (use REAL_INV_LE_ANTIMONO THEN simplify with [] THEN REAL_ASM_ARITH_TAC).
-    rewrite assumptions and []. follows trivially.`)
+    'inv (-q) <= inv (-a) <=> (-a) <= (-q)' by (use REAL_INV_LE_ANTIMONO THEN simplify THEN trivial).
+    rewrite assumptions. follows trivially.`)
   >- (
     LassieLib.nltac `
       rewrite with [<- REAL_INV_1OVER].
-      'inv r <= inv a <=> a <= r' by (use REAL_INV_LE_ANTIMONO THEN REAL_ASM_ARITH_TAC).
+      'inv r <= inv a <=> a <= r' by (use REAL_INV_LE_ANTIMONO THEN trivial).
       follows trivially.`)
   \\ LassieLib.nltac `
     rewrite with [<- REAL_INV_1OVER].
-    'inv a <= inv q <=> q <= a' by (use REAL_INV_LE_ANTIMONO THEN REAL_ASM_ARITH_TAC).
+    'inv a <= inv q <=> q <= a' by (use REAL_INV_LE_ANTIMONO THEN trivial).
     follows trivially.`
 QED
 

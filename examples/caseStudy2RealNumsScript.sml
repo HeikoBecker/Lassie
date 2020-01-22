@@ -149,12 +149,12 @@ Proof
     we know '2 * &n * (1 + &n) * inv 2 = 2 * inv 2 * & n * (1 + &n)'.
     rewrite last assumption.
     simplify with [REAL_MUL_RINV].
-    we show 'n + 1 = SUC n' using (simplify with []).
-    rewrite last assumption. simplify with [].
-    we show '3 = SUC (SUC (SUC 0)) and 2 = (SUC (SUC 0))' using (simplify with []).
+    we show 'n + 1 = SUC n' using (simplify).
+    rewrite last assumption. simplify.
+    we show '3 = SUC (SUC (SUC 0)) and 2 = (SUC (SUC 0))' using (simplify).
     rewrite last assumption. rewrite last assumption.
     rewrite with [EXP].
-    we show 'SUC n = n + 1' using (simplify with []).
+    we show 'SUC n = n + 1' using (simplify).
     rewrite last assumption.
     rewrite with [MULT_RIGHT_1, RIGHT_ADD_DISTRIB, LEFT_ADD_DISTRIB, MULT_LEFT_1].`
 QED

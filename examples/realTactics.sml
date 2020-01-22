@@ -1,9 +1,11 @@
+val ignThmTac = fn (thm:term) => ALL_TAC;
+
 val _ = LassieLib.addCustomTactic "REAL_ASM_ARITH_TAC";
 val _ = LassieLib.addCustomTactic "DECIDE_TAC";
 val _ = LassieLib.addCustomTactic "impl_tac";
-val _ = LassieLib.addCustomTactic "cheat";
 val _ = LassieLib.addCustomTactic "EQ_TAC";
 val _ = LassieLib.addCustomThmTactic "rw_th";
+val _ = addCustomTermTactic "ignThmTac";
 
 (* intro tactics *)
 val _ = LassieLib.def `introduce variables` [`rpt gen_tac`];
@@ -28,7 +30,6 @@ val _ = LassieLib.def `simplify with [CONJ_COMM]` [`simp [CONJ_COMM]`];
 
 (* lc aliases *)
 val _ = LassieLib.def `try gen_tac` [`TRY gen_tac`];
-(* val _ = LassieLib.def `try solving with [CONJ_COMM]` [`TRY simp [CONJ_COMM]`]; *)
 
 (* Textbook style tactics for existentials, modus ponens, ... *)
 val _ = LassieLib.def `choose 'e'` [`qexists_tac 'e'`];
@@ -57,3 +58,6 @@ val _ = LassieLib.def `it suffices to show 'T' because (gen_tac)` [`'T' suffices
 (* Custom tactic *)
 val _ = LassieLib.def `rewrite last assumption` [`pop_assum rw_th`];
 val _ = LassieLib.def `rewrite ADD_ASSOC for 'n'` [`qspec_then 'n' rw_th ADD_ASSOC`];
+
+(* Support comments *)
+val _ = LassieLib.def `comment ABC` [`ignThmTac ABC`];
