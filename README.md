@@ -1,7 +1,8 @@
 # Lassie
 
 The Case Studies for the IJCAR 2020 paper can be found in the folder `examples`.
-Please follow the below setup guide if you intend to run them on your machine.
+Please make sure to install the dependencies and setup guide below if you intend
+to run them on your machine.
 
 ## Dependencies
 
