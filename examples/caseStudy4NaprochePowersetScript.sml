@@ -1,11 +1,15 @@
 open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
      boolTheory bossLib lcsymtacs arithmeticTheory;
 
+open realTheory arithmeticTheory realLib RealArith;
+
 open LassieLib;
 
 val _ = new_theory "caseStudy4NaprochePowerset";
 
 LassieLib.LASSIESEP := ";";
+
+QUse.use "logicTactics.sml";
 
 Definition not_in_f_def:
   not_in_f f = \x . ~ (x IN (f x))
@@ -57,3 +61,5 @@ Take a function f that is defined on M and surjects onto the powerset of M.
 Define N = { x in M | x is not an element of f[x] }.
 Then N is not equal to the value of f at any element of M.
 Contradiction. qed. *)
+
+val _ = export_theory;

@@ -1,5 +1,5 @@
 (* Case splitting *)
-val _ = LassieLib.def `case split` [`(rpt conj_tac ORELSE EQ_TAC) ORELSE Cases`];
+val _ = LassieLib.def `case split` [`all_tac THEN (rpt conj_tac ORELSE EQ_TAC) ORELSE Cases`];
 val _ = LassieLib.def `case split for 's'` [`Cases_on 's'`];
 val _ = LassieLib.def `perform a case split` [`case split`];
 val _ = LassieLib.def `specialize for 'T'` [`first_x_assum qspec_then 'T' assume_tac`];
@@ -43,6 +43,3 @@ val _ = LassieLib.def `we know 'T'` [`'T' by (fs[])`];
 val _ = LassieLib.def `thus 'T'` [`we know 'T'`];
 val _ = LassieLib.def `'T' using (fs[])` [`'T' by ( fs[] )`];
 val _ = LassieLib.def `it suffices to show 'T' because (gen_tac)` [`'T' suffices_by (gen_tac)`];
-
-(* Custom tactic *)
-val _ = LassieLib.def `rewrite last assumption` [`pop_assum rw_th`];

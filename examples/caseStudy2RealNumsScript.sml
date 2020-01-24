@@ -64,9 +64,10 @@ val sum_of_cubes_def = Define `
   (sum_of_cubes 0 = 0:real) /\
   (sum_of_cubes (SUC n) = (&(SUC n)) pow 3 + sum_of_cubes n)`;
 
-val sum_def = Define `
+Definition sum_def:
   (sum 0 = 0:real) /\
-  (sum (SUC n) = (&(SUC n) + sum n))`
+  (sum (SUC n) = (&(SUC n) + sum n))
+End
 
 Theorem gaussian_sum:
   ! n. (sum n = (((&n):real) * (1 + &n)) / 2)

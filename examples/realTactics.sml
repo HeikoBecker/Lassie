@@ -13,7 +13,7 @@ val _ = LassieLib.def `introduce assumptions` [`rpt strip_tac`];
 val _ = LassieLib.def `introduce variables and assumptions` [`rpt strip_tac`];
 
 (* Case splitting *)
-val _ = LassieLib.def `case split` [`(rpt conj_tac ORELSE EQ_TAC) ORELSE Cases`];
+val _ = LassieLib.def `case split` [`all_tac THEN ((rpt conj_tac ORELSE EQ_TAC) ORELSE Cases)`];
 val _ = LassieLib.def `case split for 's'` [`Cases_on 's'`];
 val _ = LassieLib.def `perform a case split` [`case split`];
 
@@ -58,6 +58,3 @@ val _ = LassieLib.def `it suffices to show 'T' because (gen_tac)` [`'T' suffices
 (* Custom tactic *)
 val _ = LassieLib.def `rewrite last assumption` [`pop_assum rw_th`];
 val _ = LassieLib.def `rewrite ADD_ASSOC for 'n'` [`qspec_then 'n' rw_th ADD_ASSOC`];
-
-(* Support comments *)
-val _ = LassieLib.def `comment ABC` [`ignThmTac ABC`];

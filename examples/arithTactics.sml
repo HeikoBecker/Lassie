@@ -1,5 +1,6 @@
 val _ = LassieLib.def `follows from [ADD_ASSOC]` [`metis_tac [ADD_ASSOC]`];
-val _ = LassieLib.def `trivial using [ADD_ASSOC]` [`(fs [ADD_ASSOC] THEN NO_TAC) ORELSE (rw [ADD_ASSOC] THEN NO_TAC) ORELSE metis_tac [ADD_ASSOC]`];
+val _ = LassieLib.def `trivial using [ADD_ASSOC]`
+          [`all_tac THEN (fs [ADD_ASSOC] THEN NO_TAC) ORELSE (rw [ADD_ASSOC] THEN NO_TAC) ORELSE metis_tac [ADD_ASSOC]`];
 val _ = LassieLib.def `rewrite [ADD_ASSOC]` [`rw [ADD_ASSOC]`];
 val _ = LassieLib.def `perform an induction on 't'` [`Induct_on 't'`];
 val _ = LassieLib.def `perform a case split` [`Cases`];
