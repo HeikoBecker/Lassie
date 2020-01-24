@@ -116,8 +116,7 @@ Once                        type    thm -> thm
 ############################
 # Interactive mode : Types #
 ############################
-bt                          type    command
-undo                        type    command
+b                           type    command
 
 #################################
 # HOL4 Tactics - Name features: #

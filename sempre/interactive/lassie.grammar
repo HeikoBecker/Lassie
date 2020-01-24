@@ -179,8 +179,8 @@
 
 ##Commands to the interactive prove interface
 (rule $command
-      ($TOKEN)
-      (SimpleLexiconFn (type "command") (anchored 1)))
+      (back)
+      (ConstantFn (string "(b)")) (anchored 1))
 
 ## Other
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
