@@ -44,6 +44,22 @@ Running this command loads the functions from the Lassie library and starts
 a SEMPRE instance.
 Note that we currently support only one instance of SEMPRE being run.
 
+Now you can use `nltac` as a drop-in replacement for any HOL4 tactic, sending
+tactic descriptions to SEMPRE.
+We recommend running the examples from the `examples` directory (files
+`arithTactics.sml` and `realTactics.sml`) to get some predefined descriptions.
+
+Also see the script files in that directory for examples how to use `nltac`.
+
+To use `proveVerbose` the goal has to be started using function `gt` from the
+goalTree package. If `! x. x < 3 ==> x < 5` is to be proven, run
+
+    gt `! x. x < 3 ==> x < 5`;
+    proveVerbose();
+
+Afterwards natural language descriptions can be send just like normal HOL4
+commands to the REPL.
+
 If you want to use Holmake, you have to explicitly enforce no parallelism, using
 `Holmake -j 1`.
 In case there are any issues with `Holmake` please look at the [[Known Bugs]].
