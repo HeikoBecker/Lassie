@@ -50,15 +50,15 @@ rfs                         type    thm list -> tactic
 rw                          type    thm list -> tactic
 
 # thm tactics
-imp_res_tac                 type    thm -> tactic
-assume_tac                  type    thm -> tactic
-irule                       type    thm -> tactic
-drule                       type    thm -> tactic
-match_mp_tac                type    thm -> tactic
-mp_tac                      type    thm -> tactic
+THMTACTIC$imp_res_tac                 type    thm -> tactic
+THMTACTIC$assume_tac                  type    thm -> tactic
+THMTACTIC$irule                       type    thm -> tactic
+THMTACTIC$drule                       type    thm -> tactic
+THMTACTIC$match_mp_tac                type    thm -> tactic
+THMTACTIC$mp_tac                      type    thm -> tactic
 
 # automation tactics
-res_tac                     type    tactic
+TACTIC$res_tac              type    tactic
 metis_tac                   type    thm list -> tactic
 MESON_TAC                   type    thm list -> tactic
 
@@ -70,8 +70,8 @@ qpat_assum                  type    term quotation -> (thm -> tactic) -> tactic
 first_x_assum               type    (thm -> tactic) -> tactic
 last_x_assum                type    (thm -> tactic) -> tactic
 ntac                        type    int -> tactic -> tactic
-rpt                         type    tactic -> tactic
-TRY                         type    tactic -> tactic
+TACTICAL$rpt                         type    tactic -> tactic
+TACTICAL$TRY                         type    tactic -> tactic
 
 
 # other
@@ -79,16 +79,16 @@ subgoal                     type    term quotation -> tactic
 Cases_on                    type    term quotation -> tactic
 by                          type    term quotation * tactic -> tactic
 suffices_by                 type    term quotation * tactic -> tactic
-Cases                       type    tactic
-Induct                      type    tactic
-cheat                       type    tactic
-gen_tac                     type    tactic
-strip_tac                   type    tactic
-conj_tac                    type    tactic
-all_tac                     type    tactic
-NO_TAC                      type    tactic
-EQ_TAC                      type    tactic
-CCONTR_TAC                  type    tactic
+TACTIC$Cases                       type    tactic
+TACTIC$Induct                      type    tactic
+TACTIC$cheat                       type    tactic
+TACTIC$gen_tac                     type    tactic
+TACTIC$strip_tac                   type    tactic
+TACTIC$conj_tac                    type    tactic
+TACTIC$all_tac                     type    tactic
+TACTIC$NO_TAC                      type    tactic
+TACTIC$EQ_TAC                      type    tactic
+TACTIC$CCONTR_TAC                  type    tactic
 Induct_on                   type    term quotation -> tactic
 completeInduct_on           type    term quotation -> tactic
 rename                      type    term quotation list -> tactic
@@ -122,158 +122,156 @@ b                           type    command
 # HOL4 Tactics - Name features: #
 #################################
 # rewriting
-rewrite_tac                 VP      rewrite
-rewrite_tac                 OBJ     goal
-rewrite_tac                 PREARG  with
-
-asm_rewrite_tac             VP      rewrite
-asm_rewrite_tac             OBJ     goal
-asm_rewrite_tac             CP      with assumptions
-asm_rewrite_tac             PREARG  with
-
-once_rewrite_tac            VP      rewrite
-once_rewrite_tac            OBJ     goal
-once_rewrite_tac            CP      once
-once_rewrite_tac            PREARG  with
-
-once_asm_rewrite_tac        VP      rewrite
-once_asm_rewrite_tac        OBJ     goal
-once_asm_rewrite_tac        CP      once
-once_asm_rewrite_tac        CP      with assumptions
-once_asm_rewrite_tac        PREARG  with
-
-# simplification
-simp                        VP      simplify
-simp                        OBJ     goal
-simp                        CP      with assumptions
-simp                        PREARG  with
-
-fs                          AV      full, fully
-fs                          VP      simplify
-fs                          OBJ     goal, all of goal, assumptions
-fs                          CP      with assumptions
-fs                          PREARG  with
-
-rfs                         AV      reverse, full, fully
-rfs                         VP      simplify
-rfs                         OBJ     goal, all of goal, assumptions
-rfs                         CP      with assumptions, in reverse order
-rfs                         PREARG  with
-
-# thm tactics
-imp_res_tac                 VP      enrich assumptions, resolve theorem
-imp_res_tac                 PREARG  with
-
-res_tac                     VP      enrich, resolve
-res_tac                     OBJ     assumptions
-res_tac                     CP      together, with eachother
-
-assume_tac                  VP      assume, have, add
-assume_tac                  OBJ     assumption
-assume_tac                  CP      to goal, to assumptions
-
-irule                       VP      reduce
-irule                       OBJ     goal
-irule                       CP      with matching
-irule                       PREARG  with, with implication
-
-drule                       name    resolve with
-
-match_mp_tac                name    modus ponens
-match_mp_tac                VP      reduce
-match_mp_tac                OBJ     goal
-match_mp_tac                CP      with matching, without normalization, without normalizing
-match_mp_tac                PREARG  with, with implication
-
-# automation tactics
-res_tac                     VP      enrich, resolve
-res_tac                     OBJ      assumptions
-res_tac                     CP       together, with eachother
-
-MESON_TAC                   name    meson
-MESON_TAC                   AV      auto, automatic
-MESON_TAC                   VP      proof search, search
-MESON_TAC                   OBJ      proof
-MESON_TAC                   PREARG  with
-
-metis_tac                   name    metis
-metis_tac                   AV      auto, automatic, ordered, fancy
-metis_tac                   VP      proof search, search
-metis_tac                   OBJ     proof
-metis_tac                   PREARG  with
-
-# pattern based tactics
-qpat_assum                  VP      find, use
-qpat_assum                  OBJ     assumption, matching assumption
-qpat_assum                  PREARG  with pattern
-
-qpat_x_assum                VP      spend, find, use
-qpat_x_assum                OBJ     assumption, matching assumption
-qpat_x_assum                CP      and remove it
-qpat_x_assum                PREARG  with pattern
-
-# tacticals
-first_x_assum               VP      map, spend, use
-first_x_assum               OBJ     assumption, matching assumption
-first_x_assum               CP      over assumptions
-
-last_x_assum                AV      reverse
-last_x_assum                VP      map, spend, use
-last_x_assum                OBJ     assumption, matching assumption, last matching assumption
-last_x_assum                CP      over assumptions
-
-ntac                        VP      apply
-ntac                        CP      times
-
-rpt                         AV      infinitely, indefinitely
-rpt                         VP      repeat, keep applying
-
-# other
-subgoal                     VP      produce, add, show
-subgoal                     OBJ     subgoal
-subgoal                     CP      as subgoal
-
-by                          name    by, shown by
-suffices_by                 name    suffices to show
-
-Cases                       name    case analysis, case, cases
-Cases                       VP      split
-Cases                       OBJ     goal
-
-Induct                      AV      by
-Induct                      VP      induct, induction, do induction
-
-Induct_on                   AV      by
-Induct_on                   VP      induct, induction, do induction
-Induct_on                   OBJ     on variable
-Induct_on                   PREARG  on
-
-cheat                       name    cheat
-
-strip_tac                   name    intros
-strip_tac                   VP      remove, strip
-strip_tac                   OBJ     quantifier
-
-rename                      name    alpha conversion
-rename                      VP      rename, change
-rename                      OBJ     variable names, free variables
-rename                      CP      in goal
-rename                      PREARG  into, to, with
-
-qexists_tac                 name    exists, exists_tac
-qexists_tac                 VP      reduce, instantiate, use witness, have witness
-qexists_tac                 OBJ      existential
-qexists_tac                 PREARG  with
-
-qspec_then                  name    specialize for
-qspecl_then                 name    specialize for all
-
-########################
-# HOL4 - Rules : Types #
-########################
-GSYM                        name    symmetry, gsym
-EVAL_RULE                   name    eval_rule, evaluate
-Once                        name    only once, once
+#rewrite_tac                 VP      rewrite
+#rewrite_tac                 OBJ     goal
+#rewrite_tac                 PREARG  with
+#
+#asm_rewrite_tac             VP      rewrite
+#asm_rewrite_tac             OBJ     goal
+#asm_rewrite_tac             CP      with assumptions
+#asm_rewrite_tac             PREARG  with
+#
+#once_rewrite_tac            VP      rewrite
+#once_rewrite_tac            OBJ     goal
+#once_rewrite_tac            CP      once
+#once_rewrite_tac            PREARG  with
+#
+#once_asm_rewrite_tac        VP      rewrite
+#once_asm_rewrite_tac        OBJ     goal
+#once_asm_rewrite_tac        CP      once
+#once_asm_rewrite_tac        CP      with assumptions
+#once_asm_rewrite_tac        PREARG  with
+#
+## simplification
+#simp                        VP      simplify
+#simp                        OBJ     goal
+#simp                        CP      with assumptions
+#simp                        PREARG  with
+#
+#fs                          AV      full, fully
+#fs                          VP      simplify
+#fs                          OBJ     goal, all of goal, assumptions
+#fs                          CP      with assumptions
+#fs                          PREARG  with
+#
+#rfs                         AV      reverse, full, fully
+#rfs                         VP      simplify
+#rfs                         OBJ     goal, all of goal, assumptions
+#rfs                         CP      with assumptions, in reverse order
+#rfs                         PREARG  with
+#
+## thm tactics
+#imp_res_tac                 VP      enrich assumptions, resolve theorem
+#imp_res_tac                 PREARG  with
+#
+#res_tac                     VP      enrich, resolve
+#res_tac                     OBJ     assumptions
+#res_tac                     CP      together, with eachother
+#
+#assume_tac                  VP      assume, have, add
+#assume_tac                  OBJ     assumption
+#assume_tac                  CP      to goal, to assumptions
+#
+#irule                       VP      reduce
+#irule                       OBJ     goal
+#irule                       CP      with matching
+#irule                       PREARG  with, with implication
+#
+#drule                       name    resolve with
+#
+#match_mp_tac                name    modus ponens
+#match_mp_tac                VP      reduce
+#match_mp_tac                OBJ     goal
+#match_mp_tac                CP      with matching, without normalization, without normalizing
+#match_mp_tac                PREARG  with, with implication
+#
+## automation tactics
+#res_tac                     VP      enrich, resolve
+#res_tac                     OBJ      assumptions
+#res_tac                     CP       together, with eachother
+#
+#MESON_TAC                   name    meson
+#MESON_TAC                   AV      auto, automatic
+#MESON_TAC                   VP      proof search, search
+#MESON_TAC                   OBJ      proof
+#MESON_TAC                   PREARG  with
+#
+#metis_tac                   name    metis
+#metis_tac                   AV      auto, automatic, ordered, fancy
+#metis_tac                   VP      proof search, search
+#metis_tac                   OBJ     proof
+#metis_tac                   PREARG  with
+#
+## pattern based tactics
+#qpat_assum                  VP      find, use
+#qpat_assum                  OBJ     assumption, matching assumption
+#qpat_assum                  PREARG  with pattern
+#
+#qpat_x_assum                VP      spend, find, use
+#qpat_x_assum                OBJ     assumption, matching assumption
+#qpat_x_assum                CP      and remove it
+#qpat_x_assum                PREARG  with pattern
+#
+## tacticals
+#first_x_assum               VP      map, spend, use
+#first_x_assum               OBJ     assumption, matching assumption
+#first_x_assum               CP      over assumptions
+#
+#last_x_assum                AV      reverse
+#last_x_assum                VP      map, spend, use
+#last_x_assum                OBJ     assumption, matching assumption, last matching assumption
+#last_x_assum                CP      over assumptions
+#
+#ntac                        VP      apply
+#ntac                        CP      times
+#
+#rpt                         AV      infinitely, indefinitely
+#rpt                         VP      repeat, keep applying
+#
+## other
+#subgoal                     VP      produce, add, show
+#subgoal                     OBJ     subgoal
+#subgoal                     CP      as subgoal
+#
+#by                          name    by, shown by
+#suffices_by                 name    suffices to show
+#
+#Cases                       name    case analysis, case, cases
+#Cases                       VP      split
+#Cases                       OBJ     goal
+#
+#Induct                      AV      by
+#Induct                      VP      induct, induction, do induction
+#
+#Induct_on                   AV      by
+#Induct_on                   VP      induct, induction, do induction
+#Induct_on                   OBJ     on variable
+#Induct_on                   PREARG  on
+#
+#strip_tac                   name    intros
+#strip_tac                   VP      remove, strip
+#strip_tac                   OBJ     quantifier
+#
+#rename                      name    alpha conversion
+#rename                      VP      rename, change
+#rename                      OBJ     variable names, free variables
+#rename                      CP      in goal
+#rename                      PREARG  into, to, with
+#
+#qexists_tac                 name    exists, exists_tac
+#qexists_tac                 VP      reduce, instantiate, use witness, have witness
+#qexists_tac                 OBJ      existential
+#qexists_tac                 PREARG  with
+#
+#qspec_then                  name    specialize for
+#qspecl_then                 name    specialize for all
+#
+#########################
+## HOL4 - Rules : Types #
+#########################
+#GSYM                        name    symmetry, gsym
+#EVAL_RULE                   name    eval_rule, evaluate
+#Once                        name    only once, once
 
 #######################################
 # HOL4 - Real number theorems : Types #
@@ -727,25 +725,25 @@ ABS_0                       type    thm
 # HOL4 - Real number theorems : Names #
 #######################################
 #REAL_DIV                   set    real, division
-REAL_SUB                    set    real, subtraction, additive inverse
-POW_2                       set    power, square, two
-REAL                        set    real, definition, successor
-REAL_ADD                    set    real, addition
-REAL_ADD_ASSOC              set    real, addition, associativity
-REAL_ADD_LDISTRIB           set    real, addition, left, distributivity
-REAL_ADD_RDISTRIB           set    real, addition, right, distributivity
-REAL_ADD_SYM                set    real, addition, symmetry
-REAL_DIV_LZERO              set    real, division, left, zero
-REAL_DOUBLE                 set    real, double
-REAL_HALF_DOUBLE            set    real, half, double
-REAL_LDISTRIB               set    real, left, distributivity
-REAL_MUL                    set    real, multiplication
-REAL_MUL_LID                set    real, multiplication, left, identity
-REAL_MUL_RID                set    real, multiplication, right, identity
-REAL_MUL_RINV               set    real, multiplication, right, inverse
-REAL_MUL_SYM                set    real, multiplication, symmetry
-REAL_NEG_ADD                set    real, negation, addition
-REAL_NEG_LMUL               set    real, negation, left, multiplication
-REAL_RDISTRIB              set    real, right, distributivity
-REAL_SUB_LDISTRIB           set    real, subtraction, left, distributivity
-REAL_SUB_RDISTRIB           set    real, subtraction, right, distributivity
+#REAL_SUB                    set    real, subtraction, additive inverse
+#POW_2                       set    power, square, two
+#REAL                        set    real, definition, successor
+#REAL_ADD                    set    real, addition
+#REAL_ADD_ASSOC              set    real, addition, associativity
+#REAL_ADD_LDISTRIB           set    real, addition, left, distributivity
+#REAL_ADD_RDISTRIB           set    real, addition, right, distributivity
+#REAL_ADD_SYM                set    real, addition, symmetry
+#REAL_DIV_LZERO              set    real, division, left, zero
+#REAL_DOUBLE                 set    real, double
+#REAL_HALF_DOUBLE            set    real, half, double
+#REAL_LDISTRIB               set    real, left, distributivity
+#REAL_MUL                    set    real, multiplication
+#REAL_MUL_LID                set    real, multiplication, left, identity
+#REAL_MUL_RID                set    real, multiplication, right, identity
+#REAL_MUL_RINV               set    real, multiplication, right, inverse
+#REAL_MUL_SYM                set    real, multiplication, symmetry
+#REAL_NEG_ADD                set    real, negation, addition
+#REAL_NEG_LMUL               set    real, negation, left, multiplication
+#REAL_RDISTRIB              set    real, right, distributivity
+#REAL_SUB_LDISTRIB           set    real, subtraction, left, distributivity
+#REAL_SUB_RDISTRIB           set    real, subtraction, right, distributivity

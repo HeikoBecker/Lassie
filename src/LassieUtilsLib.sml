@@ -118,6 +118,35 @@ fun string_split s cr =
     splitAll cr (explode s) []
   end;
 
+exception NotFoundException;
+
+fun get_suffix_after_match str1 str2 =
+  let
+    fun get_suffix_after_match_list flag ls1 ls2 =
+      case (ls1,ls2) of
+      ([], _) =>  if flag then ls2 else raise NotFoundException
+      | (_, []) => raise NotFoundException
+      | (c1::ls1, c2::ls2) =>
+        if (c1 = c2) then
+          get_suffix_after_match_list true ls1 ls2
+        else if flag then
+          raise NotFoundException
+        else get_suffix_after_match_list false (c1::ls1) ls2
+  in
+    implode (get_suffix_after_match_list false (explode str1) (explode str2))
+  end;
+
+fun get_prefix_before_match str1 str2 =
+  let
+    fun get_prefix_before_match_akk str1 str2 akk =
+      if (String.isPrefix str1 str2) then implode (List.rev akk)
+      else
+        if (str2 = "") then raise NotFoundException
+        else get_prefix_before_match_akk str1 (implode (tl (explode str2))) (hd(explode str2)::akk);
+  in
+    get_prefix_before_match_akk str1 str2 []
+  end;
+
 fun list_replace n x l =
   if (n = 0)
   then

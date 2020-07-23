@@ -34,18 +34,18 @@ public class LassieUtils{
             string = string.replace("\"" + field + "\":", field + "= ");
         }
 
-        string = string
-            .replace("\"type\":", "cmd= ") // avoid reserved keywords of SML
-            .replace("\"NaN\"", "~1.0") // force types of fields
-            .replaceAll("\"anchored\":true,","")
-            .replaceAll("\"anchored\":false,","")
-            .replaceAll("\"candidates\":\\[(.*?)\\]","\\[ $1 \\]")
-            .replaceAll("\"stats\":\\{(.*?)\\},","")
-            .replaceAll(",\"lines\":\\[(.*?)\\]","")
-            .replaceAll("\"value\":\"Tactic (.*?)\"", "value = \"Tactic $1\",result = Tactic ($1)")
-            .replaceAll("\"value\":\"Command (.*?)\"", "value = \"Command $1\",result = Command ($1)")
-            .replaceAll("\"value\":\"(.*?)\"", "value = \"$1\",result = Tactic ($1)")
-            .replaceAll("\\{\\[(.*?)\\]\\}","\\[$1\\]");
+        //string = string
+        //    .replace("\"type\":", "cmd= ") // avoid reserved keywords of SML
+        //    .replace("\"NaN\"", "~1.0") // force types of fields
+        //    .replaceAll("\"anchored\":true,","")
+        //    .replaceAll("\"anchored\":false,","")
+        //    .replaceAll("\"candidates\":\\[(.*?)\\]","\\[ $1 \\]")
+        //    .replaceAll("\"stats\":\\{(.*?)\\},","")
+        //    .replaceAll(",\"lines\":\\[(.*?)\\]","")
+        //    .replaceAll("\"value\":\"Tactic (.*?)\"", "value = \"Tactic $1\",result = Tactic ($1)")
+        //    .replaceAll("\"value\":\"Command (.*?)\"", "value = \"Command $1\",result = Command ($1)")
+        //    .replaceAll("\"value\":\"(.*?)\"", "value = \"$1\",result = Tactic ($1)")
+        //    .replaceAll("\\{\\[(.*?)\\]\\}","\\[$1\\]");
 
             //.replaceAll("\"value\":\"(.*?)\"","value= \"$1\",tactic= $1"); // cast the value as a tactic
 

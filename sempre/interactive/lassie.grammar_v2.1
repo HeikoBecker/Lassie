@@ -59,9 +59,7 @@
 (def @set2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.set2string)
 (def @choice edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.choice)
 (def @tactic edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.tactic)
-(def @mark edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.mark)
 (def @command edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.command)
-(def @thm edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.thm)
 
 (def @ChoiceFn edu.stanford.nlp.sempre.interactive.lassie.ChoiceFn)
 
@@ -73,39 +71,54 @@
 ###################################
 
 (rule $ROOT ($tactic) (IdentityFn) (anchored 1))
-#(rule $ROOT ($command) (lambda t (call @mark (var t))) (anchored 1))
 
-###############################################################################
-# literal HOL4 tactics, tacticals, ...                                        #
-# looked up in the Lassie database, and wrapped with the corresponding marker #
-###############################################################################
-# tactics
+###############################################################
+##      literal SML objects, looked up from the database      #
+###############################################################
+## tactics
 (rule $tactic
-      ($TOKEN)
-      (SimpleLexiconFn (type "tactic"))
-      (anchored 1))
-
-# tactic modifiers
-(rule $tactic->tactic
   ($TOKEN)
-  (SimpleLexiconFn (type "tactic->tactic")) (anchored 1))
+  (call @tactic (SimpleLexiconFn (type "tactic"))) (anchored 1))
 
-# thm tactics
-(rule $thm->tactic
-  ($TOKEN)
-  (SimpleLexiconFn (type "thm->tactic") (anchored 1)))
-
-# Tactics can be produced by combining different constructs
-# missing:
-#    (($tactic->tactic $tactic) ($thmlist->tactic $thmlist)
+# The root is always a tactic or a command
+#(rule $ROOT ($tactic) (IdentityFn) (anchored 1))
+#(rule $ROOT ($command) (lambda c (call @command (var c))) (anchored 1))
+#
+## Tactics can be produced by combining different constructs
+#(for @category
+#    (($thm->tactic $thm) ($tactic->tactic $tactic) ($thmlist->tactic $thmlist)
 #     ($termquotation->tactic $termquotation)
 #     ($[thm->tactic]->tactic $thm->tactic))
-(for @category
-     (($tactic->tactic $tactic) ($thm->tactic $thm))
-     (rule $tactic @category @appT1T2 (anchored 1)))
-
-(rule $thm ($TOKEN) (lambda t (call @thm (var t))) (anchored 1))
-
+#  (rule $tactic @category @appT1T2 (anchored 1)))
+#(rule $tactic ($termquotation $termquotation*tactic->tactic $tactic) @infixT1T2T3 (anchored 1))
+## Support for inline THEN
+#(rule $tactic ($tactic $tactic->tactic->tactic $tactic) @infixT1T2T3 (anchored 1))
+#
+## Partial applications for things like qpat_x_assum or first_x_assum
+#(rule $[thm->tactic]->tactic
+#  ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->thm->tactic
+#  ($termquotation->[thm->tactic]->thm->tactic $termquotation) @appT1T2 (anchored 1))
+#(rule $[thm->tactic]->thm->tactic
+#  ($termquotationlist->[thm->tactic]->thm->tactic $termquotationlist) @appT1T2 (anchored 1))
+#(rule $thm->tactic ($[thm->tactic]->thm->tactic $thm->tactic) @appT1T2 (anchored 1))
+#(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
+#
+## We can put parentheses around a tactic or a command
+#(for @cat ($ROOT $command $tactic)
+#     (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
+#
+###############################################################
+##      literal SML objects, looked up from the database      #
+###############################################################
+## tactic modifiers
+#(rule $tactic->tactic
+#  ($TOKEN)
+#  (SimpleLexiconFn (type "tactic->tactic")) (anchored 1))
+## thm tactics
+#(rule $thm->tactic
+#  ($TOKEN)
+#  (SimpleLexiconFn (type "thm->tactic") (anchored 1)))
 ## thm list tactics:
 #(rule $thmlist->tactic
 #  ($TOKEN)
@@ -144,35 +157,6 @@
 #(rule $thm->thm
 #  ($TOKEN)
 #  (SimpleLexiconFn (type "thm->thm")) (anchored 1))
-#
-#(rule $tactic
-#  ($termquotation $termquotation*tactic->tactic $tactic)
-#  @infixT1T2T3 (anchored 1))
-
-# The root is always a tactic or a command
-#(rule $ROOT ($tactic) (IdentityFn) (anchored 1))
-#(rule $ROOT ($command) (lambda c (call @command (var c))) (anchored 1))
-#
-## Support for inline THEN
-#(rule $tactic ($tactic $tactic->tactic->tactic $tactic) @infixT1T2T3 (anchored 1))
-#
-## Partial applications for things like qpat_x_assum or first_x_assum
-#(rule $[thm->tactic]->tactic
-#  ($termquotation->[thm->tactic]->tactic $termquotation) @appT1T2 (anchored 1))
-#(rule $[thm->tactic]->thm->tactic
-#  ($termquotation->[thm->tactic]->thm->tactic $termquotation) @appT1T2 (anchored 1))
-#(rule $[thm->tactic]->thm->tactic
-#  ($termquotationlist->[thm->tactic]->thm->tactic $termquotationlist) @appT1T2 (anchored 1))
-#(rule $thm->tactic ($[thm->tactic]->thm->tactic $thm->tactic) @appT1T2 (anchored 1))
-#(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
-#
-## We can put parentheses around a tactic or a command
-#(for @cat ($ROOT $command $tactic)
-#     (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
-#
-###############################################################
-##      literal SML objects, looked up from the database      #
-###############################################################
 #
 ##### HOL4 Terms
 #(rule $termquotation (` $term ') (lambda e (call @quote (var e))) (anchored 1))

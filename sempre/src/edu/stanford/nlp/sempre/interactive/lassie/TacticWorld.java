@@ -31,13 +31,21 @@ import edu.stanford.nlp.sempre.interactive.lassie.Component;
 // the world of tactics
 public class TacticWorld {
 
+    public static String thm (String t) {
+        return "THM$"+t;
+    }
+
+    public static String mark (String t) {
+        return "LASSIESTART " + t + " LASSIEEND";
+    }
+
     // Wrap a tactic text as a "Tactic":
     public static String tactic (String t) {
-        return "Tactic " + t;
+        return "TACTIC " + t;
     }
 
     public static String command (String c) {
-        return "Command " + c;
+        return "COMMAND " + c;
     }
 
     // String constructions, basically tactic language
@@ -46,7 +54,7 @@ public class TacticWorld {
     }
     public static String app(String fn, String arg) {
         if (fn.equals("") || arg.equals("")) return "";
-        return "(" + fn + " " + arg + ")";
+        return fn + " " + arg;
     }
     public static String then(String tac1, String tac2) {
         if (tac1.equals("") || tac2.equals("")) return "";
