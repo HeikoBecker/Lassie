@@ -77,7 +77,7 @@
 
 ###############################################################################
 # literal HOL4 tactics, tacticals, ...                                        #
-# looked up in the Lassie database, and wrapped with the corresponding marker #
+# looked up in the Lassie database                                            #
 ###############################################################################
 # tactics
 (rule $tactic
@@ -95,29 +95,37 @@
   ($TOKEN)
   (SimpleLexiconFn (type "thm->tactic") (anchored 1)))
 
+# thm list tactics:
+(rule $thmlist->tactic
+  ($TOKEN)
+  (SimpleLexiconFn (type "thmlist->tactic") (anchored 1)))
+
+# term tactics
+(rule $termquotation->tactic
+  ($TOKEN)
+  (SimpleLexiconFn (type "termquotation->tactic") (anchored 1)))
+
 # Tactics can be produced by combining different constructs
 # missing:
-#    (($tactic->tactic $tactic) ($thmlist->tactic $thmlist)
-#     ($termquotation->tactic $termquotation)
-#     ($[thm->tactic]->tactic $thm->tactic))
+#    (($[thm->tactic]->tactic $thm->tactic))
 (for @category
-     (($tactic->tactic $tactic) ($thm->tactic $thm))
+     (($tactic->tactic $tactic)
+      ($thm->tactic $thm)
+      ($thmlist->tactic $thmlist)
+      ($termquotation->tactic $termquotation))
      (rule $tactic @category @appT1T2 (anchored 1)))
 
 (rule $thm ($TOKEN) (lambda t (call @thm (var t))) (anchored 1))
+(rule $Thms ($thm) (IdentityFn) (anchored 1))
+(rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
+(rule $thmlist ([ $Thms ]) (lambda thms (call @list (var thms))) (anchored 1))
+(rule $thmlist ([]) (ConstantFn (call @list (string " "))) (anchored 1))
+(rule $thmlist ([ ]) (ConstantFn (call @list (string " "))) (anchored 1))
 
-## thm list tactics:
-#(rule $thmlist->tactic
-#  ($TOKEN)
-#  (SimpleLexiconFn (type "thmlist->tactic") (anchored 1)))
 ## tactic combinators
 #(rule $tactic->tactic->tactic
 #  ($TOKEN)
 #  (SimpleLexiconFn (type "tactic->tactic->tactic") (anchored 1)))
-## term tactics
-#(rule $termquotation->tactic
-#  ($TOKEN)
-#  (SimpleLexiconFn (type "termquotation->tactic") (anchored 1)))
 ## first_x_assum, last_x_assum, ...
 #(rule $[thm->tactic]->tactic
 #  ($TOKEN)

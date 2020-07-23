@@ -70,7 +70,7 @@ public class TacticWorld {
     }
     public static String list(String seq) {
         if (seq.equals("")) return "";
-        return "[" + seq + "]";
+        return "[ " + seq + " ]";
     }
     public static String quote(String exp) {
         if (exp.equals("")) return "";

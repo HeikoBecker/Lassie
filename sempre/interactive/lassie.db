@@ -38,29 +38,29 @@
 #########################
 
 # rewriting
-asm_rewrite_tac             type    thm list -> tactic
-rewrite_tac                 type    thm list -> tactic
-once_rewrite_tac            type    thm list -> tactic
-once_asm_rewrite_tac        type    thm list -> tactic
+THMLISTTACTIC$asm_rewrite_tac             type    thm list -> tactic
+THMLISTTACTIC$rewrite_tac                 type    thm list -> tactic
+THMLISTTACTIC$once_rewrite_tac            type    thm list -> tactic
+THMLISTTACTIC$once_asm_rewrite_tac        type    thm list -> tactic
 
 # simplification
-simp                        type    thm list -> tactic
-fs                          type    thm list -> tactic
-rfs                         type    thm list -> tactic
-rw                          type    thm list -> tactic
+THMLISTTACTIC$simp                        type    thm list -> tactic
+THMLISTTACTIC$fs                          type    thm list -> tactic
+THMLISTTACTIC$rfs                         type    thm list -> tactic
+THMLISTTACTIC$rw                          type    thm list -> tactic
 
 # thm tactics
-THMTACTIC$imp_res_tac                 type    thm -> tactic
-THMTACTIC$assume_tac                  type    thm -> tactic
-THMTACTIC$irule                       type    thm -> tactic
-THMTACTIC$drule                       type    thm -> tactic
-THMTACTIC$match_mp_tac                type    thm -> tactic
-THMTACTIC$mp_tac                      type    thm -> tactic
+THMTACTIC$imp_res_tac                     type    thm -> tactic
+THMTACTIC$assume_tac                      type    thm -> tactic
+THMTACTIC$irule                           type    thm -> tactic
+THMTACTIC$drule                           type    thm -> tactic
+THMTACTIC$match_mp_tac                    type    thm -> tactic
+THMTACTIC$mp_tac                          type    thm -> tactic
 
 # automation tactics
-TACTIC$res_tac              type    tactic
-metis_tac                   type    thm list -> tactic
-MESON_TAC                   type    thm list -> tactic
+TACTIC$res_tac                            type    tactic
+THMLISTTACTIC$metis_tac                   type    thm list -> tactic
+THMLISTTACTIC$MESON_TAC                   type    thm list -> tactic
 
 # pattern based tactics
 qpat_x_assum                type    term quotation -> (thm -> tactic) -> tactic

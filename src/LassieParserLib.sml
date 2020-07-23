@@ -39,7 +39,7 @@ struct
       case descr of
       "TACTIC" => SOME (Tactic txt, strs)
       | "THMTACTIC" => SOME (ThmTactic txt, strs)
-      | "THMLISTACTIC" => SOME (ThmListTactic txt, strs)
+      | "THMLISTTACTIC" => SOME (ThmListTactic txt, strs)
       | "TERMTACTIC" => SOME (TermTactic txt, strs)
       | "TERMLISTTACTIC" => SOME (TermListTactic txt, strs)
       | "QUOTTACTIC" => SOME (QuotTactic txt, strs)
@@ -56,6 +56,24 @@ struct
    case List.find (fn ((theory,theorem),stmt) => theorem = name) (DB.listDB()) of
    NONE => NONE
    | SOME (_, (th, _)) =>  SOME th;
+
+(** TODO: Better debug message if list not valid list of theorems **)
+  fun readThms strs =
+    case lex strs of
+    SOME (Thm th, strs) =>
+      (case readThms strs of
+      NONE => NONE
+      | SOME (ths, strs) =>
+        case findThm th of
+        NONE => NONE
+        | SOME th => SOME (th::ths, strs))
+    | SOME (ListEnd, strs) => SOME ([], strs)
+    |  _ => NONE;
+
+  fun parseThms (strs:string list) : (thm list * string list) option =
+    case lex strs of
+    SOME (ListStart,strs) => readThms strs
+    |  _ => NONE;
 
   fun parse (sempreResp:string) :tactic =
     case lex (LassieUtilsLib.string_split sempreResp #" ") of
@@ -79,7 +97,17 @@ struct
             | SOME th => thTac th)
           | SOME _ => raise NoParseException ("No theorem argument defined"))
         | SOME _ => raise NoParseException ("Theorem tactic " ^ str ^ " not defined"))
+      | ThmListTactic str =>
+        (case TacticMap.lookupTac str TacticMap.stdTree of
+        NONE => raise NoParseException ("Thmlist tactic " ^ str ^ " not found\n")
+        | SOME (ThmListTac thsTac) =>
+          (case parseThms strs of
+          NONE => raise NoParseException ("No thm list provided")
+          | SOME (thms, strs) => thsTac thms)
+        | SOME _ => raise NoParseException ("Could not find a matching closure"))
+            (* (case findThm thStr of
+            NONE => raise NoParseException ("Could not find theorem " ^thStr)
+            | SOME th => thTac th) *)
       | _ =>  raise NoParseException "";
-
 
 end;

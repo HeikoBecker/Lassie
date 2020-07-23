@@ -9,7 +9,7 @@
 structure TacticMap =
 struct
 
-  open Lib Tactic Tactical bossLib;
+  open Lib Tactic Tactical Rewrite bossLib mesonLib;
 
   datatype tacticClos =
     Tac of tactic
@@ -28,17 +28,30 @@ struct
   fun lookupTac (s:string) (tr:(string,tacticClos) AssocMap.tree) =
     AssocMap.lookup s tr String.compare;
 
+  fun insertThmListTac (s:string) (t:thm list -> tactic) =
+    insertTac s (ThmListTac t);
+
   (* Define a standard Lassie Tree that has rudimentary support for the most
      common tactics *)
   val stdTree =
     insertTac "cheat" (Tac cheat) (empty ())
       |> insertTac "strip_tac" (Tac strip_tac)
-      |> insertTac "fs" (ThmListTac fs)
+      |> insertTac "gen_tac" (Tac gen_tac)
+      |> insertTac "Cases" (Tac Cases)
+      |> insertTac "Induct" (Tac Induct)
+      |> insertThmListTac "asm_rewrite_tac" asm_rewrite_tac
+      |> insertThmListTac "rewrite_tac" rewrite_tac
+      |> insertThmListTac "once_rewrite_tac" once_rewrite_tac
+      |> insertThmListTac "once_asm_rewrite_tac" once_asm_rewrite_tac
+      |> insertThmListTac "simp" simp
+      |> insertThmListTac "fs" fs
+      |> insertThmListTac "rfs" rfs
+      |> insertThmListTac "rw" rw
+      |> insertThmListTac "metis_tac" metis_tac
+      |> insertThmListTac "MESON_TAC" MESON_TAC
       |> insertTac "rpt" (TacComb rpt)
       |> insertTac "imp_res_tac" (ThmTac imp_res_tac)
-      |> insertTac "Cases" (Tac Cases)
       |> insertTac "Cases_on" (QuotTac Cases_on)
-      |> insertTac "Induct" (Tac Induct)
       |> insertTac "Induct_on" (QuotTac Induct_on);
 
 end;

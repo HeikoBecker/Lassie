@@ -1,8 +1,6 @@
 open BasicProvers Defn HolKernel Parse SatisfySimps Tactic monadsyntax boolTheory bossLib;
 open LassieLib;
 
-open machine_ieeeTheory;
-
 val _ = new_theory "LassieTest";
 
 val this_can_never_be_a_thm = Q.store_thm ("test", `T`, fs[]);
@@ -13,13 +11,15 @@ val t = LassieLib.nltac ‘TACTIC$Cases.’;
 
 val t = LassieLib.def "test123" ["TACTIC$cheat"];
 
-val t = LassieLib.nltac ‘test123.’
+val t = LassieLib.nltac ‘test123.’;
 
-val t = LassieLib.nltac ‘THMTACTIC$imp_res_tac test.’
+val t = LassieLib.nltac ‘THMTACTIC$imp_res_tac test.’;
 
 val t = LassieLib.def "resolve_with test" ["THMTACTIC$imp_res_tac test"];
 
-val t = LassieLib.nltac ‘resolve_with CONJ_COMM.’
+val t = LassieLib.nltac ‘resolve_with CONJ_COMM.’;
+
+val t = LassieLib.nltac ‘THMLISTTACTIC$fs [ test ].’;
 
 (*
 val _ = LassieLib.nltac `Cases.`;
