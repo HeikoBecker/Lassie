@@ -74,7 +74,7 @@ public class TacticWorld {
     }
     public static String quote(String exp) {
         if (exp.equals("")) return "";
-        return "`" + exp + "`";
+        return "TERMSTART " + exp + " TERMEND";
     }
     public static String parens(String exp) {
         if (exp.equals("")) return "";
@@ -82,7 +82,7 @@ public class TacticWorld {
     }
     public static String op(String operator, String arg1, String arg2) {
         if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
-        return "(" + arg1 + " " + operator + " " + arg2 + ")";
+        return arg1 + " " + operator + " " + arg2;
     }
 
     public static Set<String> fromFeature(String f) {

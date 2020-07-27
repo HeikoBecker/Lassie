@@ -12,46 +12,72 @@ struct
   open Lib Tactic Tactical Rewrite bossLib mesonLib;
 
   datatype tacticClos =
-    Tac of tactic
-    | TacComb of (tactic -> tactic)
-    | TermTac of (term -> tactic)
-    | QuotTac of (term quotation -> tactic)
-    | ThmTac of (thm -> tactic)
-    | TermListTac of (term list -> tactic)
-    | ThmListTac of (thm list -> tactic);
+    Tactic of tactic
+    | Tactical of (tactic -> tactic)
+    | TacticComb of (tactic * tactic -> tactic)
+    | ThmTactic of (thm -> tactic)
+    | QuotTactic of (term quotation -> tactic)
+    | ThmListTactic of (thm list -> tactic)
+    (* first_x_assum ,... *)
+    | AsmTestTactic of (thm_tactic -> Tactical.tactic) (* TODO: Fix overloading? *)
+    (* qpat_assum, ... *)
+    | AsmMatchTactic of (term quotation -> (thm -> tactic) -> tactic)
+    (* qspec_then, ... *)
+    | QuotSpecThmTactic of (term quotation -> (thm -> tactic) -> thm -> tactic)
+    (* qspecl_then, ... *)
+    | QuotListSpecThmTactic of (term quotation list -> (thm -> tactic) -> thm -> tactic);
 
   fun empty (_:unit) = AssocMap.Leaf;
-
-  fun insertTac (s:string) (t:tacticClos) (tr:(string,tacticClos) AssocMap.tree) =
-    AssocMap.append s t tr String.compare;
 
   fun lookupTac (s:string) (tr:(string,tacticClos) AssocMap.tree) =
     AssocMap.lookup s tr String.compare;
 
-  fun insertThmListTac (s:string) (t:thm list -> tactic) =
-    insertTac s (ThmListTac t);
+  fun insertTac (s:string) (t:tacticClos) (tr:(string,tacticClos) AssocMap.tree) =
+    AssocMap.append s t tr String.compare;
+
+  fun insTac (s,t) = insertTac s (Tactic t);
+  fun insTact (s, tt) = insertTac s (Tactical tt);
+  fun insTacComb (s, tc) = insertTac s (TacticComb tc);
+  fun insThmTac (s,t) = insertTac s (ThmTactic t);
+  fun insQuotTac (s,t) = insertTac s (QuotTactic t);
+  fun insThmsTac (s,t) = insertTac s (ThmListTactic t);
+  fun insAsmTt (s,t) = insertTac s (AsmTestTactic t);
+  fun insAsmMt (s,t) = insertTac s (AsmMatchTactic t);
+  fun insQuotSpecTac (s,t) = insertTac s (QuotSpecThmTactic t)
+  fun insQuotListSpecTac (s,t) = insertTac s (QuotListSpecThmTactic t);
+
+  fun appendTacs tf s = fn t => foldl (fn (e,t) => tf e t) t s;
 
   (* Define a standard Lassie Tree that has rudimentary support for the most
      common tactics *)
   val stdTree =
-    insertTac "cheat" (Tac cheat) (empty ())
-      |> insertTac "strip_tac" (Tac strip_tac)
-      |> insertTac "gen_tac" (Tac gen_tac)
-      |> insertTac "Cases" (Tac Cases)
-      |> insertTac "Induct" (Tac Induct)
-      |> insertThmListTac "asm_rewrite_tac" asm_rewrite_tac
-      |> insertThmListTac "rewrite_tac" rewrite_tac
-      |> insertThmListTac "once_rewrite_tac" once_rewrite_tac
-      |> insertThmListTac "once_asm_rewrite_tac" once_asm_rewrite_tac
-      |> insertThmListTac "simp" simp
-      |> insertThmListTac "fs" fs
-      |> insertThmListTac "rfs" rfs
-      |> insertThmListTac "rw" rw
-      |> insertThmListTac "metis_tac" metis_tac
-      |> insertThmListTac "MESON_TAC" MESON_TAC
-      |> insertTac "rpt" (TacComb rpt)
-      |> insertTac "imp_res_tac" (ThmTac imp_res_tac)
-      |> insertTac "Cases_on" (QuotTac Cases_on)
-      |> insertTac "Induct_on" (QuotTac Induct_on);
+    appendTacs insTac
+      [("cheat", cheat), ("strip_tac", strip_tac), ("gen_tac", gen_tac),
+       ("Cases", Cases), ("Induct", Induct), ("res_tac", res_tac),
+       ("conj_tac", conj_tac), ("all_tac", all_tac), ("NO_TAC", NO_TAC),
+       ("EQ_TAC", EQ_TAC), ("CCONTR_TAC", CCONTR_TAC)]
+      (empty())
+    |> appendTacs insTact [("rpt", rpt), ("TRY", TRY)]
+    |> appendTacs insTacComb [("THEN",op THEN), ("ORELSE", op ORELSE)]
+    |> appendTacs insThmTac
+        [("imp_res_tac", imp_res_tac), ("assume_tac", assume_tac),
+         ("irule", irule), ("drule", drule), ("match_mp_tac", match_mp_tac),
+         ("mp_tac", mp_tac)]
+    |> appendTacs insQuotTac
+        [("Cases_on", Cases_on), ("Induct_on", Induct_on),
+         ("completeInduct_on", completeInduct_on), ("qexists_tac", qexists_tac)]
+    |> appendTacs insThmsTac
+        [("asm_rewrite_tac", asm_rewrite_tac), ("rewrite_tac", rewrite_tac),
+         ("once_rewrite_tac", once_rewrite_tac),
+         ("once_asm_rewrite_tac", once_asm_rewrite_tac), ("simp", simp),
+         ("fs", fs), ("rfs", rfs), ("rw", rw), ("metis_tac", metis_tac),
+         ("MESON_TAC", MESON_TAC)]
+    |> appendTacs insAsmTt
+        [("first_x_assum", first_x_assum), ("first_assum", first_assum),
+         ("last_x_assum", last_x_assum), ("last_assum", last_assum)]
+    |> appendTacs insAsmMt
+      [("qpat_x_assum", qpat_x_assum), ("qpat_assum", qpat_assum)]
+    |> appendTacs insQuotSpecTac [("qspec_then", qspec_then)]
+    |> appendTacs insQuotListSpecTac [("qspecl_then", qspecl_then)];
 
 end;

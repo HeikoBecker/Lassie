@@ -5,21 +5,29 @@ val _ = new_theory "LassieTest";
 
 val this_can_never_be_a_thm = Q.store_thm ("test", `T`, fs[]);
 
-val t = LassieLib.nltac ‘TACTIC$cheat. TACTIC$cheat. TACTIC$cheat. TACTIC$cheat.’
+val t = LassieLib.nltac ‘TAC$cheat. TAC$cheat. TAC$cheat. TAC$cheat.’
 
-val t = LassieLib.nltac ‘TACTIC$Cases.’;
+val t = LassieLib.nltac ‘TAC$Cases.’;
 
-val t = LassieLib.def "test123" ["TACTIC$cheat"];
+val t = LassieLib.nltac ‘QUOTTAC$Cases_on ' x '.’
+
+val t = LassieLib.nltac ‘THMLISTTAC$fs [ arithmeticTheory.ADD_ASSOC ].’
+
+val t = LassieLib.def "test123" ["TAC$cheat"];
 
 val t = LassieLib.nltac ‘test123.’;
 
-val t = LassieLib.nltac ‘THMTACTIC$imp_res_tac test.’;
+val t = LassieLib.nltac ‘THMTAC$imp_res_tac test.’;
 
-val t = LassieLib.def "resolve_with test" ["THMTACTIC$imp_res_tac test"];
+val t = LassieLib.nltac ‘QUOTSPECTHMTAC$qspec_then ' x ' THMTAC$irule test.’
+
+val t = LassieLib.def "resolve_with test" ["THMTAC$imp_res_tac test"];
 
 val t = LassieLib.nltac ‘resolve_with CONJ_COMM.’;
 
-val t = LassieLib.nltac ‘THMLISTTACTIC$fs [ test ].’;
+val t = LassieLib.nltac ‘THMLISTTAC$fs [ test ].’;
+
+val t = LassieLib.nltac ‘TAC$cheat TACCOMB$THEN TAC$cheat.’
 
 (*
 val _ = LassieLib.nltac `Cases.`;
