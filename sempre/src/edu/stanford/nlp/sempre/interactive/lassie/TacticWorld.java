@@ -66,7 +66,7 @@ public class TacticWorld {
     }
     public static String cons(String hd, String tl) {
         if (hd.equals("") || tl.equals("")) return "";
-        return hd + "," + tl;
+        return hd + " , " + tl;
     }
     public static String list(String seq) {
         if (seq.equals("")) return "";

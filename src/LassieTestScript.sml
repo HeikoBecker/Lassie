@@ -25,7 +25,7 @@ val t = LassieLib.def "resolve_with test" ["THMTAC$imp_res_tac test"];
 
 val t = LassieLib.nltac ‘resolve_with CONJ_COMM.’;
 
-val t = LassieLib.nltac ‘THMLISTTAC$fs [ test ].’;
+val t = LassieLib.nltac ‘THMLISTTAC$fs [ test , test ].’;
 
 val t = LassieLib.nltac ‘TAC$cheat TACCOMB$THEN TAC$cheat.’
 

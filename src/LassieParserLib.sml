@@ -27,6 +27,8 @@ struct
     | ThmList of string list
     | TermStart
     | TermEnd
+    | LBrac
+    | RBrac
     | ListStart
     | ListEnd
     | ListSep;
@@ -34,6 +36,8 @@ struct
   fun lex (strs:string list) : (token * string list) option =
     case strs of
     [] =>  NONE
+    | "(" :: strs => SOME (LBrac, strs)
+    | ")" :: strs => SOME (RBrac, strs)
     | "[" :: strs => SOME (ListStart, strs)
     | "]" :: strs => SOME (ListEnd, strs)
     | "," :: strs => SOME (ListSep, strs)
@@ -80,40 +84,57 @@ struct
     | SOME _ => raise NoParseException "Could not parse a theorem";
 
   local
-    fun readList strs singleton endTok =
+    fun readList strs singleton endTok sep =
       let
-        val (th, strs) = singleton strs
-        val (ths, strs2) = readList strs singleton endTok
+        val (th, strs2) = singleton strs
       in
-        (th :: ths, strs2)
+        let
+          val strs3 = sep strs2
+          val (ths, strs4) = readList strs3 singleton endTok sep
+        in
+          (th :: ths, strs4)
+        end
+        handle e =>
+        case lex strs2 of
+        SOME (tok, strs3) =>
+          if (tok = endTok) then ([th], strs3)
+          else raise NoParseException "No valid singleton list"
+        | _ => raise NoParseException "No valid list terminator found"
       end
       handle e =>
         case lex strs of
-        SOME (tok, strs) =>
-          if (tok = endTok) then ([], strs)
-          else raise NoParseException "No valid list"
-        | _ => raise NoParseException "No valid list"
+        SOME (tok, strs2) =>
+          if (tok = endTok) then ([], strs2)
+          else raise NoParseException "No valid empty list"
+        | _ => raise NoParseException "No valid list terminator found"
   in
-  fun parseList (strs:string list) singleton startTok endTok =
+  fun parseList (strs:string list) singleton startTok endTok sep =
     case lex strs of
     SOME (tok,strs) =>
-      if (tok = startTok) then readList strs singleton endTok
+      if (tok = startTok) then readList strs singleton endTok sep
       else raise NoParseException "No valid list"
     |  _ => raise NoParseException "No valid theorem list"
   end;
 
-  fun parseThmList strs = parseList strs parseThm ListStart ListEnd;
+  fun consumeListSep strs =
+    case lex strs of
+    SOME (ListSep, strs2) => strs2
+    | _ => raise NoParseException "No list separator found";
+
+  fun parseThmList strs = parseList strs parseThm ListStart ListEnd consumeListSep;
+
+  fun consumeTmSep strs = strs;
 
   fun parseTm (strs:string list) :(term frag list * string list) =
     let
         val (tm, strs) =
-          parseList strs (fn (ss:string list) => (hd ss, tl ss)) TermStart TermEnd
+          parseList strs (fn (ss:string list) => (hd ss, tl ss)) TermStart TermEnd consumeTmSep
     in
       (List.map QUOTE tm, strs)
     end;
 
   fun parseTmList strs =
-    parseList strs parseTm ListStart ListEnd;
+    parseList strs parseTm ListStart ListEnd consumeListSep;
 
   fun parseThmTactic strs =
     case lex strs of
