@@ -93,12 +93,12 @@ QUOTSPECTHMTAC$qspec_then              type    term quotation -> (thm -> tactic)
 QUOTLISTSPECTHMTAC$qspecl_then         type    term quotation list -> (thm -> tactic) -> thm -> tactic
 rename                      type    term quotation list -> tactic
 sg                          type    term quotation -> tactic
-pop_assum                   type    (thm -> tactic) -> tactic
-spose_not_then              type    (thm -> tactic) -> tactic
+THMTAC$pop_assum                   type    (thm -> tactic) -> tactic
+THMTAC$spose_not_then              type    (thm -> tactic) -> tactic
 ntac                        type    int -> tactic -> tactic
 subgoal                     type    term quotation -> tactic
-by                          type    term quotation * tactic -> tactic
-suffices_by                 type    term quotation * tactic -> tactic
+TERMCOMB$by                          type    term quotation * tactic -> tactic
+TERMCOMB$suffices_by                 type    term quotation * tactic -> tactic
 
 ###################
 # Tactic chaining #

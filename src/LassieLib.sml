@@ -133,7 +133,9 @@ struct
         (String.map (fn c => if (c = #"\n") then #" " else c) formula, response)
     val cleanedResponse =
       LassieUtilsLib.get_suffix_after_match "(string " theResponse
-      |> LassieUtilsLib.get_prefix_before_match ")" (* TODO: This may be too fragile...*)
+      |> explode |> List.rev |> implode
+      |> LassieUtilsLib.get_suffix_after_match ")" (* TODO: This may be too fragile...*)
+      |> explode |> List.rev |> implode
       |> strip_quotmark |> explode |> List.rev |> implode
       |> strip_quotmark |> explode |> List.rev |> implode
       |> String.map (fn c => if (c = #"$") then #" " else c)
@@ -161,7 +163,7 @@ struct
   (* parse and return most likely tactic *)
   fun nltac (utt:'a frag list) : tactic=
     let
-      val uttStr1 =
+     val uttStr1 =
         case utt of
         [QUOTE s] => LassieUtilsLib.preprocess s
         | _ => raise LassieException "";

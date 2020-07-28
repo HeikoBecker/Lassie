@@ -19,7 +19,7 @@ val t = LassieLib.nltac ‘test123.’;
 
 val t = LassieLib.nltac ‘THMTAC$imp_res_tac test.’;
 
-val t = LassieLib.nltac ‘QUOTSPECTHMTAC$qspec_then ' x ' THMTAC$irule test.’
+val t = LassieLib.nltac ‘(QUOTSPECTHMTAC$qspec_then ' x ' THMTAC$irule test).’
 
 val t = LassieLib.def "resolve_with test" ["THMTAC$imp_res_tac test"];
 
@@ -28,6 +28,8 @@ val t = LassieLib.nltac ‘resolve_with CONJ_COMM.’;
 val t = LassieLib.nltac ‘THMLISTTAC$fs [ test , test ].’;
 
 val t = LassieLib.nltac ‘TAC$cheat TACCOMB$THEN TAC$cheat.’
+
+val t = LassieLib.nltac ‘' T ' TERMCOMB$by TAC$cheat.’
 
 (*
 val _ = LassieLib.nltac `Cases.`;

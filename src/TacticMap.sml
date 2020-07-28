@@ -9,12 +9,13 @@
 structure TacticMap =
 struct
 
-  open Lib Tactic Tactical Rewrite bossLib mesonLib;
+  open Lib Tactical Rewrite bossLib mesonLib;
 
   datatype tacticClos =
     Tactic of tactic
     | Tactical of (tactic -> tactic)
     | TacticComb of (tactic * tactic -> tactic)
+    | TermComb of (term quotation * tactic -> tactic)
     | ThmTactic of (thm -> tactic)
     | QuotTactic of (term quotation -> tactic)
     | ThmListTactic of (thm list -> tactic)
@@ -38,6 +39,7 @@ struct
   fun insTac (s,t) = insertTac s (Tactic t);
   fun insTact (s, tt) = insertTac s (Tactical tt);
   fun insTacComb (s, tc) = insertTac s (TacticComb tc);
+  fun insTmComb (s, tc) = insertTac s (TermComb tc);
   fun insThmTac (s,t) = insertTac s (ThmTactic t);
   fun insQuotTac (s,t) = insertTac s (QuotTactic t);
   fun insThmsTac (s,t) = insertTac s (ThmListTactic t);
@@ -59,6 +61,7 @@ struct
       (empty())
     |> appendTacs insTact [("rpt", rpt), ("TRY", TRY)]
     |> appendTacs insTacComb [("THEN",op THEN), ("ORELSE", op ORELSE)]
+    |> appendTacs insTmComb [("by", op by), ("suffices_by", op suffices_by)]
     |> appendTacs insThmTac
         [("imp_res_tac", imp_res_tac), ("assume_tac", assume_tac),
          ("irule", irule), ("drule", drule), ("match_mp_tac", match_mp_tac),
@@ -74,7 +77,8 @@ struct
          ("MESON_TAC", MESON_TAC)]
     |> appendTacs insAsmTt
         [("first_x_assum", first_x_assum), ("first_assum", first_assum),
-         ("last_x_assum", last_x_assum), ("last_assum", last_assum)]
+         ("last_x_assum", last_x_assum), ("last_assum", last_assum),
+         ("spose_not_then", spose_not_then), ("pop_assum", pop_assum) ]
     |> appendTacs insAsmMt
       [("qpat_x_assum", qpat_x_assum), ("qpat_assum", qpat_assum)]
     |> appendTacs insQuotSpecTac [("qspec_then", qspec_then)]

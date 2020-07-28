@@ -75,6 +75,10 @@
 (rule $ROOT ($tactic) (IdentityFn) (anchored 1))
 #(rule $ROOT ($command) (lambda t (call @mark (var t))) (anchored 1))
 
+## We can put parentheses around a tactic or a command (Missing: $ROOT $command )
+(for @cat ($tactic)
+  (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
+
 ###############################################################################
 # literal HOL4 tactics, tacticals, ...                                        #
 # looked up in the Lassie database                                            #
@@ -130,6 +134,11 @@
   ($TOKEN)
   (SimpleLexiconFn (type "tactic->tactic->tactic") (anchored 1)))
 
+#by, suffices_by
+(rule $termquotation*tactic->tactic
+      ($TOKEN)
+      (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))
+
 # Tactics can be produced by combining different constructs
 (for @category
      (($tactic->tactic $tactic)
@@ -138,6 +147,10 @@
       ($termquotation->tactic $termquotation)
       ($[thm->tactic]->tactic $thm->tactic))
      (rule $tactic @category @appT1T2 (anchored 1)))
+
+(rule $tactic
+  ($termquotation $termquotation*tactic->tactic $tactic)
+  @infixT1T2T3 (anchored 1))
 
 ## Partial applications for things like qpat_x_assum or first_x_assum
 (rule $[thm->tactic]->tactic
@@ -181,22 +194,17 @@
 #      ($TOKEN)
 #      (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
 #(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
-#(rule $termquotation*tactic->tactic
-#      ($TOKEN)
-#      (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))
 #(rule $thm->thm
 #  ($TOKEN)
 #  (SimpleLexiconFn (type "thm->thm")) (anchored 1))
 #
+
+#(rule $termquotation*tactic->tactic
+#      ($TOKEN)
+#      (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))
 #(rule $tactic
 #  ($termquotation $termquotation*tactic->tactic $tactic)
 #  @infixT1T2T3 (anchored 1))
-#
-#
-#
-## We can put parentheses around a tactic or a command
-#(for @cat ($ROOT $command $tactic)
-#     (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
 #
 ###############################################################
 ##      literal SML objects, looked up from the database      #

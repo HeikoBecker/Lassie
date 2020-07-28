@@ -16,6 +16,7 @@ struct
     Tac of string
     | Tacl of string
     | TacComb of string
+    | TmComb of string
     | ThmTac of string
     | ThmListTac of string
     | QuotTac of string
@@ -49,6 +50,7 @@ struct
       "TAC" => SOME (Tac txt, strs)
       | "TACL" => SOME (Tacl txt, strs)
       | "TACCOMB" => SOME (TacComb txt, strs)
+      | "TERMCOMB" => SOME (TmComb txt, strs)
       | "THMTAC" => SOME (ThmTac txt, strs)
       | "THMLISTTAC" => SOME (ThmListTac txt, strs)
       | "QUOTTAC" => SOME (QuotTac txt, strs)
@@ -144,88 +146,123 @@ struct
       | _ => raise NoParseException ("Theorem tactic " ^ str ^ " not found \n"))
     | _ => raise NoParseException ("No theorem tactic found where it was expected\n");
 
-local
-  fun parsePartial (inp:string list) :(tactic * string list) =
-    case lex inp of
-    SOME (Tac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
-        SOME (Tactic t) => (t,strs)
-        | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
-    | SOME (ThmTac str, strs) =>
-      let val (thTac, strs) = parseThmTactic inp
-          val (th, strs) = parseThm strs in
-          (thTac th, strs)
-      end
-    | SOME (ThmListTac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
-        SOME (ThmListTactic thsTac) =>
-          let val (thms, strs) = parseThmList strs in
-            (thsTac thms, strs)
-          end
-        | _ => raise NoParseException ("Thmlist tactic " ^ str ^ " not found\n"))
-    | SOME (QuotTac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
-        SOME (QuotTactic qt) =>
-          let val (tm, strs) = parseTm strs in
-            (qt tm, strs)
-          end
-        | _ => raise NoParseException ("Quotation tactic" ^ str ^ " not found\n"))
-    | SOME (AsmTestTac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
-      SOME (AsmTestTactic t) =>
-        let val (thTac, strs) = parseThmTactic strs in
-          (t thTac, strs)
-        end
-      | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
-    | SOME (AsmMatchTac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
-      SOME (AsmMatchTactic t) =>
-        let val (tm, strs2) = parseTm strs
-            val (thTac, strs3) = parseThmTactic strs2
-        in
-          (t tm thTac, strs)
-        end
-      | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
-    | SOME (QuotSpecThmTac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
-      SOME (QuotSpecThmTactic t) =>
-        let
-          val (tm, strs2) = parseTm strs
-          val (thTac, strs3) = parseThmTactic strs2
-          val (thm, strs4) = parseThm strs3
-        in
-          (t tm thTac thm, strs)
-        end
-      | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
-    | SOME (QuotListSpecThmTac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
-      SOME (QuotListSpecThmTactic t) =>
-        let
-          val (tms, strs2) = parseTmList strs
-          val (thTac, strs3) = parseThmTactic strs2
-          val (thm, strs4) = parseThm strs3
-        in
-          (t tms thTac thm, strs)
-        end
-      | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
-    | _ =>  raise NoParseException "Cannot parse input string";
-  fun parseFull (inp:string list) : (tactic * string list) =
-    let val (t1, strs1) = parsePartial inp in
-      case lex strs1 of
-      SOME (TacComb str, strs2) =>
+  fun peek (s:string list) :token =
+    case lex s of
+    SOME (tok, strs) => tok
+    | _ =>  raise (NoParseException "Could not look into next token when expecting a token\n")
+
+  local
+    fun parsePartial (inp:string list) :(tactic * string list) =
+      case lex inp of
+      SOME (Tac str, strs) =>
         (case TacticMap.lookupTac str TacticMap.stdTree of
-        SOME (TacticComb t) =>
-          let val (t2, strs3) = parsePartial strs2 in
-            (t (t1, t2), strs3)
+          SOME (Tactic t) => (t,strs)
+          | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
+      | SOME (ThmTac str, strs) =>
+        let val (thTac, strs) = parseThmTactic inp
+            val (th, strs) = parseThm strs in
+            (thTac th, strs)
+        end
+      | SOME (ThmListTac str, strs) =>
+        (case TacticMap.lookupTac str TacticMap.stdTree of
+          SOME (ThmListTactic thsTac) =>
+            let val (thms, strs) = parseThmList strs in
+              (thsTac thms, strs)
+            end
+          | _ => raise NoParseException ("Thmlist tactic " ^ str ^ " not found\n"))
+      | SOME (QuotTac str, strs) =>
+        (case TacticMap.lookupTac str TacticMap.stdTree of
+          SOME (QuotTactic qt) =>
+            let val (tm, strs) = parseTm strs in
+              (qt tm, strs)
+            end
+          | _ => raise NoParseException ("Quotation tactic" ^ str ^ " not found\n"))
+      | SOME (AsmTestTac str, strs) =>
+        (case TacticMap.lookupTac str TacticMap.stdTree of
+        SOME (AsmTestTactic t) =>
+          let val (thTac, strs) = parseThmTactic strs in
+            (t thTac, strs)
           end
-        | _ => raise NoParseException ("Tactic combinator " ^ str ^ " not found\n"))
-      | _ => (t1,strs1)
-    end;
+        | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
+      | SOME (AsmMatchTac str, strs) =>
+        (case TacticMap.lookupTac str TacticMap.stdTree of
+        SOME (AsmMatchTactic t) =>
+          let val (tm, strs2) = parseTm strs
+              val (thTac, strs3) = parseThmTactic strs2
+          in
+            (t tm thTac, strs3)
+          end
+        | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
+      | SOME (QuotSpecThmTac str, strs) =>
+        (case TacticMap.lookupTac str TacticMap.stdTree of
+        SOME (QuotSpecThmTactic t) =>
+          let
+            val (tm, strs2) = parseTm strs
+            val (thTac, strs3) = parseThmTactic strs2
+            val (thm, strs4) = parseThm strs3
+          in
+            (t tm thTac thm, strs4)
+          end
+        | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
+      | SOME (QuotListSpecThmTac str, strs) =>
+        (case TacticMap.lookupTac str TacticMap.stdTree of
+        SOME (QuotListSpecThmTactic t) =>
+          let
+            val (tms, strs2) = parseTmList strs
+            val (thTac, strs3) = parseThmTactic strs2
+            val (thm, strs4) = parseThm strs3
+          in
+            (t tms thTac thm, strs4)
+          end
+        | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
+      | _ =>  raise NoParseException "Cannot parse input string";
+    fun parseFull (inp:string list) : (tactic * string list) =
+      case peek inp of
+      TermStart =>
+        let val (tm, strs2) = parseTm inp in
+        case lex strs2 of
+        SOME (TmComb str, strs3) =>
+          (case TacticMap.lookupTac str TacticMap.stdTree of
+          SOME (TermComb tc) =>
+            let val (tac, strs4) = parsePartial strs3 in
+              (tc (tm,tac), strs4)
+            end
+          | _ => raise NoParseException ("Term combinator " ^ str ^ " not found\n"))
+        | _ => raise NoParseException ("Unsupported tactic structure in " ^ (foldl (fn (a,b) => b ^ a) "" inp))
+        end
+      | _ =>
+        let
+          val ((t1, strs1),brac) =
+            case peek inp of
+            LBrac => (parseFull (snd (valOf (lex inp))),true)
+            | _ => (parsePartial inp, false)
+        in
+          case lex strs1 of
+          SOME (TacComb str, strs2) =>
+            (case TacticMap.lookupTac str TacticMap.stdTree of
+            SOME (TacticComb t) =>
+              let val (t2, strs3) = parseFull strs2 in
+                if brac then
+                  case lex strs3 of
+                  SOME (RBrac, strs2) =>
+                    (t1, strs2)
+                  | _ => raise NoParseException ("Unmatched parenthesis\n")
+                else (t (t1, t2), strs3)
+              end
+            | _ => raise NoParseException ("Tactic combinator " ^ str ^ " not found\n"))
+          | _ =>
+            if brac then
+              case lex strs1 of
+                SOME (RBrac, strs2) =>
+                  (t1, strs2)
+                | _ => raise NoParseException ("Unmatched parenthesis\n")
+            else (t1, strs1)
+        end;
   in
-  fun parse (sempreResp:string) :tactic =
-    let val inp = LassieUtilsLib.string_split sempreResp #" " in
-      fst (parseFull inp)
-    end;
+    fun parse (sempreResp:string) :tactic =
+      let val inp = LassieUtilsLib.string_split sempreResp #" " in
+        fst (parseFull inp)
+      end;
   end;
 
 end;

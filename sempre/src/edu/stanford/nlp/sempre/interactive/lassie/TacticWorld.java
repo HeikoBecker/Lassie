@@ -78,7 +78,7 @@ public class TacticWorld {
     }
     public static String parens(String exp) {
         if (exp.equals("")) return "";
-        return "(" + exp + ")";
+        return "( " + exp + " )";
     }
     public static String op(String operator, String arg1, String arg2) {
         if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
