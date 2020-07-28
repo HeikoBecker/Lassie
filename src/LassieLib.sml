@@ -29,6 +29,8 @@ struct
   val LASSIEPROMPT = "|>";
   val LASSIESEP = ref ".";
 
+  val knownJargon :(string * (unit->unit)) list ref= ref [];
+
   val sempreResponse :sempre_response list ref = ref [];
 
   val ambiguityWarning : AmbiguityWarning option ref = ref NONE;
@@ -250,6 +252,13 @@ struct
       val _ = logging := prev;
     in
       () end;
+
+  fun registerJargon (name:string) (loader:unit->unit) =
+    knownJargon := (name, loader):: !knownJargon;
+
+  fun knownJargons () = !knownJargon;
+
+  fun loadJargon (n:string) = (map (fn (s,f) => if s = n then f() else ()) (!knownJargon); ());
 
 (*
   local

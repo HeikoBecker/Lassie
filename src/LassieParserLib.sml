@@ -260,7 +260,10 @@ struct
         end;
   in
     fun parse (sempreResp:string) :tactic =
-      let val inp = LassieUtilsLib.string_split sempreResp #" " in
+      let
+        val inp = LassieUtilsLib.string_split sempreResp #" "
+        val inp = List.rev (foldl (fn (s,ss) => if s = "" then ss else s::ss) [] inp)
+     in
         fst (parseFull inp)
       end;
   end;
