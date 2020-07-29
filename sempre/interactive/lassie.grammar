@@ -139,6 +139,10 @@
       ($TOKEN)
       (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))
 
+(rule $thm->thm
+  ($TOKEN)
+  (SimpleLexiconFn (type "thm->thm")) (anchored 1))
+
 # Tactics can be produced by combining different constructs
 (for @category
      (($tactic->tactic $tactic)
@@ -166,6 +170,7 @@
 
 ### HOL4 Theorems
 (rule $thm ($TOKEN) (lambda t (call @thm (var t))) (anchored 1))
+(rule $thm ($thm->thm $thm) @appT1T2 (anchored 1))
 (rule $Thms ($thm) (IdentityFn) (anchored 1))
 (rule $Thms ($thm , $Thms) (lambda t1 (lambda t2 (call @cons (var t1) (var t2)))) (anchored 1))
 (rule $thmlist ([ $Thms ]) (lambda thms (call @list (var thms))) (anchored 1))
@@ -194,11 +199,6 @@
 #      ($TOKEN)
 #      (SimpleLexiconFn (type "int->tactic->tactic")) (anchored 1))
 #(rule $tactic->tactic ($int->tactic->tactic $int) @appT1T2 (anchored 1))
-#(rule $thm->thm
-#  ($TOKEN)
-#  (SimpleLexiconFn (type "thm->thm")) (anchored 1))
-#
-
 #(rule $termquotation*tactic->tactic
 #      ($TOKEN)
 #      (SimpleLexiconFn (type "termquotation*tactic->tactic")) (anchored 1))

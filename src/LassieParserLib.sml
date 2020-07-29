@@ -12,6 +12,10 @@ struct
 
   exception NoParseException of string;
 
+  val tacticMap = ref TacticMap.stdTree;
+
+  val thmModifs = ["Once", "GSYM"];
+
   datatype token =
     Tac of string
     | Tacl of string
@@ -26,6 +30,7 @@ struct
     | QuotListSpecThmTac of string
     | Thm of string
     | ThmList of string list
+    | ThmModif of string
     | TermStart
     | TermEnd
     | LBrac
@@ -59,7 +64,9 @@ struct
       | "QUOTSPECTHMTAC" => SOME (QuotSpecThmTac txt, strs)
       | "QUOTLISTSPECTHMTAC" => SOME (QuotListSpecThmTac txt, strs)
       | "THM" => SOME (Thm txt, strs)
-      | _ =>  NONE;
+      | s => if (List.exists (fn a => a = s) thmModifs) then
+              SOME (ThmModif s, txt::strs)
+              else NONE;
 
   fun findThm (name:string) :thm option =
     let val spl = LassieUtilsLib.string_split name #"."
@@ -79,6 +86,13 @@ struct
   fun parseThm (strs:string list) : (thm * string list) =
     case lex strs of
     NONE => raise NoParseException "No theorem identifier found where theorem was expected"
+    | SOME (ThmModif s, strs1) =>
+      let val (th, strs2) = parseThm strs1 in
+      case s of
+      "Once" => (Once th, strs2)
+      | "GSYM" => (GSYM th, strs2)
+      | _ => raise NoParseException ("Invalid theorem modifier "^s^" found\n")
+      end
     | SOME (Thm th, strs) =>
       (case findThm th of
       NONE => raise NoParseException ("Could not find theorem " ^ th ^ " in current context")
@@ -141,7 +155,7 @@ struct
   fun parseThmTactic strs =
     case lex strs of
     SOME (ThmTac str, strs) =>
-      (case TacticMap.lookupTac str TacticMap.stdTree of
+      (case TacticMap.lookupTac str (!tacticMap) of
       SOME (ThmTactic th) => (th, strs)
       | _ => raise NoParseException ("Theorem tactic " ^ str ^ " not found \n"))
     | _ => raise NoParseException ("No theorem tactic found where it was expected\n");
@@ -150,7 +164,7 @@ struct
     fun parsePartial (inp:string list) :(tactic * string list) =
       case lex inp of
       SOME (Tac str, strs) =>
-        (case TacticMap.lookupTac str TacticMap.stdTree of
+        (case TacticMap.lookupTac str (!tacticMap) of
           SOME (Tactic t) => (t,strs)
           | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
       | SOME (ThmTac str, strs) =>
@@ -159,28 +173,28 @@ struct
             (thTac th, strs)
         end
       | SOME (ThmListTac str, strs) =>
-        (case TacticMap.lookupTac str TacticMap.stdTree of
+        (case TacticMap.lookupTac str (!tacticMap) of
           SOME (ThmListTactic thsTac) =>
             let val (thms, strs) = parseThmList strs in
               (thsTac thms, strs)
             end
           | _ => raise NoParseException ("Thmlist tactic " ^ str ^ " not found\n"))
       | SOME (QuotTac str, strs) =>
-        (case TacticMap.lookupTac str TacticMap.stdTree of
+        (case TacticMap.lookupTac str (!tacticMap) of
           SOME (QuotTactic qt) =>
             let val (tm, strs) = parseTm strs in
               (qt tm, strs)
             end
           | _ => raise NoParseException ("Quotation tactic" ^ str ^ " not found\n"))
       | SOME (AsmTestTac str, strs) =>
-        (case TacticMap.lookupTac str TacticMap.stdTree of
+        (case TacticMap.lookupTac str (!tacticMap) of
         SOME (AsmTestTactic t) =>
           let val (thTac, strs) = parseThmTactic strs in
             (t thTac, strs)
           end
         | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
       | SOME (AsmMatchTac str, strs) =>
-        (case TacticMap.lookupTac str TacticMap.stdTree of
+        (case TacticMap.lookupTac str (!tacticMap) of
         SOME (AsmMatchTactic t) =>
           let val (tm, strs2) = parseTm strs
               val (thTac, strs3) = parseThmTactic strs2
@@ -189,7 +203,7 @@ struct
           end
         | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
       | SOME (QuotSpecThmTac str, strs) =>
-        (case TacticMap.lookupTac str TacticMap.stdTree of
+        (case TacticMap.lookupTac str (!tacticMap) of
         SOME (QuotSpecThmTactic t) =>
           let
             val (tm, strs2) = parseTm strs
@@ -200,7 +214,7 @@ struct
           end
         | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
       | SOME (QuotListSpecThmTac str, strs) =>
-        (case TacticMap.lookupTac str TacticMap.stdTree of
+        (case TacticMap.lookupTac str (!tacticMap) of
         SOME (QuotListSpecThmTactic t) =>
           let
             val (tms, strs2) = parseTmList strs
@@ -218,7 +232,7 @@ struct
           let val (tm, strs2) = parseTm inp in
           case lex strs2 of
           SOME (TmComb str, strs3) =>
-            (case TacticMap.lookupTac str TacticMap.stdTree of
+            (case TacticMap.lookupTac str (!tacticMap) of
             SOME (TermComb tc) =>
               let val (tac, strs4) = parseFull strs3 in
                 (tc (tm,tac), strs4)
@@ -236,7 +250,7 @@ struct
       in
         case lex strs1 of
         SOME (TacComb str, strs2) =>
-          (case TacticMap.lookupTac str TacticMap.stdTree of
+          (case TacticMap.lookupTac str (!tacticMap) of
           SOME (TacticComb t) =>
               let val (t2, strs3) = parseFull strs2 in
                 (t (t1, t2), strs3)
@@ -253,5 +267,8 @@ struct
         fst (parseFull inp)
       end;
   end;
+
+  fun addCustomTactic (tac:tactic) (str:string) =
+    tacticMap := insTac (str, tac) (!tacticMap);
 
 end;

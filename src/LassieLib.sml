@@ -222,15 +222,17 @@ struct
           else "(" ^ str ^ ")"
         end
     in
-      writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ " " ^ paren anchoring ^ ")")
+      (writeSempre ("(rule " ^ lhs ^ " " ^  paren rhs ^ " " ^ paren sem ^ " " ^ paren anchoring ^ ")");
+      waitSempre (!instream); ())
     end;
 
   fun addIDRule (cat:string) (str:string) (anchoring:string) : unit =
     addRule cat str ("ConstantFn ( string \"" ^ str ^ "\")") anchoring;
 
   (** Adding a custom SML tactic to the grammar **)
-  fun addCustomTactic tac : unit =
-    addIDRule "$tactic" tac "anchored 1";
+  fun addCustomTactic tac str : unit =
+    (addIDRule "$tactic" ("TAC$"^str) "anchored 1";
+    LassieParserLib.addCustomTactic tac str);
 
   (** Adding a custom SML thm tactic to the grammar **)
   fun addCustomThmTactic tac : unit =

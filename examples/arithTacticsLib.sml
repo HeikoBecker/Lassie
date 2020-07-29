@@ -3,18 +3,22 @@ struct
   open LassieLib;
 
   local open arithmeticTheory in end;
+  fun simp_all g = let val thms = map (fn (a,th) => th) (DB.theorems "-") in simp thms g end;
+  val _ = LassieLib.addCustomTactic simp_all "simp_all";
+
   val _ =
     let
     fun jargon () =
       let val _ =
         map (fn (a,b) => LassieLib.def a [b]) [
-          ("simplify", "THMLISTTAC$fs [ ]"),
+          ("simplify", "TAC$simp_all"),
           ("simplify with [ADD_ASSOC]", "THMLISTTAC$fs [ ADD_ASSOC ]"),
           ("follows from [ADD_ASSOC]", "THMLISTTAC$metis_tac [ ADD_ASSOC ]"),
           ("rewrite [ADD_ASSOC]" ,"THMLISTTAC$rw [ADD_ASSOC]"),
           ("trivial using [ADD_ASSOC]",
           "TAC$all_tac TACCOMB$THEN ( THMLISTTAC$fs [ ADD_ASSOC ] TACCOMB$THEN TAC$NO_TAC) TACCOMB$ORELSE (THMLISTTAC$rw [ ADD_ASSOC ] TACCOMB$THEN TAC$NO_TAC) TACCOMB$ORELSE THMLISTTAC$metis_tac [ ADD_ASSOC ]"),
           ("perform an induction on 't'", "QUOTTAC$Induct_on ' t '"),
+          ("Induction on 't'", "QUOTTAC$Induct_on ' t '"),
           ("perform a case split", "TAC$Cases"),
           ("perform a case split for 't'", "QUOTTAC$Cases_on ' t '"),
           ("Complete Induction on 't'", "QUOTTAC$completeInduct_on ' t '"),
