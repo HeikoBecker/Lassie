@@ -85,30 +85,29 @@ struct
       | SOME th => (th, strs))
     | SOME _ => raise NoParseException "Could not parse a theorem";
 
+  fun peek (s:string list) :token =
+    case lex s of
+    SOME (tok, strs) => tok
+    | _ =>  raise (NoParseException "Could not look into next token when expecting a token\n")
+
   local
     fun readList strs singleton endTok sep =
-      let
-        val (th, strs2) = singleton strs
-      in
-        let
-          val strs3 = sep strs2
-          val (ths, strs4) = readList strs3 singleton endTok sep
-        in
-          (th :: ths, strs4)
+        if (case lex strs of
+            NONE => false
+            | SOME (tok, strs2) => tok = endTok) then ([], snd (valOf (lex strs)))
+        else
+        let val (th, strs2) = singleton strs in
+        if (case lex strs2 of
+            NONE => false
+            | SOME (tok, strs3) => tok = endTok) then ([th], snd (valOf (lex strs2)))
+        else
+          let
+            val strs3 = sep strs2
+            val (ths, strs4) = readList strs3 singleton endTok sep
+          in
+            (th :: ths, strs4)
+          end
         end
-        handle e =>
-        case lex strs2 of
-        SOME (tok, strs3) =>
-          if (tok = endTok) then ([th], strs3)
-          else raise NoParseException "No valid singleton list"
-        | _ => raise NoParseException "No valid list terminator found"
-      end
-      handle e =>
-        case lex strs of
-        SOME (tok, strs2) =>
-          if (tok = endTok) then ([], strs2)
-          else raise NoParseException "No valid empty list"
-        | _ => raise NoParseException "No valid list terminator found"
   in
   fun parseList (strs:string list) singleton startTok endTok sep =
     case lex strs of
@@ -131,8 +130,9 @@ struct
     let
         val (tm, strs) =
           parseList strs (fn (ss:string list) => (hd ss, tl ss)) TermStart TermEnd consumeTmSep
+        val fullTm = foldl (fn (s1,s2) => if s2 = "" then s1 else s1 ^ " " ^ s2) "" (List.rev tm)
     in
-      (List.map QUOTE tm, strs)
+      ([QUOTE fullTm], strs)
     end;
 
   fun parseTmList strs =
@@ -145,11 +145,6 @@ struct
       SOME (ThmTactic th) => (th, strs)
       | _ => raise NoParseException ("Theorem tactic " ^ str ^ " not found \n"))
     | _ => raise NoParseException ("No theorem tactic found where it was expected\n");
-
-  fun peek (s:string list) :token =
-    case lex s of
-    SOME (tok, strs) => tok
-    | _ =>  raise (NoParseException "Could not look into next token when expecting a token\n")
 
   local
     fun parsePartial (inp:string list) :(tactic * string list) =
@@ -217,47 +212,38 @@ struct
         | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
       | _ =>  raise NoParseException "Cannot parse input string";
     fun parseFull (inp:string list) : (tactic * string list) =
-      case peek inp of
-      TermStart =>
-        let val (tm, strs2) = parseTm inp in
-        case lex strs2 of
-        SOME (TmComb str, strs3) =>
-          (case TacticMap.lookupTac str TacticMap.stdTree of
-          SOME (TermComb tc) =>
-            let val (tac, strs4) = parsePartial strs3 in
-              (tc (tm,tac), strs4)
-            end
-          | _ => raise NoParseException ("Term combinator " ^ str ^ " not found\n"))
-        | _ => raise NoParseException ("Unsupported tactic structure in " ^ (foldl (fn (a,b) => b ^ a) "" inp))
-        end
-      | _ =>
-        let
-          val ((t1, strs1),brac) =
-            case peek inp of
-            LBrac => (parseFull (snd (valOf (lex inp))),true)
-            | _ => (parsePartial inp, false)
-        in
-          case lex strs1 of
-          SOME (TacComb str, strs2) =>
+      let val (t1, strs1) =
+        (case peek inp of
+        TermStart =>
+          let val (tm, strs2) = parseTm inp in
+          case lex strs2 of
+          SOME (TmComb str, strs3) =>
             (case TacticMap.lookupTac str TacticMap.stdTree of
-            SOME (TacticComb t) =>
-              let val (t2, strs3) = parseFull strs2 in
-                if brac then
-                  case lex strs3 of
-                  SOME (RBrac, strs2) =>
-                    (t1, strs2)
-                  | _ => raise NoParseException ("Unmatched parenthesis\n")
-                else (t (t1, t2), strs3)
+            SOME (TermComb tc) =>
+              let val (tac, strs4) = parseFull strs3 in
+                (tc (tm,tac), strs4)
               end
-            | _ => raise NoParseException ("Tactic combinator " ^ str ^ " not found\n"))
-          | _ =>
-            if brac then
-              case lex strs1 of
-                SOME (RBrac, strs2) =>
-                  (t1, strs2)
-                | _ => raise NoParseException ("Unmatched parenthesis\n")
-            else (t1, strs1)
-        end;
+            | _ => raise NoParseException ("Term combinator " ^ str ^ " not found\n"))
+          | _ => raise NoParseException ("Unsupported tactic structure in " ^ (foldl (fn (a,b) => b ^ a) "" inp))
+          end
+        | LBrac =>
+          let val (t1, strs1) = parseFull (snd (valOf (lex inp))) in
+            case peek strs1 of
+            RBrac => (t1, snd (valOf (lex strs1)))
+            | _ => raise NoParseException "Unmatched parenthesis"
+          end
+        | _ => parsePartial inp)
+      in
+        case lex strs1 of
+        SOME (TacComb str, strs2) =>
+          (case TacticMap.lookupTac str TacticMap.stdTree of
+          SOME (TacticComb t) =>
+              let val (t2, strs3) = parseFull strs2 in
+                (t (t1, t2), strs3)
+              end
+          | _ => raise NoParseException ("Tactic combinator " ^ str ^ " not found\n"))
+        | _ => (t1, strs1)
+      end;
   in
     fun parse (sempreResp:string) :tactic =
       let

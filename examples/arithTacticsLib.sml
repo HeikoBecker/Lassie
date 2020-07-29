@@ -3,7 +3,8 @@ struct
   open LassieLib;
 
   local open arithmeticTheory in end;
-  let
+  val _ =
+    let
     fun jargon () =
       let val _ =
         map (fn (a,b) => LassieLib.def a [b]) [

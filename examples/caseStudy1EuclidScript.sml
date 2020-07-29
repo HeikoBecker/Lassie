@@ -15,9 +15,9 @@
 (*---------------------------------------------------------------------------*)
 
 open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
-     boolTheory bossLib lcsymtacs arithmeticTheory;
+     boolTheory bossLib arithmeticTheory;
 
-open LassieLib;
+open LassieLib arithTacticsLib;
 
 val _ = new_theory "caseStudy1Euclid";
 
@@ -44,13 +44,13 @@ End
 (* A sequence of basic theorems about the "divides" relation.                *)
 (*---------------------------------------------------------------------------*)
 
-QUse.use "arithTactics.sml";
+val _ = LassieLib.loadJargon "Arithmetic";
 
 Theorem DIVIDES_0:
   ! x . x divides 0
 Proof
   LassieLib.nltac `
-    follows from [divides_def, MULT_CLAUSES].`
+    trivial using [divides_def, MULT_CLAUSES].`
   (* metis_tac [divides_def,MULT_CLAUSES] *)
 QED
 
@@ -129,24 +129,25 @@ QED
 Theorem DIVIDES_LE:
   !m n . m divides n ==> m <= n \/ (n = 0)
 Proof
-  LassieLib.nltac `
-    rewrite [divides_def]. trivial using [].`
+  LassieLib.nltac ‘
+            rewrite [divides_def].
+            trivial using [].’
   (* rw [divides_def] >> rw[] *)
 QED
 
 (*---------------------------------------------------------------------------*)
 (* Various proofs of the same formula                                        *)
 (*---------------------------------------------------------------------------*)
-val NOT_X_LE = DECIDE ``! x. ~(x < x)``;
+val NOT_X_LE = save_thm ("NOT_X_LE", DECIDE ``! x. ~(x < x)``);
 
 Theorem DIVIDES_FACT:
   !m n . 0 < m /\ m <= n ==> m divides (FACT n)
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac ‘
     rewrite [LESS_EQ_EXISTS].
     perform an induction on 'p'.
-    trivial using
-      [FACT, NOT_X_LE, num_CASES, DIVIDES_RMUL, DIVIDES_LMUL, DIVIDES_REFL, ADD_CLAUSES].`
+    follows from
+      [FACT, NOT_X_LE, num_CASES, DIVIDES_RMUL, DIVIDES_LMUL, DIVIDES_REFL, ADD_CLAUSES].’
   (*
   rw  [LESS_EQ_EXISTS]
    >> Induct_on `p`
@@ -172,14 +173,14 @@ Proof
   (* rw  [prime_def] *)
 QED
 
-val two_prime_eqs = DECIDE ``~(2=1) /\ ~(2=0) /\ ((x <=2) = (x = 0) \/ (x = 1) \/  (x = 2))``;
+val two_prime_eqs = curry save_thm "two_prime_eqs" (DECIDE ``~(2=1) /\ ~(2=0) /\ ((x <=2) = (x = 0) \/ (x = 1) \/  (x = 2))``);
 
 Theorem PRIME_2:
   prime 2
 Proof
   LassieLib.nltac `
     rewrite [prime_def].
-    trivial using [DIVIDES_LE, DIVIDES_ZERO, two_prime_eqs].`
+    follows from [DIVIDES_LE, DIVIDES_ZERO, two_prime_eqs].`
   (* rw  [prime_def] >>
   metis_tac [DIVIDES_LE, DIVIDES_ZERO,
              DECIDE``~(2=1) /\ ~(2=0) /\ (x<=2 = (x=0) \/ (x=1) \/ (x=2))``] *)
@@ -208,17 +209,17 @@ val _ = LassieLib.LASSIESEP := ";";
 Theorem PRIME_FACTOR:
   !n . ~(n = 1) ==> ?p . prime p /\ p divides n
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac ‘
     Complete Induction on 'n';
     rewrite [];
-    perform a case split for 'prime n';`
+    perform a case split for 'prime n';’
   >- (
     LassieLib.nltac `
-      trivial using [DIVIDES_REFL];`)
+      follows from [DIVIDES_REFL];`)
   >- (
     LassieLib.nltac `
-      show '?x. x divides n and x <> 1 and x <> n' using (trivial using [prime_def]);
-      trivial using [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0];`)
+      show '?x. x divides n and x <> 1 and x <> n' using (follows from [prime_def]);
+      follows from [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0];`)
   (*
    completeInduct_on `n`
    >> rw  []
@@ -241,7 +242,7 @@ Theorem PRIME_FACTOR:
 Proof
   LassieLib.nltac `
     Complete Induction on 'n'.
-    trivial using [DIVIDES_REFL,prime_def,LESS_OR_EQ, PRIME_2,
+    follows from [DIVIDES_REFL,prime_def,LESS_OR_EQ, PRIME_2,
              DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0].`
   (*
   completeInduct_on `n` >>
@@ -259,24 +260,24 @@ QED
 (* which is a contradiction.                                                 *)
 (*---------------------------------------------------------------------------*)
 
-val neq_zero = DECIDE ``~(x=0) = (0 < x)``;
+val neq_zero = curry save_thm "neq_zero" (DECIDE ``~(x=0) = (0 < x)``);
 
 val _ = LassieLib.LASSIESEP := ";";
 
 Theorem EUCLID:
   !n . ?p . n < p /\ prime p
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac‘
     suppose not; simplify;
     we can derive 'FACT n + 1 <> 1' from [FACT_LESS, neq_zero];
     thus PRIME_FACTOR for 'FACT n + 1';
     we further know '?q. prime q and q divides (FACT n + 1)';
-    show 'q <= n' using (suppose not THEN trivial using [NOT_LESS_EQUAL]);
-    show '0 < q' using (trivial using [PRIME_POS]);
-    show 'q divides FACT n' using (trivial using [DIVIDES_FACT]);
-    show 'q=1' using (trivial using [DIVIDES_ADDL, DIVIDES_ONE]);
+    show 'q <= n' using (suppose not TACCOMB$THEN trivial using [NOT_LESS_EQUAL]);
+    show '0 < q' using (follows from [PRIME_POS]);
+    show 'q divides FACT n' using (follows from [DIVIDES_FACT]);
+    show 'q=1' using (follows from [DIVIDES_ADDL, DIVIDES_ONE]);
     show 'prime 1' using (simplify);
-    trivial using [NOT_PRIME_1];`
+    follows from [NOT_PRIME_1];’
   (*
   spose_not_then strip_assume_tac
    >> mp_tac (SPEC ``FACT n + 1`` PRIME_FACTOR)
