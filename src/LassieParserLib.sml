@@ -7,7 +7,7 @@
 structure LassieParserLib =
 struct
 
-  open Abbrev Tactical Manager;
+  open Abbrev Tactical Manager Conv BoundedRewrites;
   open LassieUtilsLib TacticMap;
 
   exception NoParseException of string;

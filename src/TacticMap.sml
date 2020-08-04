@@ -9,7 +9,7 @@
 structure TacticMap =
 struct
 
-  open Lib Tactical Rewrite bossLib mesonLib;
+  open Lib Tactic Tactical Rewrite bossLib mesonLib;
 
   datatype tacticClos =
     Tactic of tactic
@@ -57,7 +57,8 @@ struct
       [("cheat", cheat), ("strip_tac", strip_tac), ("gen_tac", gen_tac),
        ("Cases", Cases), ("Induct", Induct), ("res_tac", res_tac),
        ("conj_tac", conj_tac), ("all_tac", all_tac), ("NO_TAC", NO_TAC),
-       ("EQ_TAC", EQ_TAC), ("CCONTR_TAC", CCONTR_TAC)]
+       ("EQ_TAC", EQ_TAC), ("CCONTR_TAC", CCONTR_TAC),
+       ("AP_THM_TAC", AP_THM_TAC), ("AP_TERM_TAC", AP_TERM_TAC)]
       (empty())
     |> appendTacs insTact [("rpt", rpt), ("TRY", TRY)]
     |> appendTacs insTacComb [("THEN",op THEN), ("ORELSE", op ORELSE)]

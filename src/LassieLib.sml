@@ -92,7 +92,9 @@ struct
       (* not needed anymore as we do not load from the socket file
       val _ = if OS.FileSys.access (socketPath, []) then OS.FileSys.remove socketPath else () *)
       val _ = lastUtterance := cmd
+      val _ = if !logging then (print "Writing "; print cmd; print "\n") else ()
       val _ = TextIO.output(!outstream, cmd ^ "\n")
+      val _ = TextIO.flushOut(!outstream)
     in
       ()
     end;
@@ -200,16 +202,23 @@ struct
       fun quot s = "\"" ^ s ^ "\""
       fun quot' s = "\\\"" ^ s ^ "\\\""
       fun list2string l = "[" ^ (String.concatWith "," l) ^ "]"
+      fun stripAllSpaces s = explode s |> stripSpaces |> explode |> List.rev
+        |> stripSpaces |> explode |> List.rev |> implode;
       val definiens =
         niens |> (map getFormula)
+              |> map (map stripAllSpaces)
               |> (map (map quot'))
               |> (map list2string)
               |> list2string
       val theDef = "(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")"
+      val _ = if (!logging) then (print "Defining:\n"; print theDef; print "\n\n") else ()
+      val _ = writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
+      val res = waitSempre(!instream)
+      val _ = (if (!logging) then print res else ())
     in
-      (if (!logging) then print theDef else ();
-      writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")");
-      waitSempre(!instream))
+      if (String.isPrefix "Invalid" res) then
+        (print "BUG"; def ndum niens)
+      else res
     end;
 
   fun addRule lhs rhs sem anchoring : unit =

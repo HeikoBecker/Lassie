@@ -85,6 +85,8 @@ TAC$all_tac                            type    tactic
 TAC$NO_TAC                             type    tactic
 TAC$EQ_TAC                             type    tactic
 TAC$CCONTR_TAC                         type    tactic
+TAC$AP_TERM_TAC                        type    tactic
+TAC$AP_THM_TAC                         type    tactic
 QUOTTAC$Induct_on                      type    term quotation -> tactic
 QUOTTAC$Cases_on                       type    term quotation -> tactic
 QUOTTAC$completeInduct_on              type    term quotation -> tactic
