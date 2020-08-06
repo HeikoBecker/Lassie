@@ -69,7 +69,8 @@ struct
          ("mp_tac", mp_tac)]
     |> appendTacs insQuotTac
         [("Cases_on", Cases_on), ("Induct_on", Induct_on),
-         ("completeInduct_on", completeInduct_on), ("qexists_tac", qexists_tac)]
+         ("completeInduct_on", completeInduct_on), ("qexists_tac", qexists_tac),
+         ("sg", sg), ("subgoal", subgoal)]
     |> appendTacs insThmsTac
         [("asm_rewrite_tac", asm_rewrite_tac), ("rewrite_tac", rewrite_tac),
          ("once_rewrite_tac", once_rewrite_tac),

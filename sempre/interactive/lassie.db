@@ -91,14 +91,14 @@ QUOTTAC$Induct_on                      type    term quotation -> tactic
 QUOTTAC$Cases_on                       type    term quotation -> tactic
 QUOTTAC$completeInduct_on              type    term quotation -> tactic
 QUOTTAC$qexists_tac                    type    term quotation -> tactic
+QUOTTAC$sg                             type    term quotation -> tactic
+QUOTTAC$subgoal                     type    term quotation -> tactic
 QUOTSPECTHMTAC$qspec_then              type    term quotation -> (thm -> tactic) -> thm -> tactic
 QUOTLISTSPECTHMTAC$qspecl_then         type    term quotation list -> (thm -> tactic) -> thm -> tactic
-rename                      type    term quotation list -> tactic
-sg                          type    term quotation -> tactic
 ASMTESTTAC$pop_assum                   type    (thm -> tactic) -> tactic
 ASMTESTTAC$spose_not_then              type    (thm -> tactic) -> tactic
+rename                                 type    term quotation list -> tactic
 ntac                        type    int -> tactic -> tactic
-subgoal                     type    term quotation -> tactic
 TERMCOMB$by                          type    term quotation * tactic -> tactic
 TERMCOMB$suffices_by                 type    term quotation * tactic -> tactic
 

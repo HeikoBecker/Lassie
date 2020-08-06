@@ -193,6 +193,7 @@ struct
   (* define an utterance in terms of a list of utterances*)
   fun def ndum niens : string =
     let
+      fun extract s = case hd s of QUOTE s => LassieUtilsLib.preprocess s | _ => raise LassieException "Illegal Quote"
       (* for each utterance of the definition, get its logical form *)
       fun getFormula u = [u, (u |> sempre |> #formula |> escape |> escape)]
       (* formatting *)
@@ -202,20 +203,19 @@ struct
       fun stripAllSpaces s = explode s |> stripSpaces |> explode |> List.rev
         |> stripSpaces |> explode |> List.rev |> implode;
       val definiens =
-        niens |> (map getFormula)
+        niens |> (map extract)
+              |> (map getFormula)
               |> map (map stripAllSpaces)
               |> (map (map quot'))
               |> (map list2string)
               |> list2string
-      val theDef = "(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")"
+      val theDef = "(:def " ^ (quot (extract ndum)) ^ " " ^ (quot definiens) ^ ")"
       val _ = if (!logging) then (print "Defining:\n"; print theDef; print "\n\n") else ()
-      val _ = writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
+      val _ = writeSempre ("(:def " ^ (quot (extract ndum)) ^ " " ^ (quot definiens) ^ ")")
       val res = waitSempre(!instream)
       val _ = (if (!logging) then print res else ())
     in
-      if (String.isPrefix "Invalid" res) then
-        (print "BUG"; def ndum niens)
-      else res
+      res
     end;
 
   fun addRule lhs rhs sem anchoring : unit =
@@ -241,8 +241,9 @@ struct
     LassieParserLib.addCustomTactic tac str);
 
   (** Adding a custom SML thm tactic to the grammar **)
-  fun addCustomThmTactic tac : unit =
-    addIDRule "$thm->tactic" tac "anchored 1";
+  fun addCustomThmTactic thmtac str: unit =
+    (addIDRule "$thm->tactic" ("THMTAC$"^str) "anchored 1";
+    LassieParserLib.addCustomThmTactic thmtac str)
 
   (** Adding a custom SML thmlist tactic to the grammar **)
   fun addCustomThmlistTactic tac : unit =

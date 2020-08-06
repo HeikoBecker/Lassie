@@ -162,6 +162,20 @@ struct
       (case TacticMap.lookupTac str (!tacticMap) of
       SOME (ThmTactic th) => (th, strs)
       | _ => raise NoParseException ("Theorem tactic " ^ str ^ " not found \n"))
+    | SOME (QuotSpecThmTac str, strs) =>
+      (case TacticMap.lookupTac str (! tacticMap) of
+      SOME (QuotSpecThmTactic t) =>
+        let val (tm, strs2) = parseTm strs
+          val (thmtac, strs3) = parseThmTactic strs2 in
+      (t tm thmtac, strs3) end
+      | _ => raise NoParseException ("specialization tactic " ^ str ^ " not found \n"))
+    | SOME (QuotListSpecThmTac str, strs) =>
+      (case (TacticMap.lookupTac str (! tacticMap)) of
+      SOME (QuotListSpecThmTactic t) =>
+        let val (tm, strs2) = parseTmList strs
+          val (thmtac, strs3) = parseThmTactic strs2 in
+      (t tm thmtac, strs3) end
+      | _ => raise NoParseException ("specialization tactic " ^ str ^ " not found \n"))
     | _ => raise NoParseException ("No theorem tactic found where it was expected\n");
 
   local
@@ -171,6 +185,13 @@ struct
         (case TacticMap.lookupTac str (!tacticMap) of
           SOME (Tactic t) => (t,strs)
           | _ => raise NoParseException ("Tactic " ^ str ^ " not found\n"))
+      | SOME (Tacl str, strs) =>
+        (case TacticMap.lookupTac str (!tacticMap) of
+        SOME (Tactical tt) =>
+          let val (t, strs) = parsePartial strs in
+            (tt t, strs)
+          end
+        | _ => raise NoParseException ("Tactical " ^ str ^ " not found\n"))
       | SOME (ThmTac str, strs) =>
         let val (thTac, strs) = parseThmTactic inp
             val (th, strs) = parseThm strs in
@@ -281,5 +302,8 @@ struct
 
   fun addCustomTactic (tac:tactic) (str:string) =
     tacticMap := insTac (str, tac) (!tacticMap);
+
+  fun addCustomThmTactic (tac:thm_tactic) (str:string) =
+    tacticMap := insThmTac (str, tac) (!tacticMap)
 
 end;

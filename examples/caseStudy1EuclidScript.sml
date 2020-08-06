@@ -21,6 +21,7 @@ open LassieLib arithTacticsLib;
 
 val _ = new_theory "caseStudy1Euclid";
 
+val _ = LassieLib.loadJargon "Arithmetic";
 (*---------------------------------------------------------------------------*)
 (* Divisibility.                                                             *)
 (*---------------------------------------------------------------------------*)
@@ -43,8 +44,6 @@ End
 (*---------------------------------------------------------------------------*)
 (* A sequence of basic theorems about the "divides" relation.                *)
 (*---------------------------------------------------------------------------*)
-
-val _ = LassieLib.loadJargon "Arithmetic";
 
 Theorem DIVIDES_0:
   ! x . x divides 0
