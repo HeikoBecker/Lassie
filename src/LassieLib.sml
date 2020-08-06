@@ -6,12 +6,10 @@
 structure LassieLib =
 struct
 
-  open Abbrev Tactical Manager;
+  open Abbrev Tactical Manager proofManagerLib;
   open LassieUtilsLib LassieParserLib;
 
   exception LassieException of string;
-
-  datatype SempreParse = Tactic of tactic | Command of unit -> proof;
 
   type sempre_response =
     { formula: string,
@@ -40,7 +38,6 @@ struct
   val LASSIEDIR =
     let val lDir = getOSVar "LASSIEDIR" in
     if (endsWith lDir #"/") then lDir else (lDir ^ "/") end;
-  (* val socketPath = LASSIEDIR ^ "sempre/interactive/sempre-out-socket.sml"; *)
   val historyPath = LASSIEDIR ^ "sempre/interactive/last-sempre-output.sml";
 
   (**************************************)
@@ -144,9 +141,9 @@ struct
       |> strip_quotmark |> explode |> List.rev |> implode
       |> String.map (fn c => if (c = #"$") then #" " else c)
     val _ = if !logging then (print "\n"; print cleanedResponse; print "\n") else ();
-    val tac = LassieParserLib.parse cleanedResponse;
+    val res = LassieParserLib.parse cleanedResponse;
   in
-    { formula= theFormula, result = Tactic tac}
+    { formula= theFormula, result = res}
   end;
 
   (* send a NL query to sempre and return at least a derivation *)
@@ -187,7 +184,7 @@ struct
               val t = sempre theString;
             in
               case #result t of
-              Tactic t => ("",tac THEN t)
+              HOLTactic t => ("",tac THEN t)
               | Command c => raise LassieException "Command found during tactic"
             end
           else (strAcc ^ " " ^ str, tac)) ("", ALL_TAC) theStrings)
@@ -264,6 +261,8 @@ struct
     in
       () end;
 
+  (** Jargon Management **)
+
   fun registerJargon (name:string) (loader:unit->unit) =
     knownJargon := (name, loader):: !knownJargon;
 
@@ -271,7 +270,7 @@ struct
 
   fun loadJargon (n:string) = (map (fn (s,f) => if s = n then f() else ()) (!knownJargon); ());
 
-(*
+  (** Interactive mode **)
   local
     fun printHelp () =
       (
@@ -307,6 +306,7 @@ struct
           | SOME s => LassieUtilsLib.preprocess (s ^ (getAll (TextIO.stdIn)))
         val theTrueText =
           LassieUtilsLib.preprocess theText
+        val _ = (print"Start:";print theTrueText)
       in
         (* Handle exit keyword separately TODO: Make command? *)
         if (theTrueText = "exit;\n")
@@ -325,16 +325,15 @@ struct
                               (fn x => if ((x = #"\n") orelse (x = #";")) then "" else implode [x])
                               theTrueText;
             (* Get a tactic from SEMPRE *)
-            val res = theString |> sempre |> fst
-            val theTactic = #value res;
+            val res = theString |> sempre
+            val theTactic = #formula res;
             val theResult = #result res;
             val _ = case theResult of
                     Command c => SOME (c ())
                     | _ => NONE;
             val _ = case theResult of
-                    Tactic t => et (theTactic, t)
+                    HOLTactic t => et (theTactic, t)
                     | _ => raise LassieException "No valid parse found; Please provide a command or a tactic."
-
             (* first print the current goal *)
             val _  = print "\n";
             val t = proofManagerLib.pp_proof (proofManagerLib.p());
@@ -355,105 +354,5 @@ struct
           end
         end
   end;
-*)
-
-(** UNUSED
-
-  fun showList lst : string =
-    let
-      fun helper l s = foldl (fn (s1,s2) => s2 ^ ", "^ s1) s l
-    in
-      case lst of
-        [] => "[]"
-        | hd::tl => "[ " ^ helper tl hd ^ " ]"
-    end;
-
-  fun printAmbiguities () =
-    case !ambiguityWarning of
-      NONE => ()
-    | SOME (Warning warning) =>
-        let val _ = print
-          ("Warning (ambiguity)-\n   Lassie could not disambiguate the expression\n      `"
-          ^ (#span warning)
-          ^ "`\n   in the description. Possible interpretations include:\n      "
-          ^ showList (#set warning)
-          ^ ".\n   Lassie might be able to parse the description if you are more specific.\n\n")
-        in
-          ambiguityWarning := NONE
-        end;
-
-  (* tell sempre you accepted a derivation; affects future weights *)
-  fun accept (utt, formula) : unit =
-    let
-      fun quot s = "\"" ^ s ^ "\""
-    in
-      writeSempre ("(:accept " ^ (quot (escape utt)) ^ " " ^ (quot (escape formula)) ^ ")")
-    end;
-
-  (* interactively parse utterances, allow for selection of preferred derivation, then evaluation *)
-  (*
-  fun lassie utt : int -> proof =
-    let
-      val _ = print ("Trying to parse `" ^ utt ^ "`...\n\n")
-      val derivations = utt |> sempre |> (fn (hd,tl) => hd::tl)
-      fun dprinter derivs idx =
-        case derivs of
-          [] => ()
-          | d::ds => (print ("\nDerivation [" ^ Int.toString idx ^ "]:\n"
-               ^ "\tFormula: " ^ simplifyAbsoluteNames (#formula d) ^ "\n"
-               ^ "\tValue: " ^ (normalize (#value d)) ^ "\n\n");
-              dprinter ds (idx + 1))
-    in
-      dprinter derivations 1; (* if no index is given, just print the derivations *)
-      fn (idx : int) =>
-        if idx > length derivations orelse idx < 1
-          then raise LassieException "Derivation index out of bounds"
-          else
-            let
-              val d = List.nth (derivations, (idx - 1))
-            in
-              accept (utt, #formula d);
-              print ("Accepted derivation [" ^ Int.toString idx ^ "]\n");
-              case #result d of
-              Command c => c ()
-              | Tactic t => proofManagerLib.e t
-            end
-    end;
-
-  (*
-  fun nltacl uttl : tactic =
-    case uttl of
-      [] => ALL_TAC
-      | utt::tail => (nltac utt) THEN (nltacl tail);
-  *)
-
-(*
-  (* define an utterance in terms of a list of utterances*)
-  fun def (tac:'a frag list) (tacDescriptions:'a frag list list) : unit =
-    let
-      (* for each utterance of the definition, get its logical form *)
-      fun getFormula u = [u, (u |> sempre |> fst |> #formula |> escape |> escape)]
-      (* formatting *)
-      fun quot s = "\"" ^ s ^ "\""
-      fun quot' s = "\\\"" ^ s ^ "\\\""
-      fun list2string l = "[" ^ (String.concatWith "," l) ^ "]"
-
-      val definiens =
-        tacDescriptions
-              |> (map (fn q => case q of [QUOTE s] => preprocess s | _ => ""))
-              |> (fn sl => if (!logging) then (map (fn s => print (s^"\n")) sl; sl) else sl)
-              |> (map getFormula)
-              |> (map (map quot'))
-              |> (map list2string)
-              |> list2string
-      val ndum = case tac of [QUOTE s] => preprocess s | _ => ""
-      val theDef = "(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")"
-    in
-      if (!logging) then print theDef else ();
-      writeSempre ("(:def " ^ (quot ndum) ^ " " ^ (quot definiens) ^ ")")
-    end;
-*)
-*)
-**)
 
 end

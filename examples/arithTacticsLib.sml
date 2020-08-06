@@ -8,7 +8,6 @@ struct
     let
     fun jargon () =
       let
-        val _ = LassieLib.logging := true;
         val _ = LassieLib.addCustomTactic simp_all "simp_all";
         val _ =
         map (fn (a,b) => (LassieLib.def a [b])) [

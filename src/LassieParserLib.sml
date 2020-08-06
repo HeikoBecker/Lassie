@@ -7,17 +7,20 @@
 structure LassieParserLib =
 struct
 
-  open Abbrev Tactical Manager Conv BoundedRewrites;
+  open Abbrev Tactical Manager Conv BoundedRewrites proofManagerLib;
   open LassieUtilsLib TacticMap;
 
   exception NoParseException of string;
+
+  datatype SempreParse = HOLTactic of tactic | Command of unit -> proof;
 
   val tacticMap = ref TacticMap.stdTree;
 
   val thmModifs = ["Once", "GSYM"];
 
   datatype token =
-    Tac of string
+    Cmd
+    | Tac of string
     | Tacl of string
     | TacComb of string
     | TmComb of string
@@ -49,6 +52,7 @@ struct
     | "," :: strs => SOME (ListSep, strs)
     | "TERMSTART" :: strs => SOME (TermStart, strs)
     | "TERMEND" :: strs => SOME (TermEnd, strs)
+    | "COMMAND" :: strs => SOME (Cmd, strs)
     | s1::[]=> NONE
     | descr::txt::strs =>
       case descr of
@@ -259,12 +263,19 @@ struct
         | _ => (t1, strs1)
       end;
   in
-    fun parse (sempreResp:string) :tactic =
+    fun parse (sempreResp:string) :SempreParse =
       let
         val inp = LassieUtilsLib.string_split sempreResp #" "
         val inp = List.rev (foldl (fn (s,ss) => if s = "" then ss else s::ss) [] inp)
      in
-        fst (parseFull inp)
+      case peek inp of
+      Cmd =>
+        (case inp of
+        cmdkw::cmd::[] =>
+          if cmd = "back" then Command b else raise NoParseException ("Misspecified command\n")
+        | _ => raise NoParseException ("Misspecified command\n"))
+      | _ =>
+        HOLTactic (fst (parseFull inp))
       end;
   end;
 

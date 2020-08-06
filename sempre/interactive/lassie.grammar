@@ -73,7 +73,11 @@
 ###################################
 
 (rule $ROOT ($tactic) (IdentityFn) (anchored 1))
-#(rule $ROOT ($command) (lambda t (call @mark (var t))) (anchored 1))
+(rule $ROOT ($command) (IdentityFn) (anchored 1))
+
+(rule $command
+      (back)
+      (ConstantFn (string "COMMAND$back")) (anchored 1))
 
 ## We can put parentheses around a tactic or a command (Missing: $ROOT $command )
 (for @cat ($tactic)
