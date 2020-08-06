@@ -1,15 +1,13 @@
 open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
-     boolTheory bossLib lcsymtacs;
+     boolTheory bossLib;
 
 open realTheory arithmeticTheory realLib RealArith;
 
-open LassieLib;
+open LassieLib realTacticsLib logicTacticsLib;
 
 val _ = new_theory "caseStudy3IntervalLib";
 
-val rw_th = fn thm => once_rewrite_tac[thm];
-
-QUse.use "realTactics.sml";
+val _ = (LassieLib.loadJargon "Reals"; LassieLib.loadJargon "Logic");
 
 Definition min4_def:
 min4 a b c d = min a (min b (min c d))
@@ -153,11 +151,11 @@ Theorem REAL_INV_LE_ANTIMONO[local]:
 Proof
   LassieLib.nltac `
     introduce variables and assumptions.
-    we show 'inv x < inv y <=> y < x' using (use REAL_INV_LT_ANTIMONO THEN follows trivially).
+    we show 'inv x < inv y <=> y < x' using (use REAL_INV_LT_ANTIMONO TACCOMB$THEN follows trivially).
     case split.
     simplify with [REAL_LE_LT].
     introduce assumptions.
-    follows from [REAL_INV_INJ].`
+    follows from [REAL_INV_INJ]. trivial.`
 QED
 
 Theorem interval_inversion_valid:
@@ -172,26 +170,26 @@ Proof
   introduce assumptions.
   rewrite once [<- REAL_INV_1OVER].`
   >- (
-    LassieLib.nltac `
+    LassieLib.nltac ‘
     rewrite once [ <- REAL_LE_NEG]. we know 'a < 0'. thus 'a <> 0'.
     we know 'r < 0'. thus 'r <> 0'.
-    'inv(-a) <= inv (-r) <=> (- r) <= -a' by (use REAL_INV_LE_ANTIMONO THEN simplify).
-    resolve with REAL_NEG_INV. rewrite assumptions. follows trivially.`)
+    'inv(-a) <= inv (-r) <=> (- r) <= -a' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify).
+    resolve with REAL_NEG_INV. rewrite assumptions. follows trivially.’)
   >- (
     LassieLib.nltac `
     rewrite once [<- REAL_LE_NEG].
     we know 'a < 0'. thus 'a <> 0'. we know 'q <> 0'.
     resolve with REAL_NEG_INV.
-    'inv (-q) <= inv (-a) <=> (-a) <= (-q)' by (use REAL_INV_LE_ANTIMONO THEN simplify THEN trivial).
+    'inv (-q) <= inv (-a) <=> (-a) <= (-q)' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify TACCOMB$THEN trivial).
     rewrite assumptions. follows trivially.`)
   >- (
     LassieLib.nltac `
       rewrite with [<- REAL_INV_1OVER].
-      'inv r <= inv a <=> a <= r' by (use REAL_INV_LE_ANTIMONO THEN trivial).
+      'inv r <= inv a <=> a <= r' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN trivial).
       follows trivially.`)
   \\ LassieLib.nltac `
     rewrite with [<- REAL_INV_1OVER].
-    'inv a <= inv q <=> q <= a' by (use REAL_INV_LE_ANTIMONO THEN trivial).
+    'inv a <= inv q <=> q <= a' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN trivial).
     follows trivially.`
 QED
 

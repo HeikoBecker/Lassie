@@ -25,7 +25,7 @@ struct
           (`simplify`, `THMLISTTAC$fs [ ]`),
           (`simplify with [CONJ_COMM]`, `THMLISTTAC$fs [ CONJ_COMM ]`),
           (* lc aliases *)
-          (`try gen_tac`, `TACL$TRY TAC$gen_tac`),
+          (`try TAC$gen_tac`, `TACL$TRY TAC$gen_tac`),
           (* `try solving with [CONJ_COMM]` [`TRY simp [CONJ_COMM]`]; *)
           (* Textbook style tactics for existentials, modus ponens, ... *)
           (`choose 'e'`, `QUOTTAC$qexists_tac ' e '`),
@@ -43,11 +43,11 @@ struct
           (* subgoals *)
           (`we show first 'T'`, `QUOTTAC$sg 'T'`),
           (`we show next 'T'`, `we show first 'T'`),
-          (`we show 'T' using (gen_tac)`, `'T' TERMCOMB$by TAC$gen_tac`),
+          (`we show 'T' using (TAC$gen_tac)`, `'T' TERMCOMB$by TAC$gen_tac`),
           (`we know 'T'`, `'T' TERMCOMB$by (THMLISTTAC$fs [ ])`),
           (`thus 'T'`, `we know 'T'`),
-          (`'T' using (fs[])`, `'T' TERMCOMB$by (THMLISTTAC$fs [] )`),
-          (`it suffices to show 'T' because (gen_tac)`, `'T' TERMCOMB$suffices_by (TAC$gen_tac)`)
+          (`'T' using (TAC$cheat)`, `'T' TERMCOMB$by (TAC$cheat)`),
+          (`it suffices to show 'T' because (TAC$gen_tac)`, `'T' TERMCOMB$suffices_by (TAC$gen_tac)`)
         ]
       in () end;
   in

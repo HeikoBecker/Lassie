@@ -20,7 +20,9 @@ struct
             (`introduce assumptions`, `TACL$rpt TAC$strip_tac`),
             (`introduce variables and assumptions`, `TACL$rpt TAC$strip_tac`),
           (* Custom tactic *)
-           (`rewrite last assumption`, `ASMTESTTAC$pop_assum THMTAC$rw_th`)
+            (`rewrite last assumption`, `ASMTESTTAC$pop_assum THMTAC$rw_th`),
+            (‘trivial’, ‘TAC$REAL_ASM_ARITH_TAC’),
+            (`we know 'T'`, `'T' TERMCOMB$by (TAC$REAL_ASM_ARITH_TAC)`)
           ]
         in () end
     in

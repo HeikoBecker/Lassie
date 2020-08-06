@@ -1,15 +1,13 @@
 open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
-     boolTheory bossLib lcsymtacs arithmeticTheory;
+     boolTheory bossLib arithmeticTheory;
 
 open realTheory arithmeticTheory realLib RealArith;
 
-open LassieLib;
+open LassieLib logicTacticsLib;
 
 val _ = new_theory "caseStudy4NaprochePowerset";
 
-LassieLib.LASSIESEP := ";";
-
-QUse.use "logicTactics.sml";
+val _ = (LassieLib.LASSIESEP := ";"; LassieLib.loadJargon "Logic");
 
 Definition not_in_f_def:
   not_in_f f = \x . ~ (x IN (f x))
