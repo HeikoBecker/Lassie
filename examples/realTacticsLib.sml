@@ -21,6 +21,7 @@ struct
             (`introduce variables and assumptions`, `TACL$rpt TAC$strip_tac`),
           (* Custom tactic *)
             (`rewrite last assumption`, `ASMTESTTAC$pop_assum THMTAC$rw_th`),
+            (`rewrite ADD_ASSOC for 'n'`, `QUOTSPECTHMTAC$qspec_then 'n' THMTAC$rw_th ADD_ASSOC`),
             (‘trivial’, ‘TAC$REAL_ASM_ARITH_TAC’),
             (`we know 'T'`, `'T' TERMCOMB$by (TAC$REAL_ASM_ARITH_TAC)`)
           ]

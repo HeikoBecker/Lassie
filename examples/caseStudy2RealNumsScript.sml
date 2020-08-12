@@ -1,15 +1,13 @@
 open BasicProvers Defn HolKernel Parse Conv SatisfySimps Tactic monadsyntax
-     boolTheory bossLib lcsymtacs;
+     boolTheory bossLib;
 
 open realTheory arithmeticTheory realLib RealArith;
 
-open LassieLib;
+open LassieLib realTacticsLib logicTacticsLib;
 
 val _ = new_theory "caseStudy2RealNums";
 
-val rw_th = fn thm => once_rewrite_tac[thm];
-
-QUse.use "realTactics.sml";
+val _ = (LassieLib.loadJargon "Reals"; LassieLib.loadJargon "Logic");
 
 Theorem binom1:
   ! (a b:real). (a + b) pow 2 = a pow 2 + 2 * a * b + b pow 2
@@ -72,7 +70,7 @@ End
 Theorem gaussian_sum:
   ! n. (sum n = (((&n):real) * (1 + &n)) / 2)
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac ‘
     induction on 'n'. simplify with [sum_def, REAL_DIV_LZERO, MULT].
     rewrite MULT_SYM for 'n'.
     we show 'SUC n + 1 = SUC (SUC n)' using (simplify).
@@ -89,7 +87,7 @@ Proof
     rewrite with [GSYM REAL_MUL, GSYM REAL_ADD, GSYM REAL_DIV_ADD].
     rewrite with [real_div].
     simplify with [GSYM REAL_MUL_ASSOC, REAL_MUL_RINV].
-    simplify with [REAL_MUL_ASSOC].`
+    simplify with [REAL_MUL_ASSOC].’
   (* Induct_on `n`
   \\ fs[sum_def, REAL_DIV_LZERO]
   \\ pop_assum (fn thm=> once_rewrite_tac [GSYM thm] \\ assume_tac thm)
@@ -136,31 +134,34 @@ QED
 Theorem sum_of_cubes_is_squared_sum:
   ! n. sum_of_cubes n = (sum n) pow 2
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac ‘
     induction on 'n'.
-    simplify with [sum_of_cubes_def, sum_def, POW_2].
-    rewrite with [REAL_LDISTRIB, REAL_RDISTRIB, REAL_ADD_ASSOC].
+    simplify conclusion with [sum_of_cubes_def, sum_def].
+    rewrite with [POW_2, REAL_LDISTRIB, REAL_RDISTRIB, REAL_ADD_ASSOC].
     it suffices to show '&SUC n pow 3 = &SUC n * &SUC n + &SUC n * sum n + sum n * &SUC n'
-      because (simplify with [REAL_EQ_LADD]).
+      because (simplify conclusion with [REAL_EQ_LADD]).
     we know '& SUC n * sum n + sum n * &SUC n = 2 * (sum n * & SUC n)'.
     rewrite once [<- REAL_ADD_ASSOC].
     rewrite last assumption.
-    simplify with [pow_3].
-    rewrite with [gaussian_sum, real_div, REAL_MUL_ASSOC].
+    rewrite with [pow_3, gaussian_sum, real_div, REAL_MUL_ASSOC].
     we know '2 * &n * (1 + &n) * inv 2 = 2 * inv 2 * & n * (1 + &n)'.
     rewrite last assumption.
-    simplify with [REAL_MUL_RINV].
-    we show 'n + 1 = SUC n' using (simplify).
-    rewrite last assumption. simplify.
-    we show '3 = SUC (SUC (SUC 0)) and 2 = (SUC (SUC 0))' using (simplify).
+    simplify conclusion with [REAL_MUL_RINV].
+    we show 'n + 1 = SUC n' using (simplify conclusion).
+    rewrite last assumption. simplify conclusion.
+    we show '2 = (SUC (SUC 0))' using (simplify conclusion).
     rewrite last assumption. rewrite last assumption.
     rewrite with [EXP].
-    we show 'SUC n = n + 1' using (simplify).
+    we show 'SUC n = n + 1' using (simplify conclusion).
     rewrite last assumption.
-    rewrite with [MULT_RIGHT_1, RIGHT_ADD_DISTRIB, LEFT_ADD_DISTRIB, MULT_LEFT_1].`
+    rewrite with [GSYM REAL_OF_NUM_ADD, pow_3].
+    rewrite with [REAL_OF_NUM_ADD, REAL_OF_NUM_MUL, MULT_RIGHT_1,
+                  RIGHT_ADD_DISTRIB, LEFT_ADD_DISTRIB, MULT_LEFT_1].
+    simplify.’
 QED
 
 (*
+Induct_on ‘n’ \\ simp [sum_of_cubes_def, sum_def, ]
     \\ fs[pow_3]
     \\ once_rewrite_tac [REAL_ADD_ASSOC]
     \\ pop_assum rw_th

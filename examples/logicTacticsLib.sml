@@ -24,6 +24,8 @@ struct
           (* Simplification *)
           (`simplify`, `THMLISTTAC$fs [ ]`),
           (`simplify with [CONJ_COMM]`, `THMLISTTAC$fs [ CONJ_COMM ]`),
+          (`simplify conclusion`, `THMLISTTAC$simp [ ]`),
+          (`simplify conclusion with [CONJ_COMM]`, `THMLISTTAC$simp [ CONJ_COMM ]`),
           (* lc aliases *)
           (`try TAC$gen_tac`, `TACL$TRY TAC$gen_tac`),
           (* `try solving with [CONJ_COMM]` [`TRY simp [CONJ_COMM]`]; *)

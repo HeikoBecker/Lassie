@@ -60,4 +60,4 @@ Define N = { x in M | x is not an element of f[x] }.
 Then N is not equal to the value of f at any element of M.
 Contradiction. qed. *)
 
-val _ = export_theory;
+val _ = export_theory();
