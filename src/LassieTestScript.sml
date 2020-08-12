@@ -13,7 +13,7 @@ val t = LassieLib.nltac ‘QUOTTAC$Cases_on ' x '.’
 
 val t = LassieLib.nltac ‘THMLISTTAC$fs [ arithmeticTheory.ADD_ASSOC ].’
 
-val t = LassieLib.def "test123" ["TAC$cheat"];
+val t = LassieLib.def `test123` [`TAC$cheat`];
 
 val t = LassieLib.nltac ‘test123.’;
 
@@ -21,7 +21,7 @@ val t = LassieLib.nltac ‘THMTAC$imp_res_tac test.’;
 
 val t = LassieLib.nltac ‘(QUOTSPECTHMTAC$qspec_then ' x ' THMTAC$irule test).’
 
-val t = LassieLib.def "resolve_with test" ["THMTAC$imp_res_tac test"];
+val t = LassieLib.def `resolve_with test` [`THMTAC$imp_res_tac test`];
 
 val t = LassieLib.nltac ‘resolve_with CONJ_COMM.’;
 

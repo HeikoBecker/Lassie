@@ -13,7 +13,8 @@ struct
 
   type sempre_response =
     { formula: string,
-      result: SempreParse};
+      result: SempreParse,
+      descr: string};
 
   type ambiguity_warning =
     { set : string list,
@@ -91,7 +92,6 @@ struct
       val _ = lastUtterance := cmd
       val _ = if !logging then (print "Writing "; print cmd; print "\n") else ()
       val _ = TextIO.output(!outstream, cmd ^ "\n")
-      val _ = TextIO.flushOut(!outstream)
     in
       ()
     end;
@@ -143,7 +143,7 @@ struct
     val _ = if !logging then (print "\n"; print cleanedResponse; print "\n") else ();
     val res = LassieParserLib.parse cleanedResponse;
   in
-    { formula= theFormula, result = res}
+    { formula= theFormula, result = fst res, descr = snd res}
   end;
 
   (* send a NL query to sempre and return at least a derivation *)
@@ -310,13 +310,13 @@ struct
         val _ = (print"Start:";print theTrueText)
       in
         (* Handle exit keyword separately TODO: Make command? *)
-        if (theTrueText = "exit;\n")
+        if (theTrueText = "exit;")
         then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
         (* Handle pause keyword separately TODO: Make command? *)
-        else if (theTrueText = "pause;\n")
+        else if (theTrueText = "pause;")
         then (print "Pausing proof.\nReturn with LassieLib.proveVerbose().\n")
         (* help keyword *)
-        else if (theTrueText = "help;\n")
+        else if (theTrueText = "help;")
         then (printHelp(); proveVerbose())
         (* Proof step or command was given, parse with SEMPRE *)
         else
@@ -327,7 +327,7 @@ struct
                               theTrueText;
             (* Get a tactic from SEMPRE *)
             val res = theString |> sempre
-            val theTactic = #formula res;
+            val theTactic = #descr res;
             val theResult = #result res;
             val _ = case theResult of
                     Command c => SOME (c ())
