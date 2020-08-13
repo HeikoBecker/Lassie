@@ -300,7 +300,7 @@ struct
     fun proveVerbose () =
       let
         (* Set up prompt; wait for input *)
-        val _ = print LASSIEPROMPT;
+        val _ = print ("\n"^LASSIEPROMPT);
         val theText =
           case (TextIO.inputLine (TextIO.stdIn)) of
           NONE => raise LassieException "Error getting input"
@@ -339,7 +339,6 @@ struct
             val _  = print "\n";
             val t = proofManagerLib.pp_proof (proofManagerLib.p());
             val _ = PolyML.prettyPrint (print, 80) t;
-            val _  = print "\n";
             (*
             val done =
               (let val _ = proofManagerLib.top_goal(); in false end
