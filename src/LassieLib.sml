@@ -23,6 +23,9 @@ struct
   datatype AmbiguityWarning =
     Warning of ambiguity_warning;
 
+  datatype GoalPart =
+    All | Sub of int;
+
   val map = List.map
   fun mem x l = List.exists (fn x' => x = x') l
   val LASSIEPROMPT = "|>";
@@ -173,22 +176,27 @@ struct
           raise LassieException "Tactics must end with LASSIESEP"
         else ();
       val theStrings = LassieUtilsLib.string_split uttStr #" ";
+      val ltac =
+        #3 (List.foldl (fn (str, (strAcc, goalpos, tac)) =>
+            if (String.isSuffix (! LASSIESEP) str) then
+              (let
+                val theString = strAcc ^ " " ^ (removeTrailing (! LASSIESEP) str);
+                val t = sempre theString;
+              in
+                case #result t of
+                HOLTactic t =>
+                  (case goalpos of
+                  All => ("", goalpos, (tac THEN_LT ALLGOALS t))
+                  | Sub i => ("", goalpos, tac THEN_LT NTH_GOAL t i))
+                | Subgoal n => ("", Sub n, tac)
+                | Command c => raise LassieException "Command found during tactic"
+              end)
+              (* The Lassie separator was a HOL4 level token *)
+              handle LassieException diag =>
+                (strAcc ^ " " ^ str, goalpos, tac)
+            else (strAcc ^ " " ^ str, goalpos, tac)) ("", All, ALL_TAC) theStrings)
     in
-      (snd (List.foldl (fn (str, (strAcc, tac)) =>
-          if (String.isSuffix (! LASSIESEP) str) then
-            (let
-              val theString = strAcc ^ " " ^ (removeTrailing (! LASSIESEP) str);
-              val t = sempre theString;
-            in
-              case #result t of
-              HOLTactic t => ("", fn tac2 => (tac t THEN tac2))
-              | Subgoal n => ("", fn tac2 => ((tac ALL_TAC) THEN_LT NTH_GOAL tac2 n))
-              | Command c => raise LassieException "Command found during tactic"
-            end)
-            (* The Lassie separator was a HOL4 level token *)
-            handle LassieException diag =>
-              (strAcc ^ " " ^ str, tac)
-          else (strAcc ^ " " ^ str, tac)) ("", fn t => t) theStrings)) ALL_TAC
+      ltac
     end;
 
   (* define an utterance in terms of a list of utterances*)
