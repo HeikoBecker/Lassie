@@ -211,14 +211,11 @@ Proof
   LassieLib.nltac ‘
     Complete Induction on 'n';
     rewrite [];
-    perform a case split for 'prime n';’
-  >- (
-    LassieLib.nltac `
-      follows from [DIVIDES_REFL];`)
-  >- (
-    LassieLib.nltac `
-      show '?x. x divides n and x <> 1 and x <> n' using (follows from [prime_def]);
-      follows from [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0];`)
+    perform a case split for 'prime n';
+    Goal 1; follows from [DIVIDES_REFL];
+    Goal 1;
+      show '? x. x divides n and x <> 1 and x <> n' using (follows from [prime_def]);
+      follows from [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0];’
   (*
    completeInduct_on `n`
    >> rw  []

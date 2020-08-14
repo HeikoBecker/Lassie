@@ -12,7 +12,10 @@ struct
 
   exception NoParseException of string;
 
-  datatype SempreParse = HOLTactic of tactic | Command of unit -> proof;
+  datatype SempreParse =
+    HOLTactic of tactic
+    | Command of unit -> proof
+    | Subgoal of int;
 
   val tacticMap = ref TacticMap.stdTree;
 
@@ -20,6 +23,7 @@ struct
 
   datatype token =
     Cmd
+    | Subg of int
     | Tac of string
     | Tacl of string
     | TacComb of string
@@ -68,6 +72,10 @@ struct
       | "QUOTSPECTHMTAC" => SOME (QuotSpecThmTac txt, strs)
       | "QUOTLISTSPECTHMTAC" => SOME (QuotListSpecThmTac txt, strs)
       | "THM" => SOME (Thm txt, strs)
+      | "GOAL" =>
+        (case Int.fromString txt of
+        NONE => NONE
+        | SOME i => SOME (Subg i, strs))
       | s => if (List.exists (fn a => a = s) thmModifs) then
               SOME (ThmModif s, txt::strs)
               else NONE;
@@ -316,6 +324,8 @@ struct
         cmdkw::cmd::[] =>
           if cmd = "back" then (Command b,"") else raise NoParseException ("Misspecified command\n")
         | _ => raise NoParseException ("Misspecified command\n"))
+      | Subg n =>
+        (Subgoal n, "Subgoal " ^ (Int.toString n))
       | _ =>
         let val res = parseFull inp in
         ((HOLTactic (#2 res)),#1res)

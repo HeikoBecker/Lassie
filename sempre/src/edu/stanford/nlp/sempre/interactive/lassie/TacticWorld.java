@@ -56,6 +56,7 @@ public class TacticWorld {
         if (fn.equals("") || arg.equals("")) return "";
         return fn + " " + arg;
     }
+
     public static String then(String tac1, String tac2) {
         if (tac1.equals("") || tac2.equals("")) return "";
         return tac1 + " \\ " + tac2;
@@ -83,6 +84,10 @@ public class TacticWorld {
     public static String op(String operator, String arg1, String arg2) {
         if (operator.equals("") || arg1.equals("") || arg2.equals("")) return "";
         return arg1 + " " + operator + " " + arg2;
+    }
+
+    public static String goal(String num) {
+        return "GOAL" + " " + num;
     }
 
     public static Set<String> fromFeature(String f) {

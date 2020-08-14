@@ -31,6 +31,7 @@ val t = LassieLib.nltac ‘TAC$cheat TACCOMB$THEN TAC$cheat.’
 
 val t = LassieLib.nltac ‘' T ' TERMCOMB$by TAC$cheat.’
 
+val t = LassieLib.nltac ‘Goal 1. TAC$cheat.’
 (*
 val _ = LassieLib.nltac `Cases.`;
 val _ = LassieLib.nltac `rpt Cases.`;

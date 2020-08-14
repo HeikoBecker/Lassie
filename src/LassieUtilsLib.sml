@@ -208,7 +208,10 @@ fun rejoin_pars [] = [] |
         if (String.isPrefix "(*#loc" (stripSpaces (explode (hd (strs)))))
         then tl (strs)
         else strs
-      val noBreaks = List.map (String.translate (fn s => if s = #"\n" then "" else implode [s])) remainder
+      val noBreaks =
+        List.map (String.translate
+          (fn c => if c = #"\n" then " " else if Char.isCntrl c then "" else implode [c]))
+          remainder
       val res =
         if String.isPrefix " " (hd noBreaks)
         then String.concatWith ")" (stripSpaces (explode (hd noBreaks)) :: (tl noBreaks))

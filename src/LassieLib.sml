@@ -164,30 +164,28 @@ struct
   (* parse and return most likely tactic *)
   fun nltac (utt:'a frag list) : tactic=
     let
-     val uttStr1 =
+     val uttStr =
         case utt of
         [QUOTE s] => LassieUtilsLib.preprocess s
-        | _ => raise LassieException "";
-      val uttStr =
-        String.translate
-          (fn c => if c = #"\n" then " " else if Char.isCntrl c then "" else implode [c]) uttStr1;
+        | _ => raise LassieException "Illegal input to nltac";
       val _ =
         if (not (String.isSuffix (! LASSIESEP) uttStr)) then
           raise LassieException "Tactics must end with LASSIESEP"
         else ();
       val theStrings = LassieUtilsLib.string_split uttStr #" ";
     in
-      snd (List.foldl (fn (str, (strAcc, tac)) =>
+      (snd (List.foldl (fn (str, (strAcc, tac)) =>
           if (String.isSuffix (! LASSIESEP) str) then
             let
               val theString = strAcc ^ " " ^ (removeTrailing (! LASSIESEP) str);
               val t = sempre theString;
             in
               case #result t of
-              HOLTactic t => ("",tac THEN t)
+              HOLTactic t => ("", fn tac2 => (tac t THEN tac2))
+              | Subgoal n => ("", fn tac2 => ((tac ALL_TAC) THEN_LT NTH_GOAL tac2 n))
               | Command c => raise LassieException "Command found during tactic"
             end
-          else (strAcc ^ " " ^ str, tac)) ("", ALL_TAC) theStrings)
+          else (strAcc ^ " " ^ str, tac)) ("", fn t => t) theStrings)) ALL_TAC
     end;
 
   (* define an utterance in terms of a list of utterances*)

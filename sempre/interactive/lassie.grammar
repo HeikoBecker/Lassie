@@ -46,6 +46,7 @@
  ################################################################
 (def @int2string edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.int2string)
 (def @app edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.app)
+(def @goal edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.goal)
 (def @infix edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.infix)
 (def @then edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.then)
 (def @then1 edu.stanford.nlp.sempre.interactive.lassie.TacticWorld.then1)
@@ -194,6 +195,12 @@
 (rule $termquotationlist ([ ]) (ConstantFn (call @list (string " "))) (anchored 1))
 (rule $termquotationlist ([]) (ConstantFn (call @list (string " "))) (anchored 1))
 
+(rule $tactic (Goal $int) (lambda n (call @goal (var n))) (anchored 1))
+
+### Other
+(rule $Number ($TOKEN) (NumberFn) (anchored 1))
+(rule $int ($Number) (lambda n (call @int2string (var n))) (anchored 1))
+
 ## tactic combinators
 #(rule $tactic->tactic->tactic
 #  ($TOKEN)
@@ -232,7 +239,4 @@
 #      (back)
 #      (ConstantFn (string "(b)")) (anchored 1))
 #
-### Other
-#(rule $Number ($TOKEN) (NumberFn) (anchored 1))
-#(rule $int ($Number) (lambda n (call @int2string (var n))) (anchored 1))
 #
