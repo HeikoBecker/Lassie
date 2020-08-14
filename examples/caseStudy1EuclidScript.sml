@@ -203,19 +203,17 @@ QED
 (* a contradiction with the fact that x is not 1 or n.                       *)
 (*---------------------------------------------------------------------------*)
 
-val _ = LassieLib.LASSIESEP := ";";
-
 Theorem PRIME_FACTOR:
   !n . ~(n = 1) ==> ?p . prime p /\ p divides n
 Proof
   LassieLib.nltac ‘
-    Complete Induction on 'n';
-    rewrite [];
-    perform a case split for 'prime n';
-    Goal 1; follows from [DIVIDES_REFL];
-    Goal 1;
-      show '? x. x divides n and x <> 1 and x <> n' using (follows from [prime_def]);
-      follows from [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0];’
+    Complete Induction on 'n'.
+    rewrite [].
+    perform a case split for 'prime n'.
+    Goal 1. follows from [DIVIDES_REFL].
+    Goal 1.
+      show '? x. x divides n and x <> 1 and x <> n' using (follows from [prime_def]).
+      follows from [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0].’
   (*
    completeInduct_on `n`
    >> rw  []
@@ -226,8 +224,6 @@ Proof
                DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0]] *)
 QED
 
-val _ = LassieLib.LASSIESEP := ".";
-
 (*---------------------------------------------------------------------------*)
 (* In the following proof, metis_tac automatically considers cases on        *)
 (* whether n is prime or not.                                                *)
@@ -236,10 +232,10 @@ val _ = LassieLib.LASSIESEP := ".";
 Theorem PRIME_FACTOR:
  !n . n<>1 ==> ?p . prime p /\ p divides n
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac ‘
     Complete Induction on 'n'.
     follows from [DIVIDES_REFL,prime_def,LESS_OR_EQ, PRIME_2,
-             DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0].`
+             DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0].’
   (*
   completeInduct_on `n` >>
   metis_tac [DIVIDES_REFL,prime_def,LESS_OR_EQ, PRIME_2,
@@ -258,22 +254,20 @@ QED
 
 val neq_zero = curry save_thm "neq_zero" (DECIDE ``~(x=0) = (0 < x)``);
 
-val _ = LassieLib.LASSIESEP := ";";
-
 Theorem EUCLID:
   !n . ?p . n < p /\ prime p
 Proof
   LassieLib.nltac‘
-    suppose not; simplify;
-    we can derive 'FACT n + 1 <> 1' from [FACT_LESS, neq_zero];
-    thus PRIME_FACTOR for 'FACT n + 1';
-    we further know '?q. prime q and q divides (FACT n + 1)';
-    show 'q <= n' using (suppose not TACCOMB$THEN trivial using [NOT_LESS_EQUAL]);
-    show '0 < q' using (follows from [PRIME_POS]);
-    show 'q divides FACT n' using (follows from [DIVIDES_FACT]);
-    show 'q=1' using (follows from [DIVIDES_ADDL, DIVIDES_ONE]);
-    show 'prime 1' using (simplify);
-    follows from [NOT_PRIME_1];’
+    suppose not. simplify.
+    we can derive 'FACT n + 1 <> 1' from [FACT_LESS, neq_zero].
+    thus PRIME_FACTOR for 'FACT n + 1'.
+    we further know '?q. prime q and q divides (FACT n + 1)'.
+    show 'q <= n' using (suppose not TACCOMB$THEN trivial using [NOT_LESS_EQUAL]).
+    show '0 < q' using (follows from [PRIME_POS]).
+    show 'q divides FACT n' using (follows from [DIVIDES_FACT]).
+    show 'q=1' using (follows from [DIVIDES_ADDL, DIVIDES_ONE]).
+    show 'prime 1' using (simplify).
+    follows from [NOT_PRIME_1].’
   (*
   spose_not_then strip_assume_tac
    >> mp_tac (SPEC ``FACT n + 1`` PRIME_FACTOR)

@@ -58,9 +58,10 @@ Proof
   \\ simp[REAL_DOUBLE, GSYM REAL_NEG_LMUL, GSYM REAL_NEG_RMUL, REAL_MUL_ASSOC] *)
 QED
 
-val sum_of_cubes_def = Define `
+Definition sum_of_cubes_def:
   (sum_of_cubes 0 = 0:real) /\
-  (sum_of_cubes (SUC n) = (&(SUC n)) pow 3 + sum_of_cubes n)`;
+  (sum_of_cubes (SUC n) = (&(SUC n)) pow 3 + sum_of_cubes n)
+End
 
 Definition sum_def:
   (sum 0 = 0:real) /\

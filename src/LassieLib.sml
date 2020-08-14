@@ -176,7 +176,7 @@ struct
     in
       (snd (List.foldl (fn (str, (strAcc, tac)) =>
           if (String.isSuffix (! LASSIESEP) str) then
-            let
+            (let
               val theString = strAcc ^ " " ^ (removeTrailing (! LASSIESEP) str);
               val t = sempre theString;
             in
@@ -184,7 +184,10 @@ struct
               HOLTactic t => ("", fn tac2 => (tac t THEN tac2))
               | Subgoal n => ("", fn tac2 => ((tac ALL_TAC) THEN_LT NTH_GOAL tac2 n))
               | Command c => raise LassieException "Command found during tactic"
-            end
+            end)
+            (* The Lassie separator was a HOL4 level token *)
+            handle LassieException diag =>
+              (strAcc ^ " " ^ str, tac)
           else (strAcc ^ " " ^ str, tac)) ("", fn t => t) theStrings)) ALL_TAC
     end;
 

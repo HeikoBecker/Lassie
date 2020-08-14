@@ -7,18 +7,18 @@ open LassieLib logicTacticsLib;
 
 val _ = new_theory "caseStudy4NaprochePowerset";
 
-val _ = (LassieLib.LASSIESEP := ";"; LassieLib.loadJargon "Logic");
+val _ = LassieLib.loadJargon "Logic";
 
 Theorem cantor:
  ∀ f:'a -> ('a -> bool).
   ~ (∀ y:'a -> bool. ∃ x:'a. f x = y)
 Proof
   LassieLib.nltac ‘
-    assume the contrary; simplify;
-    we know '∃ x. f x = λ x . ~ (x IN (f x))';
-    simplify;
-    case split for 'x IN f x';
-    simplify with [IN_DEF]; trivial;’
+    assume the contrary. simplify.
+    we know '∃ x. f x = λ x . ~ (x IN (f x))'.
+    simplify.
+    case split for 'x IN f x'.
+    simplify with [IN_DEF]. trivial.’
   (* CCONTR_TAC \\ fs[]
   \\ first_x_assum (qspec_then `\ x. ~ (x IN (f x))` assume_tac)
   \\ fs[]
