@@ -188,7 +188,7 @@ struct
                   (case goalpos of
                   All => ("", goalpos, (tac THEN_LT ALLGOALS t))
                   | Sub i => ("", goalpos, tac THEN_LT NTH_GOAL t i))
-                | Subgoal n => ("", Sub n, tac)
+                | Subgoal n => if n = ~1 then ("", All, tac) else ("", Sub n, tac)
                 | Command c => raise LassieException "Command found during tactic"
               end)
               (* The Lassie separator was a HOL4 level token *)

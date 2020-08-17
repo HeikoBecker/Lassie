@@ -159,38 +159,37 @@ Proof
 QED
 
 Theorem interval_inversion_valid:
-  !iv a.
-    (SND iv < 0 \/ 0 < FST iv) /\ contained a iv ==>
+  ∀ iv a.
+    (SND iv < 0 ∨ 0 < FST iv) ∧ contained a iv ⇒
       contained (inv a) (invertInterval iv)
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac ‘
   introduce variables.
   case split for 'iv'.
   simplify with [contained_def, invertInterval_def].
   introduce assumptions.
-  rewrite once [<- REAL_INV_1OVER].`
-  >- (
-    LassieLib.nltac ‘
+  rewrite once [<- REAL_INV_1OVER].
+  Goal 1.
     rewrite once [ <- REAL_LE_NEG]. we know 'a < 0'. thus 'a <> 0'.
     we know 'r < 0'. thus 'r <> 0'.
-    'inv(-a) <= inv (-r) <=> (- r) <= -a' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify).
-    resolve with REAL_NEG_INV. rewrite assumptions. follows trivially.’)
-  >- (
-    LassieLib.nltac `
+    'inv(-a) <= inv (-r) <=> (- r) <= -a' using
+      (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify).
+    resolve with REAL_NEG_INV. rewrite assumptions. follows trivially.
+  Goal 1.
     rewrite once [<- REAL_LE_NEG].
     we know 'a < 0'. thus 'a <> 0'. we know 'q <> 0'.
     resolve with REAL_NEG_INV.
-    'inv (-q) <= inv (-a) <=> (-a) <= (-q)' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify TACCOMB$THEN trivial).
-    rewrite assumptions. follows trivially.`)
-  >- (
-    LassieLib.nltac `
-      rewrite with [<- REAL_INV_1OVER].
-      'inv r <= inv a <=> a <= r' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN trivial).
-      follows trivially.`)
-  \\ LassieLib.nltac `
+    'inv (-q) <= inv (-a) <=> (-a) <= (-q)' using
+      (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify TACCOMB$THEN trivial).
+    rewrite assumptions. follows trivially.
+  Goal 1.
+    rewrite with [<- REAL_INV_1OVER].
+    'inv r <= inv a <=> a <= r' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN trivial).
+    follows trivially.
+  Goal 1.
     rewrite with [<- REAL_INV_1OVER].
     'inv a <= inv q <=> q <= a' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN trivial).
-    follows trivially.`
+    follows trivially.’
 QED
 
 val _ = export_theory();

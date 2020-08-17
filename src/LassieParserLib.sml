@@ -57,6 +57,7 @@ struct
     | "TERMSTART" :: strs => SOME (TermStart, strs)
     | "TERMEND" :: strs => SOME (TermEnd, strs)
     | "COMMAND" :: strs => SOME (Cmd, strs)
+    | "ALLGOALS" :: strs => SOME (Subg (~ 1), strs)
     | s1::[]=> NONE
     | descr::txt::strs =>
       case descr of

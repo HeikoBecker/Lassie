@@ -196,6 +196,7 @@
 (rule $termquotationlist ([]) (ConstantFn (call @list (string " "))) (anchored 1))
 
 (rule $tactic (Goal $int) (lambda n (call @goal (var n))) (anchored 1))
+(rule $tactic (End) (ConstantFn (string "ALLGOALS")) (anchored 1))
 
 ### Other
 (rule $Number ($TOKEN) (NumberFn) (anchored 1))
