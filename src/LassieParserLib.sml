@@ -15,7 +15,8 @@ struct
   datatype SempreParse =
     HOLTactic of tactic
     | Command of unit -> proof
-    | Subgoal of int;
+    | Subgoal of int
+    | Termgoal of term frag list;
 
   val tacticMap = ref TacticMap.stdTree;
 
@@ -58,6 +59,7 @@ struct
     | "TERMEND" :: strs => SOME (TermEnd, strs)
     | "COMMAND" :: strs => SOME (Cmd, strs)
     | "ALLGOALS" :: strs => SOME (Subg (~ 1), strs)
+    | "TERMGOAL" :: strs => SOME (Subg (~2), strs)
     | s1::[]=> NONE
     | descr::txt::strs =>
       case descr of
@@ -73,7 +75,7 @@ struct
       | "QUOTSPECTHMTAC" => SOME (QuotSpecThmTac txt, strs)
       | "QUOTLISTSPECTHMTAC" => SOME (QuotListSpecThmTac txt, strs)
       | "THM" => SOME (Thm txt, strs)
-      | "GOAL" =>
+      | "INTGOAL" =>
         (case Int.fromString txt of
         NONE => NONE
         | SOME i => SOME (Subg i, strs))
@@ -326,7 +328,10 @@ struct
           if cmd = "back" then (Command b,"") else raise NoParseException ("Misspecified command\n")
         | _ => raise NoParseException ("Misspecified command\n"))
       | Subg n =>
-        (Subgoal n, "Subgoal " ^ (Int.toString n))
+        if n = ~2 then
+          let val (descr, tm, strs1) = parseTm (snd (Option.valOf (lex inp))) in
+            (Termgoal tm, "Subgoal " ^ descr) end
+        else (Subgoal n, "Subgoal " ^ (Int.toString n))
       | _ =>
         let val res = parseFull inp in
         ((HOLTactic (#2 res)),#1res)

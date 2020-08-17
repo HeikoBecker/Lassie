@@ -86,8 +86,12 @@ public class TacticWorld {
         return arg1 + " " + operator + " " + arg2;
     }
 
-    public static String goal(String num) {
-        return "GOAL" + " " + num;
+    public static String goalInt(String num) {
+        return "INTGOAL" + " " + num;
+    }
+
+    public static String goalTerm(String tm) {
+        return "TERMGOAL" + " " + tm;
     }
 
     public static Set<String> fromFeature(String f) {

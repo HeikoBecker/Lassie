@@ -24,7 +24,7 @@ struct
     Warning of ambiguity_warning;
 
   datatype GoalPart =
-    All | Sub of int;
+    All | Sub of int | Term of term frag list;
 
   val map = List.map
   fun mem x l = List.exists (fn x' => x = x') l
@@ -187,8 +187,10 @@ struct
                 HOLTactic t =>
                   (case goalpos of
                   All => ("", goalpos, (tac THEN_LT ALLGOALS t))
-                  | Sub i => ("", goalpos, tac THEN_LT NTH_GOAL t i))
+                  | Sub i => ("", goalpos, tac THEN_LT NTH_GOAL t i)
+                  | Term tm => ("", goalpos, tac THEN_LT ALLGOALS (TRY (rename1 tm) THEN t)))
                 | Subgoal n => if n = ~1 then ("", All, tac) else ("", Sub n, tac)
+                | Termgoal t => ("", Term t, tac)
                 | Command c => raise LassieException "Command found during tactic"
               end)
               (* The Lassie separator was a HOL4 level token *)
