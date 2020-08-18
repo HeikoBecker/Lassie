@@ -11,7 +11,8 @@ struct
         val _ =
         map (fn (a,b) => (def a [b])) [
           (* Case splitting *)
-          (`case split`, `(TACL$rpt TAC$conj_tac TACCOMB$ORELSE TAC$EQ_TAC) TACCOMB$ORELSE TAC$Cases`),
+          (‘split conjuncts’, ‘TAC$conj_tac TACCOMB$THEN TACL$rpt TAC$conj_tac’),
+          (`case split`, `(split conjuncts) TACCOMB$ORELSE (TAC$EQ_TAC TACCOMB$ORELSE TAC$Cases)`),
           (`case split for 's'`,`QUOTTAC$Cases_on 's'`),
           (`perform a case split`,`case split`),
           (`specialize for 'T'`,`ASMTESTTAC$first_x_assum QUOTSPECTHMTAC$qspec_then ' T ' THMTAC$assume_tac`),
@@ -49,7 +50,9 @@ struct
           (`we know 'T'`, `'T' TERMCOMB$by (THMLISTTAC$fs [ ])`),
           (`thus 'T'`, `we know 'T'`),
           (`'T' using (TAC$cheat)`, `'T' TERMCOMB$by (TAC$cheat)`),
-          (`it suffices to show 'T' because (TAC$gen_tac)`, `'T' TERMCOMB$suffices_by (TAC$gen_tac)`)
+          (`it suffices to show 'T' because (TAC$gen_tac)`, `'T' TERMCOMB$suffices_by (TAC$gen_tac)`),
+          (‘Case 'x'’, ‘Goal 'x'’),
+          (‘TAC$cheat then TAC$cheat’, ‘TAC$cheat TACCOMB$THEN TAC$cheat’)
         ]
       in () end;
   in

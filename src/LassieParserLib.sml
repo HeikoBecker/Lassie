@@ -329,7 +329,9 @@ struct
         | _ => raise NoParseException ("Misspecified command\n"))
       | Subg n =>
         if n = ~2 then
-          let val (descr, tm, strs1) = parseTm (snd (Option.valOf (lex inp))) in
+          let
+            val (_, strs) = Option.valOf (lex inp)
+            val (descr, tm, strs1) = parseTm (snd (Option.valOf (lex inp))) in
             (Termgoal tm, "Subgoal " ^ descr) end
         else (Subgoal n, "Subgoal " ^ (Int.toString n))
       | _ =>

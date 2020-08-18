@@ -24,7 +24,7 @@ struct
     Warning of ambiguity_warning;
 
   datatype GoalPart =
-    All | Sub of int | Term of term frag list;
+    All | Sub of int;
 
   val map = List.map
   fun mem x l = List.exists (fn x' => x = x') l
@@ -164,10 +164,22 @@ struct
   fun removeTrailing str fullStr =
     implode (rev (listStrip (List.rev (explode str)) (List.rev (explode fullStr))));
 
-  (* parse and return most likely tactic *)
-  fun nltac (utt:'a frag list) : tactic=
+  fun find_matching_goal tq gl =
+    let val (id,found) =
+      foldl (fn (g,(id, found)) =>
+        if found then (id,found) else
+          let val _ = rename1 tq g in (id,true) end handle Feedback.HOL_ERR e => (id+1,false))
+        (1, false)
+        gl
+    in
+      if found then id else raise (LassieException "No matching subgoal found")
+    end;
+
+  (* parse and apply most likely tactic *)
+  fun nltac (utt:'a frag list) g : goal list * validation=
     let
-     val uttStr =
+      (* preprocess the input string *)
+      val uttStr =
         case utt of
         [QUOTE s] => LassieUtilsLib.preprocess s
         | _ => raise LassieException "Illegal input to nltac";
@@ -176,29 +188,38 @@ struct
           raise LassieException "Tactics must end with LASSIESEP"
         else ();
       val theStrings = LassieUtilsLib.string_split uttStr #" ";
-      val ltac =
-        #3 (List.foldl (fn (str, (strAcc, goalpos, tac)) =>
-            if (String.isSuffix (! LASSIESEP) str) then
-              (let
-                val theString = strAcc ^ " " ^ (removeTrailing (! LASSIESEP) str);
-                val t = sempre theString;
-              in
-                case #result t of
-                HOLTactic t =>
-                  (case goalpos of
-                  All => ("", goalpos, (tac THEN_LT ALLGOALS t))
-                  | Sub i => ("", goalpos, tac THEN_LT NTH_GOAL t i)
-                  | Term tm => ("", goalpos, tac THEN_LT ALLGOALS (TRY (rename1 tm) THEN t)))
-                | Subgoal n => if n = ~1 then ("", All, tac) else ("", Sub n, tac)
-                | Termgoal t => ("", Term t, tac)
-                | Command c => raise LassieException "Command found during tactic"
-              end)
-              (* The Lassie separator was a HOL4 level token *)
-              handle LassieException diag =>
-                (strAcc ^ " " ^ str, goalpos, tac)
-            else (strAcc ^ " " ^ str, goalpos, tac)) ("", All, ALL_TAC) theStrings)
+      val (gls1,vld1) = ALL_TAC g;
+      val (str, pos, gls, vld) =
+        (List.foldl
+             (fn (str, (strAcc, goalpos, gl, vld)) =>
+                if not (String.isSuffix (! LASSIESEP) str) then
+                  (strAcc ^ " " ^ str, goalpos, gl, vld)
+                else
+                let
+                  val theString = strAcc ^ " " ^ (removeTrailing (! LASSIESEP) str);
+                  val t = sempre theString;
+                in
+                  case #result t of
+                  HOLTactic t =>
+                    (case goalpos of
+                    All =>
+                      let val (gls, vld2) = ALLGOALS t gl in
+                        ("", goalpos, gls, vld o vld2) end
+                    | Sub i =>
+                      let val (gls, vld2) = NTH_GOAL t i gl in
+                        ("", goalpos, gls, vld o vld2) end)
+                  | Subgoal n => if n = ~1 then ("", All, gl, vld) else ("", Sub n, gl, vld)
+                  | Termgoal t =>
+                    let val id = find_matching_goal t gl in
+                      ("", Sub id, gl, vld) end
+                  | Command c => raise LassieException "Command found during tactic"
+                end
+                (* The Lassie separator was a HOL4 level token *)
+                handle LassieException diag =>
+                  (strAcc ^ " " ^ str, goalpos, gl, vld))
+             ("", All, gls1, vld1) theStrings)
     in
-      ltac
+      (gls, vld)
     end;
 
   (* define an utterance in terms of a list of utterances*)

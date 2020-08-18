@@ -143,19 +143,32 @@ proveInteractive();
 introduce variables and assumptions
 we show 'inv x < inv y <=> y < x' using (use REAL_INV_LT_ANTIMONO THEN follows trivially)
 *)
+Theorem nonzerop_EQ1_I'[simp]:
+  0 < r ==> (nonzerop r = 1)
+Proof
+  rw[nonzerop_def]
+QED
+
+val REAL_LE_IMP_LT = curry save_thm "REAL_LE_IMP_LT" (fst (EQ_IMP_RULE (Drule.SPEC_ALL REAL_LE_LT)));
 
 Theorem REAL_INV_LE_ANTIMONO[local]:
   ! x y.
     0 < x /\ 0 < y ==>
     (inv x <= inv y <=> y <= x)
 Proof
-  LassieLib.nltac `
+  LassieLib.nltac ‘
     introduce variables and assumptions.
-    we show 'inv x < inv y <=> y < x' using (use REAL_INV_LT_ANTIMONO TACCOMB$THEN follows trivially).
-    case split.
-    simplify with [REAL_LE_LT].
-    introduce assumptions.
-    follows from [REAL_INV_INJ]. trivial.`
+    we show 'inv x < inv y <=> y < x'
+      using (use REAL_INV_LT_ANTIMONO then follows trivially).
+    case split. introduce assumptions.
+    Case 'inv x ≤ inv y'.
+      resolve with REAL_LE_IMP_LT.
+      Case 'inv x = inv y'. follows from [REAL_INV_INJ]. End.
+      Case 'inv x < inv y'. trivial. End.
+    Case 'y ≤ x'.
+      resolve with REAL_LE_IMP_LT.
+      Case 'y = x'. follows from [REAL_INV_INJ]. End.
+      Case 'y < x'. trivial. End.’
 QED
 
 Theorem interval_inversion_valid:
