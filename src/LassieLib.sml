@@ -328,63 +328,69 @@ struct
       (case TextIO.input1 instream of
       NONE => ""
       | SOME c => implode [c] ^ (getAll instream))
+  fun proofLoop () =
+    let
+      (* Set up prompt; wait for input *)
+      val _ = print ("\n"^LASSIEPROMPT);
+      val theText =
+        case (TextIO.inputLine (TextIO.stdIn)) of
+        NONE => raise LassieException "Error getting input"
+        | SOME s => LassieUtilsLib.preprocess (s ^ (getAll (TextIO.stdIn)))
+      val theTrueText =
+        LassieUtilsLib.preprocess theText
+    in
+      (* Handle exit keyword separately TODO: Make command? *)
+      if (theTrueText = "exit;")
+      then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
+      (* Handle pause keyword separately TODO: Make command? *)
+      else if (theTrueText = "pause;")
+      then (print "Pausing proof.\nReturn with LassieLib.proveVerbose().\n")
+      (* help keyword *)
+      else if (theTrueText = "help;")
+      then (printHelp(); proofLoop())
+      (* Proof step or command was given, parse with SEMPRE *)
+      else
+        let
+          (* Remove semicolons and line-breaks from string *)
+         val theString = String.translate
+                            (fn x => if ((x = #"\n") orelse (x = #";")) then "" else implode [x])
+                            theTrueText;
+          (* Get a tactic from SEMPRE *)
+          val res = theString |> sempre
+          val theTactic = #descr res;
+          val theResult = #result res;
+          val _ = case theResult of
+                  Command c => (c (); ())
+                  | Subgoal _ => (print "Subgoals are not supported in verbose prove mode."; ())
+                  | Termgoal _ => (print "Subgoals are not supported in verbose prove mode."; ())
+                  | HOLTactic t => (et (theTactic, t); ());
+          (* first print the current goal *)
+          val _  = print "\n";
+          val t = proofManagerLib.pp_proof (proofManagerLib.p());
+          val _ = PolyML.prettyPrint (print, 80) t;
+          (*
+          val done =
+            (let val _ = proofManagerLib.top_goal(); in false end
+            handle HOL_ERR _=> true); *)
+        in
+          (*
+          if (done)
+          then (print ("Finished proof;\nPrinting proofscript\n\n" ^
+                      ProofRecorderLib.pp_finished (hd(! ProofRecorderLib.finished)));
+                ProofRecorderLib.reset())
+          else *)
+          (proofLoop())
+        end
+    end
   in
     fun proveVerbose () =
-      let
-        (* Set up prompt; wait for input *)
-        val _ = print ("\n"^LASSIEPROMPT);
-        val theText =
-          case (TextIO.inputLine (TextIO.stdIn)) of
-          NONE => raise LassieException "Error getting input"
-          | SOME s => LassieUtilsLib.preprocess (s ^ (getAll (TextIO.stdIn)))
-        val theTrueText =
-          LassieUtilsLib.preprocess theText
-        val _ = (print"Start:";print theTrueText)
-      in
-        (* Handle exit keyword separately TODO: Make command? *)
-        if (theTrueText = "exit;")
-        then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
-        (* Handle pause keyword separately TODO: Make command? *)
-        else if (theTrueText = "pause;")
-        then (print "Pausing proof.\nReturn with LassieLib.proveVerbose().\n")
-        (* help keyword *)
-        else if (theTrueText = "help;")
-        then (printHelp(); proveVerbose())
-        (* Proof step or command was given, parse with SEMPRE *)
-        else
-          let
-            (* Remove semicolons and line-breaks from string *)
-           val theString = String.translate
-                              (fn x => if ((x = #"\n") orelse (x = #";")) then "" else implode [x])
-                              theTrueText;
-            (* Get a tactic from SEMPRE *)
-            val res = theString |> sempre
-            val theTactic = #descr res;
-            val theResult = #result res;
-            val _ = case theResult of
-                    Command c => SOME (c ())
-                    | _ => NONE;
-            val _ = case theResult of
-                    HOLTactic t => et (theTactic, t)
-                    | _ => raise LassieException "No valid parse found; Please provide a command or a tactic."
-            (* first print the current goal *)
-            val _  = print "\n";
-            val t = proofManagerLib.pp_proof (proofManagerLib.p());
-            val _ = PolyML.prettyPrint (print, 80) t;
-            (*
-            val done =
-              (let val _ = proofManagerLib.top_goal(); in false end
-              handle HOL_ERR _=> true); *)
-          in
-            (*
-            if (done)
-            then (print ("Finished proof;\nPrinting proofscript\n\n" ^
-                        ProofRecorderLib.pp_finished (hd(! ProofRecorderLib.finished)));
-                  ProofRecorderLib.reset())
-            else *)
-            (proveVerbose())
-          end
-        end
+    let
+      val (asms,gl) = proofManagerLib.initial_goal();
+      val _ = proofManagerLib.drop();
+      val _ = proofManagerLib.gt (‘^gl’);
+    in
+      proofLoop()
+    end;
   end;
 
 end
