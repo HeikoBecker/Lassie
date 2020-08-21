@@ -38,75 +38,75 @@
 #########################
 
 # rewriting
-THMLISTTAC$asm_rewrite_tac             type    thm list -> tactic
-THMLISTTAC$rewrite_tac                 type    thm list -> tactic
-THMLISTTAC$once_rewrite_tac            type    thm list -> tactic
-THMLISTTAC$once_asm_rewrite_tac        type    thm list -> tactic
+asm_rewrite_tac             type    thm list -> tactic
+rewrite_tac                 type    thm list -> tactic
+once_rewrite_tac            type    thm list -> tactic
+once_asm_rewrite_tac        type    thm list -> tactic
 
 # simplification
-THMLISTTAC$simp                        type    thm list -> tactic
-THMLISTTAC$fs                          type    thm list -> tactic
-THMLISTTAC$rfs                         type    thm list -> tactic
-THMLISTTAC$rw                          type    thm list -> tactic
+simp                        type    thm list -> tactic
+fs                          type    thm list -> tactic
+rfs                         type    thm list -> tactic
+rw                          type    thm list -> tactic
 
 # thm tactics
-THMTAC$imp_res_tac                     type    thm -> tactic
-THMTAC$assume_tac                      type    thm -> tactic
-THMTAC$irule                           type    thm -> tactic
-THMTAC$drule                           type    thm -> tactic
-THMTAC$match_mp_tac                    type    thm -> tactic
-THMTAC$mp_tac                          type    thm -> tactic
+imp_res_tac                     type    thm -> tactic
+assume_tac                      type    thm -> tactic
+irule                           type    thm -> tactic
+drule                           type    thm -> tactic
+match_mp_tac                    type    thm -> tactic
+mp_tac                          type    thm -> tactic
 
 # automation tactics
-TAC$res_tac                            type    tactic
-THMLISTTAC$metis_tac                   type    thm list -> tactic
-THMLISTTAC$MESON_TAC                   type    thm list -> tactic
+res_tac                            type    tactic
+metis_tac                   type    thm list -> tactic
+MESON_TAC                   type    thm list -> tactic
 
 # pattern based tactics
-ASMMATCHTAC$qpat_x_assum               type    term quotation -> (thm -> tactic) -> tactic
-ASMMATCHTAC$qpat_assum                 type    term quotation -> (thm -> tactic) -> tactic
+qpat_x_assum               type    term quotation -> (thm -> tactic) -> tactic
+qpat_assum                 type    term quotation -> (thm -> tactic) -> tactic
 
 # tacticals
-ASMTESTTAC$first_x_assum               type    (thm -> tactic) -> tactic
-ASMTESTTAC$first_assum                 type    (thm -> tactic) -> tactic
-ASMTESTTAC$last_x_assum                type    (thm -> tactic) -> tactic
-ASMTESTTAC$last_assum                  type    (thm -> tactic) -> tactic
-TACL$rpt                               type    tactic -> tactic
-TACL$TRY                               type    tactic -> tactic
+first_x_assum               type    (thm -> tactic) -> tactic
+first_assum                 type    (thm -> tactic) -> tactic
+last_x_assum                type    (thm -> tactic) -> tactic
+last_assum                  type    (thm -> tactic) -> tactic
+rpt                               type    tactic -> tactic
+TRY                               type    tactic -> tactic
 
 # other
-TAC$Cases                              type    tactic
-TAC$Induct                             type    tactic
-TAC$cheat                              type    tactic
-TAC$gen_tac                            type    tactic
-TAC$strip_tac                          type    tactic
-TAC$conj_tac                           type    tactic
-TAC$all_tac                            type    tactic
-TAC$NO_TAC                             type    tactic
-TAC$EQ_TAC                             type    tactic
-TAC$CCONTR_TAC                         type    tactic
-TAC$AP_TERM_TAC                        type    tactic
-TAC$AP_THM_TAC                         type    tactic
-QUOTTAC$Induct_on                      type    term quotation -> tactic
-QUOTTAC$Cases_on                       type    term quotation -> tactic
-QUOTTAC$completeInduct_on              type    term quotation -> tactic
-QUOTTAC$qexists_tac                    type    term quotation -> tactic
-QUOTTAC$sg                             type    term quotation -> tactic
-QUOTTAC$subgoal                     type    term quotation -> tactic
-QUOTSPECTHMTAC$qspec_then              type    term quotation -> (thm -> tactic) -> thm -> tactic
-QUOTLISTSPECTHMTAC$qspecl_then         type    term quotation list -> (thm -> tactic) -> thm -> tactic
-ASMTESTTAC$pop_assum                   type    (thm -> tactic) -> tactic
-ASMTESTTAC$spose_not_then              type    (thm -> tactic) -> tactic
+Cases                              type    tactic
+Induct                             type    tactic
+cheat                              type    tactic
+gen_tac                            type    tactic
+strip_tac                          type    tactic
+conj_tac                           type    tactic
+all_tac                            type    tactic
+NO_TAC                             type    tactic
+EQ_TAC                             type    tactic
+CCONTR_TAC                         type    tactic
+AP_TERM_TAC                        type    tactic
+AP_THM_TAC                         type    tactic
+Induct_on                      type    term quotation -> tactic
+Cases_on                       type    term quotation -> tactic
+completeInduct_on              type    term quotation -> tactic
+qexists_tac                    type    term quotation -> tactic
+sg                             type    term quotation -> tactic
+subgoal                        type    term quotation -> tactic
+qspec_then                     type    term quotation -> (thm -> tactic) -> thm -> tactic
+qspecl_then                    type    term quotation list -> (thm -> tactic) -> thm -> tactic
+pop_assum                   type    (thm -> tactic) -> tactic
+spose_not_then              type    (thm -> tactic) -> tactic
 rename                                 type    term quotation list -> tactic
 ntac                        type    int -> tactic -> tactic
-TERMCOMB$by                          type    term quotation * tactic -> tactic
-TERMCOMB$suffices_by                 type    term quotation * tactic -> tactic
+by                          type    term quotation * tactic -> tactic
+suffices_by                 type    term quotation * tactic -> tactic
 
 ###################
 # Tactic chaining #
 ###################
-TACCOMB$THEN                        type    tactic -> tactic -> tactic
-TACCOMB$ORELSE                      type    tactic -> tactic -> tactic
+THEN                        type    tactic -> tactic -> tactic
+ORELSE                      type    tactic -> tactic -> tactic
 
 
 ########################

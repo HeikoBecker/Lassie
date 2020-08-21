@@ -32,11 +32,7 @@ import edu.stanford.nlp.sempre.interactive.lassie.Component;
 public class TacticWorld {
 
     public static String thm (String t) {
-        return "THM$"+t;
-    }
-
-    public static String mark (String t) {
-        return "LASSIESTART " + t + " LASSIEEND";
+        return t;
     }
 
     // Wrap a tactic text as a "Tactic":

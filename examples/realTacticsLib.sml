@@ -16,14 +16,14 @@ struct
         val _ =
           map (fn (a,b) => (def a [b])) [
           (* intro tactics *)
-            (`introduce variables`, `TACL$rpt TAC$gen_tac`),
-            (`introduce assumptions`, `TACL$rpt TAC$strip_tac`),
-            (`introduce variables and assumptions`, `TACL$rpt TAC$strip_tac`),
+            (`introduce variables`, `rpt gen_tac`),
+            (`introduce assumptions`, `rpt strip_tac`),
+            (`introduce variables and assumptions`, `rpt strip_tac`),
           (* Custom tactic *)
-            (`rewrite last assumption`, `ASMTESTTAC$pop_assum THMTAC$rw_th`),
-            (`rewrite ADD_ASSOC for 'n'`, `QUOTSPECTHMTAC$qspec_then 'n' THMTAC$rw_th ADD_ASSOC`),
-            (‘trivial’, ‘TAC$REAL_ASM_ARITH_TAC’),
-            (`we know 'T'`, `'T' TERMCOMB$by (TAC$REAL_ASM_ARITH_TAC)`)
+            (`rewrite last assumption`, `pop_assum rw_th`),
+            (`rewrite ADD_ASSOC for 'n'`, `qspec_then 'n' rw_th ADD_ASSOC`),
+            (‘trivial’, ‘REAL_ASM_ARITH_TAC’),
+            (`we know 'T'`, `'T' by (REAL_ASM_ARITH_TAC)`)
           ]
         in () end
     in

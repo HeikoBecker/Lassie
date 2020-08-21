@@ -186,22 +186,22 @@ Proof
     rewrite once [ <- REAL_LE_NEG]. we know 'a < 0'. thus 'a <> 0'.
     we know 'r < 0'. thus 'r <> 0'.
     'inv(-a) <= inv (-r) <=> (- r) <= -a' using
-      (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify).
+      (use REAL_INV_LE_ANTIMONO THEN simplify).
     resolve with REAL_NEG_INV. rewrite assumptions. follows trivially.
   Goal 1.
     rewrite once [<- REAL_LE_NEG].
     we know 'a < 0'. thus 'a <> 0'. we know 'q <> 0'.
     resolve with REAL_NEG_INV.
     'inv (-q) <= inv (-a) <=> (-a) <= (-q)' using
-      (use REAL_INV_LE_ANTIMONO TACCOMB$THEN simplify TACCOMB$THEN trivial).
+      (use REAL_INV_LE_ANTIMONO THEN simplify THEN trivial).
     rewrite assumptions. follows trivially.
   Goal 1.
     rewrite with [<- REAL_INV_1OVER].
-    'inv r <= inv a <=> a <= r' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN trivial).
+    'inv r <= inv a <=> a <= r' using (use REAL_INV_LE_ANTIMONO THEN trivial).
     follows trivially.
   Goal 1.
     rewrite with [<- REAL_INV_1OVER].
-    'inv a <= inv q <=> q <= a' using (use REAL_INV_LE_ANTIMONO TACCOMB$THEN trivial).
+    'inv a <= inv q <=> q <= a' using (use REAL_INV_LE_ANTIMONO THEN trivial).
     follows trivially.’
 QED
 

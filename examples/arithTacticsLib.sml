@@ -11,27 +11,27 @@ struct
         val _ = LassieLib.addCustomTactic fs_all "fs_all";
         val _ =
         map (fn (a,b) => (LassieLib.def a [b])) [
-          (`simplify`, `TAC$fs_all`),
-          (`simplify with [ADD_ASSOC]`, `THMLISTTAC$fs [ ADD_ASSOC ]`),
-          (`use [ADD_ASSOC] to simplify`, `THMLISTTAC$fs [ ADD_ASSOC ]`),
-          (`follows from [ADD_ASSOC]`, `THMLISTTAC$metis_tac [ ADD_ASSOC ]`),
-          (`rewrite [ADD_ASSOC]` ,`THMLISTTAC$rw [ADD_ASSOC]`),
+          (`simplify`, `fs_all`),
+          (`simplify with [ADD_ASSOC]`, `fs [ ADD_ASSOC ]`),
+          (`use [ADD_ASSOC] to simplify`, `fs [ ADD_ASSOC ]`),
+          (`follows from [ADD_ASSOC]`, `metis_tac [ ADD_ASSOC ]`),
+          (`rewrite [ADD_ASSOC]` ,`rw [ADD_ASSOC]`),
           (`trivial using [ADD_ASSOC]`,
-          `TAC$all_tac TACCOMB$THEN ( THMLISTTAC$fs [ ADD_ASSOC ] TACCOMB$THEN TAC$NO_TAC) TACCOMB$ORELSE (THMLISTTAC$rw [ ADD_ASSOC ] TACCOMB$THEN TAC$NO_TAC) TACCOMB$ORELSE THMLISTTAC$metis_tac [ ADD_ASSOC ]`),
+          `all_tac THEN ( fs [ ADD_ASSOC ] THEN NO_TAC) ORELSE (rw [ ADD_ASSOC ] THEN NO_TAC) ORELSE metis_tac [ ADD_ASSOC ]`),
           (‘trivial’, ‘trivial using []’),
-          (`perform an induction on 't'`, `QUOTTAC$Induct_on ' t '`),
-          (`Induction on 't'`, `QUOTTAC$Induct_on ' t '`),
-          (`perform a case split`, `TAC$Cases`),
-          (`perform a case split for 't'`, `QUOTTAC$Cases_on ' t '`),
-          (`Complete Induction on 't'`, `QUOTTAC$completeInduct_on ' t '`),
-          (`suppose not`, `ASMTESTTAC$spose_not_then THMTAC$assume_tac`),
-          (`show 'T' using (TAC$gen_tac)` ,`' T ' TERMCOMB$by TAC$gen_tac`),
-          (`we further know 'T'`, `' T ' TERMCOMB$by THMLISTTAC$rw [ ]`),
-          (`we can derive 'T' from [ADD_ASSOC]`, `' T ' TERMCOMB$by THMLISTTAC$rw [ ADD_ASSOC ]`),
-          (`thus ADD_ASSOC for 'n'`, `QUOTSPECTHMTAC$qspec_then ' n ' THMTAC$assume_tac ADD_ASSOC`),
-          (‘'T' suffices to show the goal’, ‘'T' TERMCOMB$suffices_by (THMLISTTAC$fs[])’),
-          (`it suffices to show that the arguments are equal`, `TAC$AP_TERM_TAC`),
-          (`it suffices to show that the functions are equal`, `TAC$AP_THM_TAC`)
+          (`perform an induction on 't'`, `Induct_on ' t '`),
+          (`Induction on 't'`, `Induct_on ' t '`),
+          (`perform a case split`, `Cases`),
+          (`perform a case split for 't'`, `Cases_on ' t '`),
+          (`Complete Induction on 't'`, `completeInduct_on ' t '`),
+          (`suppose not`, `spose_not_then assume_tac`),
+          (`show 'T' using (gen_tac)` ,`' T ' by gen_tac`),
+          (`we further know 'T'`, `' T ' by rw [ ]`),
+          (`we can derive 'T' from [ADD_ASSOC]`, `' T ' by rw [ ADD_ASSOC ]`),
+          (`thus ADD_ASSOC for 'n'`, `qspec_then ' n ' assume_tac ADD_ASSOC`),
+          (‘'T' suffices to show the goal’, ‘'T' suffices_by (fs[])’),
+          (`it suffices to show that the arguments are equal`, `AP_TERM_TAC`),
+          (`it suffices to show that the functions are equal`, `AP_THM_TAC`)
         ]
       in () end;
   in

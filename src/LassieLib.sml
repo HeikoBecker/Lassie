@@ -219,7 +219,8 @@ struct
                   (strAcc ^ " " ^ str, goalpos, gl, vld))
              ("", All, gls1, vld1) theStrings)
     in
-      (gls, vld)
+      if (str = "") then (gls, vld)
+      else raise LassieException ("Could not parse string "^str^"\n")
     end;
 
   (* define an utterance in terms of a list of utterances*)
@@ -269,20 +270,22 @@ struct
 
   (** Adding a custom SML tactic to the grammar **)
   fun addCustomTactic tac str : unit =
-    (addIDRule "$tactic" ("TAC$"^str) "anchored 1";
+    (addIDRule "$tactic" str "anchored 1";
     LassieParserLib.addCustomTactic tac str);
 
   (** Adding a custom SML thm tactic to the grammar **)
   fun addCustomThmTactic thmtac str: unit =
-    (addIDRule "$thm->tactic" ("THMTAC$"^str) "anchored 1";
+    (addIDRule "$thm->tactic" str "anchored 1";
     LassieParserLib.addCustomThmTactic thmtac str)
 
   (** Adding a custom SML thmlist tactic to the grammar **)
+  (**
   fun addCustomThmlistTactic tac : unit =
     addIDRule "$thmlist->tactic" tac "anchored 1";
 
   fun addCustomTermTactic tac : unit =
     addIDRule "$term->tactic" tac "anchored 1";
+  **)
 
   fun printGrammar () : unit =
     let

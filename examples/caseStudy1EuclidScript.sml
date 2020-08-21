@@ -263,7 +263,7 @@ Proof
     we can derive 'FACT n + 1 <> 1' from [FACT_LESS, neq_zero].
     thus PRIME_FACTOR for 'FACT n + 1'.
     we further know '?q. prime q and q divides (FACT n + 1)'.
-    show 'q <= n' using (suppose not TACCOMB$THEN trivial using [NOT_LESS_EQUAL]).
+    show 'q <= n' using (suppose not THEN trivial using [NOT_LESS_EQUAL]).
     show '0 < q' using (follows from [PRIME_POS]).
     show 'q divides FACT n' using (follows from [DIVIDES_FACT]).
     show 'q=1' using (follows from [DIVIDES_ADDL, DIVIDES_ONE]).
