@@ -304,7 +304,10 @@ struct
 
   fun knownJargons () = !knownJargon;
 
-  fun loadJargon (n:string) = (map (fn (s,f) => if s = n then f() else ()) (!knownJargon); ());
+  fun loadJargon (n:string) =
+    case List.find (fn (s,f) => s = n) (!knownJargon) of
+    SOME (s,f) =>  f()
+    | NONE => raise LassieException ("Jargon " ^ n ^ " not found. Did you 'open' the correct library?");
 
   (** Interactive mode **)
   local
