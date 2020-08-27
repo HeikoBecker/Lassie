@@ -139,8 +139,8 @@ Proof
     induction on 'n'.
     simplify conclusion with [sum_of_cubes_def, sum_def].
     rewrite with [POW_2, REAL_LDISTRIB, REAL_RDISTRIB, REAL_ADD_ASSOC].
-    it suffices to show '&SUC n pow 3 = &SUC n * &SUC n + &SUC n * sum n + sum n * &SUC n'
-      because (simplify conclusion with [REAL_EQ_LADD]).
+    showing '&SUC n pow 3 = &SUC n * &SUC n + &SUC n * sum n + sum n * &SUC n'
+      closes the proof because (simplify conclusion with [REAL_EQ_LADD]).
     we know '& SUC n * sum n + sum n * &SUC n = 2 * (sum n * & SUC n)'.
     rewrite once [<- REAL_ADD_ASSOC].
     rewrite last assumption.

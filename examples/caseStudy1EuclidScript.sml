@@ -49,7 +49,7 @@ Theorem DIVIDES_0:
   ! x . x divides 0
 Proof
   LassieLib.nltac `
-    trivial using [divides_def, MULT_CLAUSES].`
+    [divides_def, MULT_CLAUSES] solves the goal.`
   (* metis_tac [divides_def,MULT_CLAUSES] *)
 QED
 
@@ -57,7 +57,7 @@ Theorem DIVIDES_ZERO:
   ! x . (0 divides x) = (x = 0)
 Proof
   LassieLib.nltac `
-    follows from [divides_def, MULT_CLAUSES].`
+    [divides_def, MULT_CLAUSES] solves the goal.`
   (* metis_tac [divides_def,MULT_CLAUSES] *)
 QED
 
@@ -65,7 +65,7 @@ Theorem DIVIDES_ONE:
   ! x . (x divides 1) = (x = 1)
 Proof
   LassieLib.nltac
-    `follows from [divides_def, MULT_CLAUSES, MULT_EQ_1].`
+    `[divides_def, MULT_CLAUSES, MULT_EQ_1] solves the goal.`
   (* metis_tac [divides_def,MULT_CLAUSES,MULT_EQ_1] *)
 QED
 
@@ -73,7 +73,7 @@ Theorem DIVIDES_REFL:
   ! x . x divides x
 Proof
   LassieLib.nltac `
-    follows from [divides_def, MULT_CLAUSES].`
+    [divides_def, MULT_CLAUSES] solves the goal.`
   (* metis_tac [divides_def,MULT_CLAUSES] *)
 QED
 
@@ -81,7 +81,7 @@ Theorem DIVIDES_TRANS:
   ! a b c . a divides b /\ b divides c ==> a divides c
 Proof
   LassieLib.nltac `
-    follows from [divides_def, MULT_ASSOC].`
+    [divides_def, MULT_ASSOC] solves the goal.`
   (* metis_tac [divides_def,MULT_ASSOC] *)
 QED
 
@@ -89,7 +89,7 @@ Theorem DIVIDES_ADD:
   ! d a b . d divides a /\ d divides b ==> d divides (a + b)
 Proof
   LassieLib.nltac `
-    follows from [divides_def, LEFT_ADD_DISTRIB].`
+    [divides_def, LEFT_ADD_DISTRIB] solves the goal.`
   (* metis_tac [divides_def, LEFT_ADD_DISTRIB] *)
 QED
 
@@ -97,7 +97,7 @@ Theorem DIVIDES_SUB:
   !d a b . d divides a /\ d divides b ==> d divides (a - b)
 Proof
   LassieLib.nltac `
-    follows from [divides_def, LEFT_SUB_DISTRIB].`
+    [divides_def, LEFT_SUB_DISTRIB] solves the goal.`
   (* metis_tac [divides_def,LEFT_SUB_DISTRIB] *)
 QED
 
@@ -105,7 +105,7 @@ Theorem DIVIDES_ADDL:
   !d a b . d divides a /\ d divides (a + b) ==> d divides b
 Proof
   LassieLib.nltac `
-    follows from [ADD_SUB, ADD_SYM, DIVIDES_SUB].`
+    [ADD_SUB, ADD_SYM, DIVIDES_SUB] solves the goal.`
   (* metis_tac [ADD_SUB,ADD_SYM,DIVIDES_SUB] *)
 QED
 
@@ -113,7 +113,7 @@ Theorem DIVIDES_LMUL:
   !d a x . d divides a ==> d divides (x * a)
 Proof
   LassieLib.nltac `
-    follows from [divides_def, MULT_ASSOC, MULT_SYM].`
+    [divides_def, MULT_ASSOC, MULT_SYM] solves the goal.`
   (* metis_tac [divides_def,MULT_ASSOC,MULT_SYM] *)
 QED
 
@@ -121,7 +121,7 @@ Theorem DIVIDES_RMUL:
   !d a x . d divides a ==> d divides (a * x)
 Proof
   LassieLib.nltac `
-    follows from [MULT_SYM,DIVIDES_LMUL].`
+    [MULT_SYM,DIVIDES_LMUL] solves the goal.`
   (* metis_tac [MULT_SYM,DIVIDES_LMUL] *)
 QED
 
@@ -130,7 +130,7 @@ Theorem DIVIDES_LE:
 Proof
   LassieLib.nltac ‘
             rewrite [divides_def].
-            trivial using [].’
+            [] solves the goal.’
   (* rw [divides_def] >> rw[] *)
 QED
 
@@ -145,8 +145,8 @@ Proof
   LassieLib.nltac ‘
     rewrite [LESS_EQ_EXISTS].
     perform an induction on 'p'.
-    follows from
-      [FACT, NOT_X_LE, num_CASES, DIVIDES_RMUL, DIVIDES_LMUL, DIVIDES_REFL, ADD_CLAUSES].’
+    [FACT, NOT_X_LE, num_CASES, DIVIDES_RMUL, DIVIDES_LMUL, DIVIDES_REFL, ADD_CLAUSES]
+      solves the goal.’
   (*
   rw  [LESS_EQ_EXISTS]
    >> Induct_on `p`
@@ -179,7 +179,7 @@ Theorem PRIME_2:
 Proof
   LassieLib.nltac `
     rewrite [prime_def].
-    follows from [DIVIDES_LE, DIVIDES_ZERO, two_prime_eqs].`
+    [DIVIDES_LE, DIVIDES_ZERO, two_prime_eqs] solves the goal.`
   (* rw  [prime_def] >>
   metis_tac [DIVIDES_LE, DIVIDES_ZERO,
              DECIDE``~(2=1) /\ ~(2=0) /\ (x<=2 = (x=0) \/ (x=1) \/ (x=2))``] *)
@@ -210,10 +210,10 @@ Proof
     Complete Induction on 'n'.
     rewrite [].
     perform a case split for 'prime n'.
-    Goal 1. follows from [DIVIDES_REFL]. End.
+    Goal 1. [DIVIDES_REFL] solves the goal. End.
     Goal 1.
       show '? x. x divides n and x <> 1 and x <> n' using (follows from [prime_def]).
-      follows from [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0].
+      [LESS_OR_EQ, PRIME_2, DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0] solves the goal.
     End.’
   (*
    completeInduct_on `n`
@@ -235,8 +235,8 @@ Theorem PRIME_FACTOR:
 Proof
   LassieLib.nltac ‘
     Complete Induction on 'n'.
-    follows from [DIVIDES_REFL,prime_def,LESS_OR_EQ, PRIME_2,
-             DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0].’
+    [DIVIDES_REFL,prime_def,LESS_OR_EQ, PRIME_2,
+             DIVIDES_LE, DIVIDES_TRANS, DIVIDES_0] solves the goal.’
   (*
   completeInduct_on `n` >>
   metis_tac [DIVIDES_REFL,prime_def,LESS_OR_EQ, PRIME_2,
@@ -263,12 +263,12 @@ Proof
     we can derive 'FACT n + 1 <> 1' from [FACT_LESS, neq_zero].
     thus PRIME_FACTOR for 'FACT n + 1'.
     we further know '?q. prime q and q divides (FACT n + 1)'.
-    show 'q <= n' using (suppose not THEN trivial using [NOT_LESS_EQUAL]).
-    show '0 < q' using (follows from [PRIME_POS]).
-    show 'q divides FACT n' using (follows from [DIVIDES_FACT]).
+    show 'q <= n' using (suppose not and [NOT_LESS_EQUAL] solves the goal).
+    show '0 < q' using ([PRIME_POS] solves the goal).
+    show 'q divides FACT n' using ([DIVIDES_FACT] solves the goal).
     show 'q=1' using (follows from [DIVIDES_ADDL, DIVIDES_ONE]).
     show 'prime 1' using (simplify).
-    follows from [NOT_PRIME_1].’
+    [NOT_PRIME_1] solves the goal.’
   (*
   spose_not_then strip_assume_tac
    >> mp_tac (SPEC ``FACT n + 1`` PRIME_FACTOR)

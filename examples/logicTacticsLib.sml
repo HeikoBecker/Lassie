@@ -50,7 +50,7 @@ struct
           (`we know 'T'`, `'T' by (fs [ ])`),
           (`thus 'T'`, `we know 'T'`),
           (`'T' using (cheat)`, `'T' by (cheat)`),
-          (`it suffices to show 'T' because (gen_tac)`, `'T' suffices_by (gen_tac)`),
+          (`showing 'T' closes the proof because (gen_tac)`, `'T' suffices_by (gen_tac)`),
           (‘Case 'x'’, ‘Goal 'x'’),
           (‘cheat then cheat’, ‘cheat THEN cheat’)
         ]

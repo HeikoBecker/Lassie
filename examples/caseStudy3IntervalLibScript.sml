@@ -156,6 +156,14 @@ Theorem REAL_INV_LE_ANTIMONO[local]:
     0 < x /\ 0 < y ==>
     (inv x <= inv y <=> y <= x)
 Proof
+  LassieLib.nltac `
+    introduce variables and assumptions.
+    we show 'inv x < inv y <=> y < x' using (use REAL_INV_LT_ANTIMONO TACCOMB$THEN follows trivially).
+    case split.
+    simplify with [REAL_LE_LT].
+    introduce assumptions.
+    follows from [REAL_INV_INJ]. trivial.`
+ (* More verbose version using subgoal selectors:
   LassieLib.nltac ‘
     introduce variables and assumptions.
     we show 'inv x < inv y <=> y < x'
@@ -168,7 +176,7 @@ Proof
     Case 'y ≤ x'.
       resolve with REAL_LE_IMP_LT.
       Case 'y = x'. follows from [REAL_INV_INJ]. End.
-      Case 'y < x'. trivial. End.’
+      Case 'y < x'. trivial. End.’ *)
 QED
 
 Theorem interval_inversion_valid:

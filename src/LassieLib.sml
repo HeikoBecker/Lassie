@@ -350,7 +350,7 @@ struct
       then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
       (* Handle pause keyword separately TODO: Make command? *)
       else if (theTrueText = "pause;")
-      then (print "Pausing proof.\nReturn with LassieLib.proveVerbose().\n")
+      then (print "Pausing proof.\nReturn with LassieLib.nlexplain().\n")
       (* help keyword *)
       else if (theTrueText = "help;")
       then (printHelp(); proofLoop())
@@ -389,7 +389,7 @@ struct
         end
     end
   in
-    fun proveVerbose () =
+    fun nlexplain () =
     let
       val (asms,gl) = proofManagerLib.initial_goal();
       val _ = proofManagerLib.drop();

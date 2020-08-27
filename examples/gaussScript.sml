@@ -28,8 +28,8 @@ Proof
      show 'SUC n * (SUC n + 1) = (SUC n + 1) + n * (SUC n + 1)' using (simplify with [MULT_CLAUSES]).
      simplify.
      show 'n * (n + 1) = SUC n * n' using (trivial using [MULT_CLAUSES, MULT_SYM]).
-     show '2 * SUC n = SUC n + SUC n' using (trivial using []).
-     show 'n * (SUC n + 1) = SUC n * n + n' using (trivial using []).
+     show '2 * SUC n = SUC n + SUC n' using (trivial).
+     show 'n * (SUC n + 1) = SUC n * n + n' using (trivial).
      rewrite assumptions. simplify.
    End.’
   (* Induct_on ‘n’

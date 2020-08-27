@@ -16,9 +16,9 @@ struct
           (`use [ADD_ASSOC] to simplify`, `fs [ ADD_ASSOC ]`),
           (`follows from [ADD_ASSOC]`, `metis_tac [ ADD_ASSOC ]`),
           (`rewrite [ADD_ASSOC]` ,`rw [ADD_ASSOC]`),
-          (`trivial using [ADD_ASSOC]`,
+          (`[ADD_ASSOC] solves the goal`,
           `all_tac THEN ( fs [ ADD_ASSOC ] THEN NO_TAC) ORELSE (rw [ ADD_ASSOC ] THEN NO_TAC) ORELSE metis_tac [ ADD_ASSOC ]`),
-          (‘trivial’, ‘trivial using []’),
+          (‘trivial’, ‘[] solves the goal’),
           (`perform an induction on 't'`, `Induct_on ' t '`),
           (`Induction on 't'`, `Induct_on ' t '`),
           (`perform a case split`, `Cases`),
@@ -31,7 +31,8 @@ struct
           (`thus ADD_ASSOC for 'n'`, `qspec_then ' n ' assume_tac ADD_ASSOC`),
           (‘'T' suffices to show the goal’, ‘'T' suffices_by (fs[])’),
           (`it suffices to show that the arguments are equal`, `AP_TERM_TAC`),
-          (`it suffices to show that the functions are equal`, `AP_THM_TAC`)
+          (`it suffices to show that the functions are equal`, `AP_THM_TAC`),
+          (‘cheat and cheat’, ‘cheat THEN cheat’)
         ]
       in () end;
   in
