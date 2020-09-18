@@ -1,4 +1,3 @@
-
 open BasicProvers Defn HolKernel Parse Tactic
      arithmeticTheory boolLib boolSimps bossLib;
 open LassieLib arithTacticsLib realTacticsLib logicTacticsLib;
@@ -13,14 +12,14 @@ Definition sum_def:
   sum n = n + sum (n-1)
 End
 
-Theorem gaussian_sum:
+Theorem closed_form_sum:
   ∀ n.
     sum n = (n * (n + 1)) DIV 2
 Proof
   nltac ‘
    Induction on 'n'.
    Goal 'sum 0 = 0 * (0 + 1) DIV 2'.
-     simplify.
+     use [sum_def] to simplify.
    End.
    Goal 'sum (SUC n) = SUC n * (SUC n + 1) DIV 2'.
      use [sum_def, GSYM ADD_DIV_ADD_DIV] to simplify.
@@ -28,8 +27,8 @@ Proof
      show 'SUC n * (SUC n + 1) = (SUC n + 1) + n * (SUC n + 1)' using (simplify with [MULT_CLAUSES]).
      simplify.
      show 'n * (n + 1) = SUC n * n' using (trivial using [MULT_CLAUSES, MULT_SYM]).
-     show '2 * SUC n = SUC n + SUC n' using (trivial).
-     show 'n * (SUC n + 1) = SUC n * n + n' using (trivial).
+     '2 * SUC n = SUC n + SUC n' follows trivially.
+     'n * (SUC n + 1) = SUC n * n + n' follows trivially.
      rewrite assumptions. simplify.
    End.’
   (* Induct_on ‘n’

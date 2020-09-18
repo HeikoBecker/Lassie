@@ -221,4 +221,14 @@ fun rejoin_pars [] = [] |
         then (res^")")
         else res
     end;
+
+  fun listStrip ls1 ls2 =
+    case (ls1, ls2) of
+    ([], _) => ls2
+    | (i1::ls1, i2::ls2) => if (i1 = i2) then listStrip ls1 ls2 else []
+    | (_,_) => [];
+
+  fun removeTrailing str fullStr =
+    implode (rev (listStrip (List.rev (explode str)) (List.rev (explode fullStr))));
+
 end

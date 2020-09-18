@@ -10,8 +10,8 @@ struct
       let
         val _ = LassieLib.addCustomTactic fs_all "fs_all";
         val _ =
-        map (fn (a,b) => (LassieLib.def a [b])) [
-          (`simplify`, `fs_all`),
+        map (uncurry def) [
+          (`simplify`, `fs [ ]`),
           (`simplify with [ADD_ASSOC]`, `fs [ ADD_ASSOC ]`),
           (`use [ADD_ASSOC] to simplify`, `fs [ ADD_ASSOC ]`),
           (`follows from [ADD_ASSOC]`, `metis_tac [ ADD_ASSOC ]`),
@@ -26,6 +26,8 @@ struct
           (`Complete Induction on 't'`, `completeInduct_on ' t '`),
           (`suppose not`, `spose_not_then assume_tac`),
           (`show 'T' using (gen_tac)` ,`' T ' by gen_tac`),
+          (‘show 'T' using [ CONJ_COMM ]’, ‘ ' T ' by ([ CONJ_COMM ] solves the goal)’),
+          (‘'T' follows trivially’, ‘show 'T' using (trivial)’),
           (`we further know 'T'`, `' T ' by rw [ ]`),
           (`we can derive 'T' from [ADD_ASSOC]`, `' T ' by rw [ ADD_ASSOC ]`),
           (`thus ADD_ASSOC for 'n'`, `qspec_then ' n ' assume_tac ADD_ASSOC`),

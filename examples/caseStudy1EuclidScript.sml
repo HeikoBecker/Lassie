@@ -263,10 +263,10 @@ Proof
     we can derive 'FACT n + 1 <> 1' from [FACT_LESS, neq_zero].
     thus PRIME_FACTOR for 'FACT n + 1'.
     we further know '?q. prime q and q divides (FACT n + 1)'.
-    show 'q <= n' using (suppose not and [NOT_LESS_EQUAL] solves the goal).
-    show '0 < q' using ([PRIME_POS] solves the goal).
-    show 'q divides FACT n' using ([DIVIDES_FACT] solves the goal).
-    show 'q=1' using (follows from [DIVIDES_ADDL, DIVIDES_ONE]).
+    show 'q <= n' using [NOT_LESS_EQUAL].
+    show '0 < q' using [PRIME_POS] .
+    show 'q divides FACT n' using [DIVIDES_FACT].
+    show 'q=1' using [DIVIDES_ADDL, DIVIDES_ONE].
     show 'prime 1' using (simplify).
     [NOT_PRIME_1] solves the goal.’
   (*

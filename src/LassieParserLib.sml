@@ -164,7 +164,13 @@ struct
 
   fun parseThmTactic strs =
     case lex strs of
-    SOME (Id id, strs) =>
+    SOME (LBrac, strs1) =>
+      let val (descr, thmtac, strs2) = parseThmTactic strs1 in
+        case lex strs2 of
+        SOME (RBrac, strs3) => (descr, thmtac, strs3)
+        | _ => raise NoParseException ("Imbalanced parenthesis\n")
+      end
+    | SOME (Id id, strs) =>
       (case TacticMap.lookupTac id (!tacticMap) of
       SOME (ThmTactic th) => (id, th, strs)
       | SOME (QuotSpecThmTactic t) =>

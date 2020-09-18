@@ -155,15 +155,6 @@ struct
   (*************************************)
   (*          Main interface           *)
   (*************************************)
-  fun listStrip ls1 ls2 =
-    case (ls1, ls2) of
-    ([], _) => ls2
-    | (i1::ls1, i2::ls2) => if (i1 = i2) then listStrip ls1 ls2 else []
-    | (_,_) => [];
-
-  fun removeTrailing str fullStr =
-    implode (rev (listStrip (List.rev (explode str)) (List.rev (explode fullStr))));
-
   fun find_matching_goal tq gl =
     let val (id,found) =
       foldl (fn (g,(id, found)) =>
@@ -224,32 +215,36 @@ struct
     end;
 
   (* define an utterance in terms of a list of utterances*)
-  fun def ndum niens : string =
-    let
-      fun extract s = case hd s of QUOTE s => LassieUtilsLib.preprocess s | _ => raise LassieException "Illegal Quote"
-      (* for each utterance of the definition, get its logical form *)
-      fun getFormula u = [u, (u |> sempre |> #formula |> escape |> escape)]
-      (* formatting *)
-      fun quot s = "\"" ^ s ^ "\""
-      fun quot' s = "\\\"" ^ s ^ "\\\""
-      fun list2string l = "[" ^ (String.concatWith "," l) ^ "]"
-      fun stripAllSpaces s = explode s |> stripSpaces |> explode |> List.rev
-        |> stripSpaces |> explode |> List.rev |> implode;
-      val definiens =
-        niens |> (map extract)
-              |> (map getFormula)
-              |> map (map stripAllSpaces)
-              |> (map (map quot'))
-              |> (map list2string)
-              |> list2string
-      val theDef = "(:def " ^ (quot (extract ndum)) ^ " " ^ (quot definiens) ^ ")"
-      val _ = if (!logging) then (print "Defining:\n"; print theDef; print "\n\n") else ()
-      val _ = writeSempre ("(:def " ^ (quot (extract ndum)) ^ " " ^ (quot definiens) ^ ")")
-      val res = waitSempre(!instream)
-      val _ = (if (!logging) then print res else ())
-    in
-      res
-    end;
+  local
+    fun define ndum niens : string =
+      let
+        fun extract s = case hd s of QUOTE s => LassieUtilsLib.preprocess s | _ => raise LassieException "Illegal Quote"
+        (* for each utterance of the definition, get its logical form *)
+        fun getFormula u = [u, (u |> sempre |> #formula |> escape |> escape)]
+        (* formatting *)
+        fun quot s = "\"" ^ s ^ "\""
+        fun quot' s = "\\\"" ^ s ^ "\\\""
+        fun list2string l = "[" ^ (String.concatWith "," l) ^ "]"
+        fun stripAllSpaces s = explode s |> stripSpaces |> explode |> List.rev
+          |> stripSpaces |> explode |> List.rev |> implode;
+        val definiens =
+          niens |> (map extract)
+                |> (map getFormula)
+                |> map (map stripAllSpaces)
+                |> (map (map quot'))
+                |> (map list2string)
+                |> list2string
+        val theDef = "(:def " ^ (quot (extract ndum)) ^ " " ^ (quot definiens) ^ ")"
+        val _ = if (!logging) then (print "Defining:\n"; print theDef; print "\n\n") else ()
+        val _ = writeSempre ("(:def " ^ (quot (extract ndum)) ^ " " ^ (quot definiens) ^ ")")
+        val res = waitSempre(!instream)
+        val _ = (if (!logging) then print res else ())
+      in
+        res
+      end;
+  in
+    fun def cmd def = define cmd [def];
+  end;
 
   fun addRule lhs rhs sem anchoring : unit =
     let
@@ -344,15 +339,16 @@ struct
         | SOME s => LassieUtilsLib.preprocess (s ^ (getAll (TextIO.stdIn)))
       val theTrueText =
         LassieUtilsLib.preprocess theText
+        |> LassieUtilsLib.removeTrailing ((!LASSIESEP)^"; ")
     in
       (* Handle exit keyword separately TODO: Make command? *)
-      if (theTrueText = "exit;")
+      if (theTrueText = "exit")
       then (print " Exiting\n") (* ProofRecorderLib.reset()) *)
       (* Handle pause keyword separately TODO: Make command? *)
-      else if (theTrueText = "pause;")
+      else if (theTrueText = "pause")
       then (print "Pausing proof.\nReturn with LassieLib.nlexplain().\n")
       (* help keyword *)
-      else if (theTrueText = "help;")
+      else if (theTrueText = "help")
       then (printHelp(); proofLoop())
       (* Proof step or command was given, parse with SEMPRE *)
       else

@@ -12,11 +12,10 @@ struct
         val rw_th = fn thm => once_rewrite_tac[thm];
         val _ = LassieLib.addCustomThmTactic rw_th "rw_th";
         val _ =
-          map (fn (a,b) => (def a [b])) [
+          map (uncurry def) [
           (* intro tactics *)
             (`introduce variables`, `rpt gen_tac`),
             (`introduce assumptions`, `rpt strip_tac`),
-            (`introduce variables and assumptions`, `rpt strip_tac`),
           (* Custom tactic *)
             (`rewrite last assumption`, `pop_assum rw_th`),
             (`rewrite ADD_ASSOC for 'n'`, `qspec_then 'n' rw_th ADD_ASSOC`),

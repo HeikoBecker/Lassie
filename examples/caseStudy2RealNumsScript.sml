@@ -13,7 +13,7 @@ Theorem binom1:
   ! (a b:real). (a + b) pow 2 = a pow 2 + 2 * a * b + b pow 2
 Proof
   LassieLib.nltac `
-    introduce variables and assumptions.
+    introduce assumptions.
   rewrite with [POW_2, REAL_LDISTRIB, REAL_RDISTRIB].
   rewrite with [<- REAL_ADD_ASSOC].
   simplify with [REAL_EQ_RADD].
@@ -36,7 +36,7 @@ Theorem binom2:
   ! (a b:real). (a - b) pow 2 = a pow 2 - 2 * a * b + b pow 2
 Proof
   LassieLib.nltac `
-    introduce variables and assumptions.
+    introduce assumptions.
     rewrite with [POW_2, real_sub, REAL_LDISTRIB, REAL_RDISTRIB].
     rewrite with [<- REAL_ADD_ASSOC].
     simplify with [REAL_EQ_RADD].
@@ -68,7 +68,7 @@ Definition sum_def:
   (sum (SUC n) = (&(SUC n) + sum n))
 End
 
-Theorem gaussian_sum:
+Theorem closed_form_sum:
   ! n. (sum n = (((&n):real) * (1 + &n)) / 2)
 Proof
   LassieLib.nltac ‘
@@ -144,7 +144,7 @@ Proof
     we know '& SUC n * sum n + sum n * &SUC n = 2 * (sum n * & SUC n)'.
     rewrite once [<- REAL_ADD_ASSOC].
     rewrite last assumption.
-    rewrite with [pow_3, gaussian_sum, real_div, REAL_MUL_ASSOC].
+    rewrite with [pow_3, closed_form_sum, real_div, REAL_MUL_ASSOC].
     we know '2 * &n * (1 + &n) * inv 2 = 2 * inv 2 * & n * (1 + &n)'.
     rewrite last assumption.
     simplify conclusion with [REAL_MUL_RINV].
@@ -166,7 +166,7 @@ Induct_on ‘n’ \\ simp [sum_of_cubes_def, sum_def, ]
     \\ fs[pow_3]
     \\ once_rewrite_tac [REAL_ADD_ASSOC]
     \\ pop_assum rw_th
-    \\ once_rewrite_tac [gaussian_sum]
+    \\ once_rewrite_tac [closed_form_sum]
     \\ once_rewrite_tac [real_div]
     \\ rewrite_tac [REAL_MUL_ASSOC]
     \\ `2 * &n * (1 + &n) * inv 2 = 2 * inv 2 * & n * (1 + &n)` by (REAL_ASM_ARITH_TAC)

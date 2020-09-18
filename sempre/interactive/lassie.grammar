@@ -82,7 +82,7 @@
       (ConstantFn (string "COMMAND$back")) (anchored 1))
 
 ## We can put parentheses around a tactic or a command (Missing: $ROOT $command )
-(for @cat ($tactic)
+(for @cat ($tactic $thm->tactic)
   (rule @cat (\( @cat \)) (lambda t (call @parens (var t))) (anchored 1)))
 
 ###############################################################################

@@ -9,7 +9,7 @@ struct
     fun jargon () =
       let
         val _ =
-        map (fn (a,b) => (def a [b])) [
+        map (uncurry def) [
           (* Case splitting *)
           (‘split conjuncts’, ‘conj_tac THEN rpt conj_tac’),
           (`case split`, `(split conjuncts) ORELSE (EQ_TAC ORELSE Cases)`),
@@ -52,7 +52,8 @@ struct
           (`'T' using (cheat)`, `'T' by (cheat)`),
           (`showing 'T' closes the proof because (gen_tac)`, `'T' suffices_by (gen_tac)`),
           (‘Case 'x'’, ‘Goal 'x'’),
-          (‘cheat then cheat’, ‘cheat THEN cheat’)
+          (‘cheat then cheat’, ‘cheat THEN cheat’),
+          (‘Next Goal’, ‘Goal 1’)
         ]
       in () end;
   in
