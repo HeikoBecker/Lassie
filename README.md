@@ -101,6 +101,6 @@ Language Processing (EMNLP) (2013)/.
 ## Known Bugs
 
 There is a known bug with HOL4, in that sometimes HOL4 will get hung up on
-reading the SEMPRE ourpu.
+reading the SEMPRE output, especially when not running with `Holmake -j1`.
 This can be seen by Holmake printing something along the lines of `invalid command: ...`.
 If this happens please interrupt the process with `Ctrl-c` and restart `Holmake`.
