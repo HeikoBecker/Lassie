@@ -79,6 +79,12 @@ SEMPRE and their parse according to the grammar is printed.
 The case studies for our CPP 2021 paper can be found in the directory `examples`.
 File `caseStudy<N>` is the n-th case study from section 5 of the paper.
 
+The file `gaussScript.sml` contains the prove of the closed formula for the sum
+of the first n numbers, used as an example in our HOL4 tutorial.
+
+The files `arithTacticsLib.sml`, `logicTacticsLib.sml` and `realTacticsLib.sml`
+contain the calls to `def` setting up the Lassie tactics for the case studies
+and the tutorial.
 
 ## Other directories
 
