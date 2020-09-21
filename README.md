@@ -1,8 +1,8 @@
 # Lassie
 
-The Case Studies for the IJCAR 2020 paper can be found in the folder `examples`.
-Please make sure to install the dependencies and setup guide below if you intend
-to run them on your machine.
+The Case Studies for the CPP 2021 paper can be found in the folder `examples`.
+Please make sure to install the dependencies and follow the setup guide below if
+you intend to run them on your machine.
 
 ## Dependencies
 
@@ -11,9 +11,9 @@ For this please refer to [https://github.com/HOL-Theorem-Prover/HOL].
 
 To compile and run SEMPRE you need to have a working ruby installation.
 The java `jar` command should also be available either from OpenJDK or Oracle Java.
+Running the following command should on Debian based systems set up the dependencies correctly:
 
-Lassie additionally depends on the shell variable `LASSIEDIR` which must point
-to the folder where Lassie is stored (i.e. this directory)
+    apt-get install ant ruby2.7
 
 ## Setup
 
@@ -52,14 +52,15 @@ We recommend running the examples from the `examples` directory (files
 
 Also see the script files in that directory for examples how to use `nltac`.
 
-To use `proveVerbose` the goal has to be started using function `gt` from the
-goalTree package. If `! x. x < 3 ==> x < 5` is to be proven, run
+Funtion `nlexplain` can be run similarly.
+It must be put before starting the actual proof script:
 
-    gt `! x. x < 3 ==> x < 5`;
-    proveVerbose();
+    nlexplain()
 
-Afterwards natural language descriptions can be send just like normal HOL4
-commands to the REPL.
+    <Lassie tactics>
+
+After sending `nlexplain()` to the HOL4 REPL, Lassie tactics can be send just
+like normal HOL4 commands to the REPL.
 
 If you want to use Holmake, you have to explicitly enforce no parallelism, using
 `Holmake -j 1`.
@@ -73,14 +74,27 @@ the `run` script:
 This will give you an interactive SEMPRE session where commands can be send to
 SEMPRE and their parse according to the grammar is printed.
 
+## Case Studies
+
+The case studies for our CPP 2021 paper can be found in the directory `examples`.
+File `caseStudy<N>` is the n-th case study from section 5 of the paper.
+
+
+## Other directories
+
+The directory `src` contains the main SML development of Lassie, connecting HOL4
+to the semantic parser SEMPRE.
+
+The directory `sempre` contains the version of SEMPRE that we have based the
+development of Lassie on.
+It is mostly based GitHub version (https://github.com/percyliang/sempre) of the paper
+Berant, J., Chou, A., Frostig, R., and Liang, P. Semantic parsing on
+Freebase from question-answer pairs. In Empirical Methods in Natural
+Language Processing (EMNLP) (2013)/.
+
 ## Known Bugs
 
 There is a known bug with HOL4, in that sometimes HOL4 will get hung up on
-reading the SEMPRE socket file.
+reading the SEMPRE ourpu.
 This can be seen by Holmake printing something along the lines of `invalid command: ...`.
 If this happens please interrupt the process with `Ctrl-c` and restart `Holmake`.
-
-## Case Studies
-
-The case studies for our IJCAR 2020 paper can be found in the directory `examples`.
-File `caseStudy<N>` is the n-th case study from section 5 of the paper.
