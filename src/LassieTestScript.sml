@@ -15,7 +15,7 @@ val t = LassieLib.nltac ‘Cases_on ' n '.’ tg;
 
 val t = LassieLib.nltac ‘fs [ arithmeticTheory.ADD_ASSOC ].’ tg;
 
-val t = LassieLib.def `test123` [`cheat`];
+val t = LassieLib.def `test123` `cheat`;
 
 val t = LassieLib.nltac ‘test123.’ tg;
 
@@ -23,7 +23,7 @@ val t = LassieLib.nltac ‘imp_res_tac test.’ tg;
 
 val t = LassieLib.nltac ‘(qspec_then ' x ' irule test).’ tg;
 
-val t = LassieLib.def `resolve_with test` [`imp_res_tac test`];
+val t = LassieLib.def `resolve_with test` `imp_res_tac test`;
 
 val t = LassieLib.nltac ‘resolve_with CONJ_COMM.’ tg;
 
