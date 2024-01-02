@@ -1,5 +1,7 @@
 # Lassie
 
+**IMPORTANT: This code is not actively maintained anymore**
+
 The Case Studies for the CPP 2021 paper can be found in the folder `examples`.
 Please make sure to install the dependencies and follow the setup guide below if
 you intend to run them on your machine.
